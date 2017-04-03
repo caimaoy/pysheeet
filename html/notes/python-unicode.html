@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python unicode cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python generator cheatsheet" href="python-generator.html" />
+    <link rel="prev" title="Python basic cheatsheet" href="python-basic.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-unicode-cheatsheet">
+<h1>Python unicode cheatsheet<a class="headerlink" href="#python-unicode-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="encode-unicode-code-point-to-bytes">
+<h2>Encode: unicode code point to bytes<a class="headerlink" href="#encode-unicode-code-point-to-bytes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;Café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="go">&lt;class &#39;bytes&#39;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="decode-bytes-to-unicode-code-point">
+<h2>Decode: bytes to unicode code point<a class="headerlink" href="#decode-bytes-to-unicode-code-point" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="s1">&#39;Café&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">&#39;Café&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-unicode-code-point">
+<h2>Get unicode code point<a class="headerlink" href="#get-unicode-code-point" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;Café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s1">&#39;U+</span><span class="si">%04x</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">ord</span><span class="p">(</span><span class="n">_c</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">U+0043</span>
+<span class="go">U+0061</span>
+<span class="go">U+0066</span>
+<span class="go">U+00e9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="s1">&#39;中文&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">u</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s1">&#39;U+</span><span class="si">%04x</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">ord</span><span class="p">(</span><span class="n">_c</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">U+4e2d</span>
+<span class="go">U+6587</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python2-str-is-equivalent-to-byte-string">
+<h2>python2 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to byte string<a class="headerlink" href="#python2-str-is-equivalent-to-byte-string" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>  <span class="c1"># byte string</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span>
+<span class="go">&#39;Caf\xc3\xa9&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">&lt;type &#39;str&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;Café&#39;</span> <span class="c1"># unicode string</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span>
+<span class="go">u&#39;Caf\xe9&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="go">&lt;type &#39;unicode&#39;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python3-str-is-equivalent-to-unicode-string">
+<h2>python3 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to unicode string<a class="headerlink" href="#python3-str-is-equivalent-to-unicode-string" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">&lt;class &#39;str&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span>
+<span class="go">&#39;Café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">b&#39;Caf\xc3\xa9&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="go">&#39;Café&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python2-take-str-char-as-byte-character">
+<h2>python2 take <code class="docutils literal"><span class="pre">str</span></code> char as byte character<a class="headerlink" href="#python2-take-str-char-as-byte-character" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="s1">&#39;Café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">[</span><span class="n">_c</span> <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+<span class="go">[&#39;C&#39;, &#39;a&#39;, &#39;f&#39;, &#39;\xc3&#39;, &#39;\xa9&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;Café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">[</span><span class="n">_c</span> <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+<span class="go">[u&#39;C&#39;, u&#39;a&#39;, u&#39;f&#39;, u&#39;\xe9&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python3-take-str-char-as-unicode-character">
+<h2>python3 take <code class="docutils literal"><span class="pre">str</span></code> char as unicode character<a class="headerlink" href="#python3-take-str-char-as-unicode-character" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span> <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">([</span><span class="n">_c</span> <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">])</span>
+ <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;é&#39;</span><span class="p">]</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+ <span class="mi">4</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="n">bs</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
+ <span class="sa">b</span><span class="s1">&#39;Caf</span><span class="se">\xc3\xa9</span><span class="s1">&#39;</span>
+ <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
+<span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unicode-normalization">
+<h2>unicode normalization<a class="headerlink" href="#unicode-normalization" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># python 3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>       <span class="c1"># unicode string</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u2</span> <span class="o">=</span> <span class="s1">&#39;Cafe</span><span class="se">\u0301</span><span class="s1">&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span><span class="p">,</span> <span class="n">u2</span>
+<span class="p">(</span><span class="s1">&#39;Café&#39;</span><span class="p">,</span> <span class="s1">&#39;Café&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">u1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">u2</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span> <span class="o">==</span> <span class="n">u2</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="c1"># get u1 byte string</span>
+<span class="sa">b</span><span class="s1">&#39;Caf</span><span class="se">\xc3\xa9</span><span class="s1">&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u2</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="c1"># get u2 byte string</span>
+<span class="sa">b</span><span class="s1">&#39;Cafe</span><span class="se">\xcc\x81</span><span class="s1">&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">unicodedata</span> <span class="kn">import</span> <span class="n">normalize</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFC&#39;</span><span class="p">,</span> <span class="n">u1</span><span class="p">)</span>  <span class="c1"># get u1 NFC format</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFC&#39;</span><span class="p">,</span> <span class="n">u2</span><span class="p">)</span>  <span class="c1"># get u2 NFC format</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1</span> <span class="o">==</span> <span class="n">s2</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span> <span class="n">s2</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Caf</span><span class="se">\xc3\xa9</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;Caf</span><span class="se">\xc3\xa9</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFD&#39;</span><span class="p">,</span> <span class="n">u1</span><span class="p">)</span>  <span class="c1"># get u1 NFD format</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFD&#39;</span><span class="p">,</span> <span class="n">u2</span><span class="p">)</span>  <span class="c1"># get u2 NFD format</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span>
+<span class="p">(</span><span class="s1">&#39;Café&#39;</span><span class="p">,</span> <span class="s1">&#39;Café&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1</span> <span class="o">==</span> <span class="n">s2</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span> <span class="n">s2</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Cafe</span><span class="se">\xcc\x81</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;Cafe</span><span class="se">\xcc\x81</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python unicode cheatsheet</a><ul>
+<li><a class="reference internal" href="#encode-unicode-code-point-to-bytes">Encode: unicode code point to bytes</a></li>
+<li><a class="reference internal" href="#decode-bytes-to-unicode-code-point">Decode: bytes to unicode code point</a></li>
+<li><a class="reference internal" href="#get-unicode-code-point">Get unicode code point</a></li>
+<li><a class="reference internal" href="#python2-str-is-equivalent-to-byte-string">python2 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to byte string</a></li>
+<li><a class="reference internal" href="#python3-str-is-equivalent-to-unicode-string">python3 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to unicode string</a></li>
+<li><a class="reference internal" href="#python2-take-str-char-as-byte-character">python2 take <code class="docutils literal"><span class="pre">str</span></code> char as byte character</a></li>
+<li><a class="reference internal" href="#python3-take-str-char-as-unicode-character">python3 take <code class="docutils literal"><span class="pre">str</span></code> char as unicode character</a></li>
+<li><a class="reference internal" href="#unicode-normalization">unicode normalization</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-basic.html" title="previous chapter">Python basic cheatsheet</a></li>
+      <li>Next: <a href="python-generator.html" title="next chapter">Python generator cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-unicode.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

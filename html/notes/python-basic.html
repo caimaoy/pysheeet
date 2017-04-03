@@ -1,0 +1,1309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python basic cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python unicode cheatsheet" href="python-unicode.html" />
+    <link rel="prev" title="Welcome to Python cheatsheet!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-basic-cheatsheet">
+<h1>Python basic cheatsheet<a class="headerlink" href="#python-basic-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="python-naming-rule">
+<h2>Python Naming Rule<a class="headerlink" href="#python-naming-rule" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see: PEP 8</span>
+
+<span class="c1"># for class</span>
+<span class="c1">#</span>
+<span class="c1"># good:</span>
+<span class="c1">#   MyClass</span>
+<span class="c1"># bad:</span>
+<span class="c1">#   myClass, my_class</span>
+<span class="n">MyClass</span>
+
+<span class="c1"># for func, module, package, variables</span>
+<span class="c1">#</span>
+<span class="c1"># good:</span>
+<span class="c1">#   var_underscore_separate</span>
+<span class="c1"># bad:</span>
+<span class="c1">#   varCamel, VarCamel</span>
+<span class="n">var_underscore_separate</span>
+
+<span class="c1"># for public use</span>
+<span class="n">var</span>
+
+<span class="c1"># for internal use</span>
+<span class="n">_var</span>
+
+<span class="c1"># convention to avoid conflict keyword</span>
+<span class="n">var_</span>
+
+<span class="c1"># for private use in class</span>
+<span class="n">__var</span>
+
+<span class="c1"># for protect use in class</span>
+<span class="n">_var_</span>
+
+<span class="c1"># &quot;magic&quot; method or attributes</span>
+<span class="c1"># ex: __init__, __file__, __main__</span>
+<span class="n">__var__</span>
+
+<span class="c1"># for &quot;internal&quot; use throwaway variable</span>
+<span class="c1"># usually used in loop</span>
+<span class="c1"># ex: [_ for _ in range(10)]</span>
+<span class="c1"># or variable not used</span>
+<span class="c1"># for _, a in [(1,2),(3,4)]: print a</span>
+<span class="n">_</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-future-backport-features">
+<h2>Using <code class="docutils literal"><span class="pre">__future__</span></code> backport features<a class="headerlink" href="#using-future-backport-features" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># PEP 236 - Back to the __future__</span>
+
+<span class="c1"># backport python3 print_function in python2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s2">&quot;Hello World&quot;</span>  <span class="c1"># print is a statement</span>
+<span class="n">Hello</span> <span class="n">World</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s2">&quot;Hello World&quot;</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span>
+    <span class="k">print</span> <span class="s2">&quot;Hello World&quot;</span>
+                      <span class="o">^</span>
+<span class="ne">SyntaxError</span><span class="p">:</span> <span class="n">invalid</span> <span class="n">syntax</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello World&quot;</span><span class="p">)</span> <span class="c1"># print become a function</span>
+<span class="n">Hello</span> <span class="n">World</span>
+
+<span class="c1"># backport python3 unicode_literals in python2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;Guido&quot;</span><span class="p">)</span> <span class="c1"># string type is str in python2</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;str&#39;</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;Guido&quot;</span><span class="p">)</span> <span class="c1"># string type become unicode</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;unicode&#39;</span><span class="o">&gt;</span>
+
+<span class="c1"># backport PEP 238 -- Changing the Division Operator</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span>   <span class="c1"># return a float (classic division)</span>
+<span class="mf">0.5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="o">//</span><span class="mi">2</span>  <span class="c1"># return a int (floor division)</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">from</span> <span class="pre">__future__</span> <span class="pre">import</span> <span class="pre">feature</span></code> is a <a class="reference external" href="https://docs.python.org/2/reference/simple_stmts.html#future">future statement</a>.
+It use for backporting features of other python version to
+current python version, not like original import.</p>
+</div>
+</div>
+<div class="section" id="check-object-attributes">
+<h2>Check object attributes<a class="headerlink" href="#check-object-attributes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># example of check list attributes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;__add__&#39;</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="define-a-function-doc">
+<h2>Define a function <code class="docutils literal"><span class="pre">__doc__</span></code><a class="headerlink" href="#define-a-function-doc" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Define a function document</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">Example</span><span class="p">():</span>
+<span class="o">...</span>   <span class="s2">&quot;&quot;&quot; This is an example function &quot;&quot;&quot;</span>
+<span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;Example function&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Example</span><span class="o">.</span><span class="vm">__doc__</span>
+<span class="s1">&#39; This is an example function &#39;</span>
+
+<span class="c1"># Or using help function</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">help</span><span class="p">(</span><span class="n">Example</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-instance-type">
+<h2>Check instance type<a class="headerlink" href="#check-instance-type" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="nb">int</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-get-set-attribute">
+<h2>Check, Get, Set attribute<a class="headerlink" href="#check-get-set-attribute" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;ex&quot;</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">printex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;This is an example&quot;</span>
+<span class="gp">...</span>
+
+<span class="go"># Check object has attributes</span>
+<span class="go"># hasattr(obj, &#39;attr&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">Example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s2">&quot;printex&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s2">&quot;print&quot;</span><span class="p">)</span>
+<span class="go">False</span>
+
+<span class="go"># Get object attribute</span>
+<span class="go"># getattr(obj, &#39;attr&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">getattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+<span class="go">&#39;ex&#39;</span>
+
+<span class="go"># Set object attribute</span>
+<span class="go"># setattr(obj, &#39;attr&#39;, value)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">setattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;example&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-inheritance">
+<h2>Check inheritance<a class="headerlink" href="#check-inheritance" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;ex&quot;</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">printex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;This is an Example&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">issubclass</span><span class="p">(</span><span class="n">Example</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-all-global-variables">
+<h2>Check all global variables<a class="headerlink" href="#check-all-global-variables" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># globals() return a dictionary</span>
+<span class="c1"># {&#39;variable name&#39;: variable value}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">globals</span><span class="p">()</span>
+<span class="p">{</span><span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="o">...</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-callable">
+<h2>Check <strong>callable</strong><a class="headerlink" href="#check-callable" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fun</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="s2">&quot;I am callable&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">callable</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">callable</span><span class="p">(</span><span class="n">fun</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-function-class-name">
+<h2>Get function/class name<a class="headerlink" href="#get-function-class-name" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ExampleClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">pass</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">example_function</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="k">pass</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">ExampleClass</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="go">&#39;ExampleClass&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example_function</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="go">&#39;example_function&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="new-init">
+<h2><code class="docutils literal"><span class="pre">__new__</span></code> &amp; <code class="docutils literal"><span class="pre">__init__</span></code><a class="headerlink" href="#new-init" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># __init__ will invoke</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">ClassA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">print</span> <span class="s1">&#39;__new__ &#39;</span> <span class="o">+</span> <span class="n">arg</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">print</span> <span class="s1">&#39;__init__ &#39;</span> <span class="o">+</span> <span class="n">arg</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span> <span class="o">=</span> <span class="n">ClassA</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="fm">__new__</span> <span class="n">Hello</span>
+<span class="fm">__init__</span> <span class="n">Hello</span>
+
+<span class="c1"># init won&#39;t be invoke</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">ClassB</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">print</span> <span class="s1">&#39;__new__ &#39;</span> <span class="o">+</span> <span class="n">arg</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="nb">object</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">print</span> <span class="s1">&#39;__init__ &#39;</span> <span class="o">+</span> <span class="n">arg</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span> <span class="o">=</span> <span class="n">ClassB</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="fm">__new__</span> <span class="n">Hello</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-diamond-problem">
+<h2>The diamond problem<a class="headerlink" href="#the-diamond-problem" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The problem of multiple inheritance in searching a method</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;This is ClsA&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;This is ClsB&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo_c</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;This is ClsC&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Type</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ClsA</span> <span class="o">=</span> <span class="n">Type</span><span class="p">(</span><span class="s2">&quot;ClsA&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="n">foo_a</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ClsB</span> <span class="o">=</span> <span class="n">Type</span><span class="p">(</span><span class="s2">&quot;ClsB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">ClsA</span><span class="p">,),</span> <span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="n">foo_b</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ClsC</span> <span class="o">=</span> <span class="n">Type</span><span class="p">(</span><span class="s2">&quot;ClsC&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">ClsA</span><span class="p">,),</span> <span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="n">foo_c</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ClsD</span> <span class="o">=</span> <span class="n">Type</span><span class="p">(</span><span class="s2">&quot;ClsD&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">ClsB</span><span class="p">,</span> <span class="n">ClsC</span><span class="p">),</span> <span class="p">{})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ClsD</span><span class="o">.</span><span class="n">mro</span><span class="p">()</span>
+<span class="p">[</span><span class="n">ClsD</span><span class="p">,</span> <span class="n">ClsB</span><span class="p">,</span> <span class="n">ClsC</span><span class="p">,</span> <span class="n">ClsA</span><span class="p">,</span> <span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;object&#39;</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ClsD</span><span class="p">()</span><span class="o">.</span><span class="n">foo</span><span class="p">()</span>
+<span class="n">This</span> <span class="ow">is</span> <span class="n">ClsB</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="representations-of-your-class-behave">
+<h2>Representations of your class behave<a class="headerlink" href="#representations-of-your-class-behave" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>      <span class="k">return</span> <span class="s2">&quot;Example __str__&quot;</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>      <span class="k">return</span> <span class="s2">&quot;Example __repr__&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">Example</span><span class="p">())</span>
+<span class="go">Example __str__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Example</span><span class="p">()</span>
+<span class="go">Example __repr__</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="break-up-a-long-string">
+<h2>Break up a long string<a class="headerlink" href="#break-up-a-long-string" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># original long string</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;This is a very very very long python string&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+<span class="s1">&#39;This is a very very very long python string&#39;</span>
+
+<span class="c1"># single quote with an escaping backslash</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;This is a very very very &quot;</span> \
+<span class="o">...</span>     <span class="s2">&quot;long python string&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+<span class="s1">&#39;This is a very very very long python string&#39;</span>
+
+<span class="c1"># using brackets</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;This is a very very very &quot;</span>
+<span class="o">...</span>      <span class="s2">&quot;long python string&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+<span class="s1">&#39;This is a very very very long python string&#39;</span>
+
+<span class="c1"># using &#39;+&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;This is a very very very &quot;</span> <span class="o">+</span>
+<span class="o">...</span>      <span class="s2">&quot;long python string&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+<span class="s1">&#39;This is a very very very long python string&#39;</span>
+
+<span class="c1"># using triple-quote with an escaping backslash</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;This is a very very very </span><span class="se">\</span>
+<span class="s1">... long python string&#39;&#39;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+<span class="s1">&#39;This is a very very very long python string&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-list-item-smart">
+<h2>Get list item <strong>SMART</strong><a class="headerlink" href="#get-list-item-smart" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:]</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">[1, 2, 3, 4]</span>
+
+<span class="go"># a[start:end:step]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">[1, 3]</span>
+
+<span class="go"># using slice object</span>
+<span class="go"># slice(start,end,step)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+<span class="go">[1, 3]</span>
+
+<span class="go"># Get index and item in loop</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span><span class="n">item</span><span class="p">),</span>
+<span class="gp">...</span>
+<span class="go">(0, 0) (1, 1) (2, 2)</span>
+
+<span class="go"># Transfer two list into tuple list</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="go">[(1, 2), (2, 4), (3, 5), (4, 6), (5, 8)]</span>
+
+<span class="go"># with filter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+<span class="go">[2, 3, 4]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Hello&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">predicate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">filter</span><span class="p">(</span><span class="n">predicate</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+<span class="go">[3, 4]</span>
+
+<span class="go"># collect distinct objects</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">({</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span><span class="p">})</span>
+<span class="go">[1, 2, 3]</span>
+<span class="go"># or</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="go">[1, 2, 3]</span>
+
+<span class="go"># reverse</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">[5, 4, 3, 2, 1]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-dictionary-item-smart">
+<h2>Get dictionary item <strong>SMART</strong><a class="headerlink" href="#get-dictionary-item-smart" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># get dictionary all keys</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;2&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">]</span>
+
+<span class="c1"># get dictionary key and value as tuple</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">[(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+
+<span class="c1"># find same key between two dictionary</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+<span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">]</span>
+<span class="c1"># better way</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">]</span>
+<span class="c1"># or</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span> <span class="k">if</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">b</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">]</span>
+
+<span class="c1"># update dictionary</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-a-list-dict-smart">
+<h2>Set a list/dict <strong>SMART</strong><a class="headerlink" href="#set-a-list-dict-smart" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># get a list with init value</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># extend two list</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
+
+<span class="c1"># using list comprehension</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="s1">&#39;{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)}</span>
+<span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+<span class="c1"># using builtin function &quot;map&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">map</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="namedtuple">
+<h2>NamedTuple<a class="headerlink" href="#namedtuple" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># namedtuple(typename, field_names)</span>
+<span class="c1"># replace define class without method</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Example</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Example&quot;</span><span class="p">,</span><span class="s1">&#39;a b c&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">Example</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">e</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">b</span>
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">4</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="iter-delegating-iteration">
+<h2><code class="docutils literal"><span class="pre">__iter__</span></code> - Delegating Iteration<a class="headerlink" href="#iter-delegating-iteration" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># __iter__ return an iterator object</span>
+<span class="c1"># Be careful: list is an &quot;iterable&quot; object not an &quot;iterator&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">list_</span><span class="p">):</span>
+<span class="o">...</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="n">list_</span>
+<span class="o">...</span>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>      <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="n">Example</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">ex</span><span class="p">:</span> <span class="k">print</span> <span class="n">_</span><span class="p">,</span>
+<span class="o">...</span>
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-generator-as-iterator">
+<h2>Using Generator as Iterator<a class="headerlink" href="#using-generator-as-iterator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see: PEP289</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span> <span class="k">print</span> <span class="n">_</span><span class="p">,</span>
+<span class="o">...</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
+
+<span class="c1"># equivalent to</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
+<span class="o">...</span>   <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">yield</span> <span class="n">_</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">generator</span><span class="p">():</span> <span class="k">print</span> <span class="n">_</span><span class="p">,</span>
+<span class="o">...</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="emulating-a-list">
+<h2>Emulating a list<a class="headerlink" href="#emulating-a-list" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">EmuList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="n">list_</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s2">&quot;EmuList: &quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sliced</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">sliced</span><span class="p">]</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sliced</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">sliced</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sliced</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">[</span><span class="n">sliced</span><span class="p">]</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span> <span class="o">=</span> <span class="n">EmuList</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span>
+<span class="go">EmuList: [0, 1, 2, 3, 4]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>  <span class="c1">#  __getitem__</span>
+<span class="go">[1, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>  <span class="c1">#  __getitem__</span>
+<span class="go">[0, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">emul</span><span class="p">)</span>  <span class="c1">#  __len__</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span>
+<span class="go">EmuList: [0, 1, 2, 3, 4, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span>
+<span class="go">EmuList: [0, 1, 3, 4, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>  <span class="c1"># __setitem__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emul</span>
+<span class="go">EmuList: [0, 1, 3, 6, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">0</span> <span class="ow">in</span> <span class="n">emul</span>  <span class="c1"># __contains__</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="emulating-a-dictionary">
+<h2>Emulating a dictionary<a class="headerlink" href="#emulating-a-dictionary" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">EmuDict</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="n">dict_</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s2">&quot;EmuDict: &quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emud</span> <span class="o">=</span> <span class="n">EmuDict</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emud</span>  <span class="c1"># __repr__</span>
+<span class="go">EmuDict: {&#39;1&#39;: 1, &#39;2&#39;: 2, &#39;3&#39;: 3}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emud</span><span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">]</span>  <span class="c1"># __getitem__</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emud</span><span class="p">[</span><span class="s1">&#39;5&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># __setitem__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emud</span>
+<span class="go">EmuDict: {&#39;1&#39;: 1, &#39;2&#39;: 2, &#39;3&#39;: 3, &#39;5&#39;: 5}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">emud</span><span class="p">[</span><span class="s1">&#39;2&#39;</span><span class="p">]</span>  <span class="c1"># __delitem__</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emud</span>
+<span class="go">EmuDict: {&#39;1&#39;: 1, &#39;3&#39;: 3, &#39;5&#39;: 5}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">emud</span><span class="p">:</span> <span class="k">print</span> <span class="n">emud</span><span class="p">[</span><span class="n">_</span><span class="p">],</span>  <span class="c1"># __iter__</span>
+<span class="gp">...</span>
+<span class="go">1 3 5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;1&#39;</span> <span class="ow">in</span> <span class="n">emud</span>  <span class="c1"># __contains__</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="emulating-a-matrix-multiplication">
+<h2>Emulating a matrix multiplication<a class="headerlink" href="#emulating-a-matrix-multiplication" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span># PEP 465 - &quot;@&quot; represent matrix multiplication
+#
+# Need Python-3.5 or above
+
+&gt;&gt;&gt; class Arr:
+...     def __init__(self, *arg):
+...         self._arr = arg
+...     def __matmul__(self, other):
+...         if not isinstance(other, Arr):
+...             raise TypeError
+...         if len(self) != len(other):
+...             raise ValueError
+...         return sum([x*y for x, y in zip(self._arr, other._arr)])
+...     def __imatmul__(self, other):
+...         if not isinstance(other, Arr):
+...             raise TypeError
+...         if len(self) != len(other):
+...             raise ValueError
+...         res = sum([x*y for x, y in zip(self._arr, other._arr)])
+...         self._arr = [res]
+...         return self
+...     def __len__(self):
+...         return len(self._arr)
+...     def __str__(self):
+...         return self.__repr__()
+...     def __repr__(self):
+...         return &quot;Arr({})&quot;.format(repr(self._arr))
+...
+&gt;&gt;&gt; a = Arr(9, 5, 2, 7)
+&gt;&gt;&gt; b = Arr(5, 5, 6, 6)
+&gt;&gt;&gt; a @ b  # __matmul__
+124
+&gt;&gt;&gt; a @= b  # __imatmul__
+&gt;&gt;&gt; a
+Arr([124])
+</pre></div>
+</div>
+</div>
+<div class="section" id="decorator">
+<h2>Decorator<a class="headerlink" href="#decorator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see: PEP318</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="o">...</span>   <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="s2">&quot;Before calling {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__name___</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="s2">&quot;After calling {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__name___</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">ret</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">wrapper</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@decorator</span>
+<span class="o">...</span> <span class="k">def</span> <span class="nf">example</span><span class="p">():</span>
+<span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;Inside example function.&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="p">()</span>
+<span class="n">Before</span> <span class="n">calling</span> <span class="n">example</span><span class="o">.</span>
+<span class="n">Inside</span> <span class="n">example</span> <span class="n">function</span><span class="o">.</span>
+<span class="n">After</span> <span class="n">calling</span> <span class="n">example</span><span class="o">.</span>
+
+<span class="c1"># equivalent to</span>
+<span class="o">...</span> <span class="k">def</span> <span class="nf">example</span><span class="p">():</span>
+<span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;Inside example function.&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span> <span class="o">=</span> <span class="n">decorator</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="p">()</span>
+<span class="n">Before</span> <span class="n">calling</span> <span class="n">example</span><span class="o">.</span>
+<span class="n">Inside</span> <span class="n">example</span> <span class="n">function</span><span class="o">.</span>
+<span class="n">After</span> <span class="n">calling</span> <span class="n">example</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">&#64;wraps</span></code> preserve attributes of the original function,
+otherwise attributes of decorated function will be replaced
+by <strong>wrapper function</strong></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># without @wraps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="s1">&#39;wrap function&#39;</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">wrapper</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@decorator</span>
+<span class="o">...</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">pass</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="vm">__name__</span>  <span class="c1"># attr of function lose</span>
+<span class="s1">&#39;wrapper&#39;</span>
+
+<span class="c1"># with @wraps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="o">...</span>     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="s1">&#39;wrap function&#39;</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">wrapper</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@decorator</span>
+<span class="o">...</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">pass</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="vm">__name__</span>  <span class="c1"># attr of function preserve</span>
+<span class="s1">&#39;example&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="decorator-with-arguments">
+<h2>Decorator with arguments<a class="headerlink" href="#decorator-with-arguments" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">decorator_with_argument</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>      <span class="k">print</span> <span class="s2">&quot;Val is {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+<span class="gp">... </span>      <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">wrapper</span>
+<span class="gp">... </span>  <span class="k">return</span> <span class="n">decorator</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@decorator_with_argument</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">example</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="s2">&quot;This is example function.&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="p">()</span>
+<span class="go">Val is 10</span>
+<span class="go">This is example function.</span>
+
+<span class="go"># equivalent to</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">example</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="s2">&quot;This is example function.&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span> <span class="o">=</span> <span class="n">decorator_with_argument</span><span class="p">(</span><span class="mi">10</span><span class="p">)(</span><span class="n">example</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="p">()</span>
+<span class="go">Val is 10</span>
+<span class="go">This is example function.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="for-exp-else-exp">
+<h2>for: exp else: exp<a class="headerlink" href="#for-exp-else-exp" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see document: More Control Flow Tools</span>
+<span class="c1"># forloop’s else clause runs when no break occurs</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="o">...</span>   <span class="k">print</span> <span class="n">_</span><span class="p">,</span>
+<span class="o">...</span> <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">no break occurred&quot;</span>
+<span class="o">...</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
+<span class="n">no</span> <span class="k">break</span> <span class="n">occurred</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="o">...</span>   <span class="k">if</span> <span class="n">_</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="s2">&quot;break occurred&quot;</span>
+<span class="o">...</span>     <span class="k">break</span>
+<span class="o">...</span> <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;no break occurred&quot;</span>
+<span class="o">...</span>
+<span class="k">break</span> <span class="n">occurred</span>
+
+<span class="c1"># above statement equivalent to</span>
+<span class="n">flag</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">_</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">print</span> <span class="s2">&quot;break occurred&quot;</span>
+        <span class="k">break</span>
+<span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&quot;no break occurred&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="try-exp-else-exp">
+<h2>try: exp else: exp<a class="headerlink" href="#try-exp-else-exp" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># No exception occur will go into else.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;No exception&quot;</span>
+<span class="o">...</span> <span class="k">except</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">pass</span>
+<span class="o">...</span> <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;No exception occurred&quot;</span>
+<span class="o">...</span>
+<span class="n">No</span> <span class="n">exception</span>
+<span class="n">No</span> <span class="n">exception</span> <span class="n">occurred</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lambda-function">
+<h2>Lambda function<a class="headerlink" href="#lambda-function" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)])(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">[0, 2, 4, 6, 8]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">&gt;</span><span class="mi">3</span> <span class="k">else</span> <span class="mi">3</span><span class="p">)(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">5</span>
+
+<span class="go"># multiline lambda example</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>
+<span class="gp">... </span><span class="bp">True</span>
+<span class="gp">... </span><span class="k">if</span> <span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span>
+<span class="gp">... </span><span class="k">else</span>
+<span class="gp">... </span><span class="bp">False</span><span class="p">)(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="option-arguments-args-kwargs">
+<h2>Option arguments - (*args, **kwargs)<a class="headerlink" href="#option-arguments-args-kwargs" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">args</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">kwargs</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;var&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">word</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="go">1 var</span>
+<span class="go">(2, 3)</span>
+<span class="go">{&#39;word&#39;: &#39;hello&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;var&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">a_tuple</span><span class="p">,</span> <span class="o">**</span><span class="n">a_dict</span><span class="p">)</span>
+<span class="go">1 var</span>
+<span class="go">(1, 2, 3, 4, 5)</span>
+<span class="go">{&#39;1&#39;: 1, &#39;2&#39;: 2, &#39;3&#39;: 3}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="type-declare-create-a-class">
+<h2><code class="docutils literal"><span class="pre">type()</span></code> declare (create) a <code class="docutils literal"><span class="pre">class</span></code><a class="headerlink" href="#type-declare-create-a-class" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Fib</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;Fib&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>                              <span class="s1">&#39;fib&#39;</span><span class="p">:</span> <span class="n">fib</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">Fib</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">val</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">fib</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="go">55</span>
+
+<span class="go"># equal to</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Fib</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">val</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span><span class="mi">2</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">return</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">Fib</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">val</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">fib</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+<span class="go">55</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="callable-object">
+<h2>Callable object<a class="headerlink" href="#callable-object" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">CallableObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;I am callable!&quot;</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">example</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">CallableObject</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span><span class="p">()</span>
+<span class="go">I am callable!</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="context-manager-with-statement">
+<h2>Context Manager - <code class="docutils literal"><span class="pre">with</span></code> statement<a class="headerlink" href="#context-manager-with-statement" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># replace try: ... finally: ...</span>
+<span class="c1"># see: PEP343</span>
+<span class="c1"># common use in open and close</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="k">class</span> <span class="nc">Socket</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exc_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">traceback</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exception</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="mi">5566</span>
+    <span class="k">with</span> <span class="n">Socket</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+            <span class="k">print</span> <span class="n">msg</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-contextmanager">
+<h2>Using <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code><a class="headerlink" href="#using-contextmanager" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">opening</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">):</span>
+   <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+   <span class="k">try</span><span class="p">:</span>
+      <span class="k">yield</span> <span class="n">f</span>
+   <span class="k">finally</span><span class="p">:</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">opening</span><span class="p">(</span><span class="s1">&#39;example.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+   <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-with-statement-open-file">
+<h2>Using <code class="docutils literal"><span class="pre">with</span></code> statement open file<a class="headerlink" href="#using-with-statement-open-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="property-managed-attributes">
+<h2>Property - Managed attributes<a class="headerlink" href="#property-managed-attributes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">value</span>
+<span class="gp">... </span>    <span class="nd">@property</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val</span>
+<span class="gp">... </span>    <span class="nd">@val.setter</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">isintance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expected int&quot;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">value</span>
+<span class="gp">... </span>    <span class="nd">@val.deleter</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">Example</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;str&quot;</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">  File &quot;&quot;, line 1, in</span>
+<span class="gr">  File &quot;test.py&quot;, line 12, in val</span>
+<span class="gr">    raise TypeError(&quot;Expected int&quot;)</span>
+<span class="gr">TypeError</span>: <span class="n">Expected int</span>
+
+<span class="go"># equivalent to</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">value</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">_val_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">_val_setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">isintance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expected int&quot;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">value</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">_val_deleter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">val</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="o">=</span><span class="n">_val_getter</span><span class="p">,</span> <span class="n">fset</span><span class="o">=</span><span class="n">_val_setter</span><span class="p">,</span> <span class="n">fdel</span><span class="o">=</span><span class="n">_val_deleter</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="computed-attributes-using-property">
+<h2>Computed attributes - Using property<a class="headerlink" href="#computed-attributes-using-property" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="nd">@property</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">square3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mi">2</span><span class="o">**</span><span class="mi">3</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">Example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span><span class="o">.</span><span class="n">square3</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">&#64;property</span></code> compute the value of attribute only when we need.
+Not store in memory previously.</p>
+</div>
+</div>
+<div class="section" id="descriptor-manage-attributes">
+<h2>Descriptor - manage attributes<a class="headerlink" href="#descriptor-manage-attributes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Integer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">inst</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">return</span> <span class="bp">self</span>
+<span class="gp">... </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">return</span> <span class="n">inst</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">]</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+<span class="gp">... </span>      <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expected int&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">inst</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">inst</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">del</span> <span class="n">inst</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">x</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">val</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex1</span> <span class="o">=</span> <span class="n">Example</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex1</span><span class="o">.</span><span class="n">x</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex2</span> <span class="o">=</span> <span class="n">Example</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">4</span>, in <span class="n">__init__</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">11</span>, in <span class="n">__set__</span>
+<span class="gr">TypeError</span>: <span class="n">Expected an int</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ex3</span> <span class="o">=</span> <span class="n">Example</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">ex3</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">ex3</span><span class="o">.</span><span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">ex3</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="staticmethod-classmethod">
+<h2><code class="docutils literal"><span class="pre">&#64;staticmethod</span></code>, <code class="docutils literal"><span class="pre">&#64;classmethod</span></code><a class="headerlink" href="#staticmethod-classmethod" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># @classmethod: bound to class</span>
+<span class="c1"># @staticmethod: like python function but in class</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>   <span class="nd">@classmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">clsmethod</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="s2">&quot;I am classmethod&quot;</span>
+<span class="o">...</span>   <span class="nd">@staticmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">stmethod</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="s2">&quot;I am staticmethod&quot;</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">instmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="s2">&quot;I am instancemethod&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="n">example</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="o">.</span><span class="n">clsmethod</span><span class="p">()</span>
+<span class="n">I</span> <span class="n">am</span> <span class="nb">classmethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="o">.</span><span class="n">stmethod</span><span class="p">()</span>
+<span class="n">I</span> <span class="n">am</span> <span class="nb">staticmethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="o">.</span><span class="n">instmethod</span><span class="p">()</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">instancemethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="n">clsmethod</span><span class="p">()</span>
+<span class="n">I</span> <span class="n">am</span> <span class="nb">classmethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="n">stmethod</span><span class="p">()</span>
+<span class="n">I</span> <span class="n">am</span> <span class="nb">staticmethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="n">instmethod</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span>
+<span class="ne">TypeError</span><span class="p">:</span> <span class="n">unbound</span> <span class="n">method</span> <span class="n">instmethod</span><span class="p">()</span> <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="abstract-method-metaclass">
+<h2>Abstract method - Metaclass<a class="headerlink" href="#abstract-method-metaclass" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># usually using in define methods but not implement</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>   <span class="vm">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+<span class="o">...</span>   <span class="nd">@abstractmethod</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">absmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s2">&quot;&quot;&quot; Abstract method &quot;&quot;&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">example</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">absmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="s2">&quot;abstract&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="n">example</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="o">.</span><span class="n">absmethod</span><span class="p">()</span>
+<span class="n">abstract</span>
+
+<span class="c1"># another better way to define a meta class</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">absmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">example</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">absmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="s2">&quot;abstract&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="n">example</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="o">.</span><span class="n">absmethod</span><span class="p">()</span>
+<span class="n">abstract</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-use-magic">
+<h2>Common Use <strong>Magic</strong><a class="headerlink" href="#common-use-magic" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see python document: data model</span>
+<span class="c1"># For command class</span>
+<span class="n">__main__</span>
+<span class="vm">__name__</span>
+<span class="vm">__file__</span>
+<span class="vm">__module__</span>
+<span class="n">__all__</span>
+<span class="vm">__dict__</span>
+<span class="vm">__class__</span>
+<span class="vm">__doc__</span>
+<span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="o">...</span><span class="p">)</span>
+<span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="c1"># For Descriptor</span>
+<span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
+<span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="fm">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+
+<span class="c1"># For Context Manager</span>
+<span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_ty</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span>
+
+<span class="c1"># Emulating container types</span>
+<span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+<span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+<span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="c1"># Controlling Attribute Access</span>
+<span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Callable object</span>
+<span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">args</span><span class="o">...</span><span class="p">])</span>
+
+<span class="c1"># Compare related</span>
+<span class="fm">__cmp__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+<span class="c1"># arithmetical operation related</span>
+<span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__mod__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="fm">__xor__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parsing-csv-string">
+<h2>Parsing csv string<a class="headerlink" href="#parsing-csv-string" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># python2 and python3 compatible</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>     <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span> <span class="c1"># for py2</span>
+<span class="o">...</span> <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<span class="o">...</span>     <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span> <span class="c1"># for py3</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">csv</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;foo,bar,baz&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">):</span> <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">]</span>
+
+<span class="c1"># or</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">csv</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;foo,bar,baz&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">([</span><span class="n">s</span><span class="p">]):</span> <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python basic cheatsheet</a><ul>
+<li><a class="reference internal" href="#python-naming-rule">Python Naming Rule</a></li>
+<li><a class="reference internal" href="#using-future-backport-features">Using <code class="docutils literal"><span class="pre">__future__</span></code> backport features</a></li>
+<li><a class="reference internal" href="#check-object-attributes">Check object attributes</a></li>
+<li><a class="reference internal" href="#define-a-function-doc">Define a function <code class="docutils literal"><span class="pre">__doc__</span></code></a></li>
+<li><a class="reference internal" href="#check-instance-type">Check instance type</a></li>
+<li><a class="reference internal" href="#check-get-set-attribute">Check, Get, Set attribute</a></li>
+<li><a class="reference internal" href="#check-inheritance">Check inheritance</a></li>
+<li><a class="reference internal" href="#check-all-global-variables">Check all global variables</a></li>
+<li><a class="reference internal" href="#check-callable">Check <strong>callable</strong></a></li>
+<li><a class="reference internal" href="#get-function-class-name">Get function/class name</a></li>
+<li><a class="reference internal" href="#new-init"><code class="docutils literal"><span class="pre">__new__</span></code> &amp; <code class="docutils literal"><span class="pre">__init__</span></code></a></li>
+<li><a class="reference internal" href="#the-diamond-problem">The diamond problem</a></li>
+<li><a class="reference internal" href="#representations-of-your-class-behave">Representations of your class behave</a></li>
+<li><a class="reference internal" href="#break-up-a-long-string">Break up a long string</a></li>
+<li><a class="reference internal" href="#get-list-item-smart">Get list item <strong>SMART</strong></a></li>
+<li><a class="reference internal" href="#get-dictionary-item-smart">Get dictionary item <strong>SMART</strong></a></li>
+<li><a class="reference internal" href="#set-a-list-dict-smart">Set a list/dict <strong>SMART</strong></a></li>
+<li><a class="reference internal" href="#namedtuple">NamedTuple</a></li>
+<li><a class="reference internal" href="#iter-delegating-iteration"><code class="docutils literal"><span class="pre">__iter__</span></code> - Delegating Iteration</a></li>
+<li><a class="reference internal" href="#using-generator-as-iterator">Using Generator as Iterator</a></li>
+<li><a class="reference internal" href="#emulating-a-list">Emulating a list</a></li>
+<li><a class="reference internal" href="#emulating-a-dictionary">Emulating a dictionary</a></li>
+<li><a class="reference internal" href="#emulating-a-matrix-multiplication">Emulating a matrix multiplication</a></li>
+<li><a class="reference internal" href="#decorator">Decorator</a></li>
+<li><a class="reference internal" href="#decorator-with-arguments">Decorator with arguments</a></li>
+<li><a class="reference internal" href="#for-exp-else-exp">for: exp else: exp</a></li>
+<li><a class="reference internal" href="#try-exp-else-exp">try: exp else: exp</a></li>
+<li><a class="reference internal" href="#lambda-function">Lambda function</a></li>
+<li><a class="reference internal" href="#option-arguments-args-kwargs">Option arguments - (*args, **kwargs)</a></li>
+<li><a class="reference internal" href="#type-declare-create-a-class"><code class="docutils literal"><span class="pre">type()</span></code> declare (create) a <code class="docutils literal"><span class="pre">class</span></code></a></li>
+<li><a class="reference internal" href="#callable-object">Callable object</a></li>
+<li><a class="reference internal" href="#context-manager-with-statement">Context Manager - <code class="docutils literal"><span class="pre">with</span></code> statement</a></li>
+<li><a class="reference internal" href="#using-contextmanager">Using <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code></a></li>
+<li><a class="reference internal" href="#using-with-statement-open-file">Using <code class="docutils literal"><span class="pre">with</span></code> statement open file</a></li>
+<li><a class="reference internal" href="#property-managed-attributes">Property - Managed attributes</a></li>
+<li><a class="reference internal" href="#computed-attributes-using-property">Computed attributes - Using property</a></li>
+<li><a class="reference internal" href="#descriptor-manage-attributes">Descriptor - manage attributes</a></li>
+<li><a class="reference internal" href="#staticmethod-classmethod"><code class="docutils literal"><span class="pre">&#64;staticmethod</span></code>, <code class="docutils literal"><span class="pre">&#64;classmethod</span></code></a></li>
+<li><a class="reference internal" href="#abstract-method-metaclass">Abstract method - Metaclass</a></li>
+<li><a class="reference internal" href="#common-use-magic">Common Use <strong>Magic</strong></a></li>
+<li><a class="reference internal" href="#parsing-csv-string">Parsing csv string</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to Python cheatsheet!</a></li>
+      <li>Next: <a href="python-unicode.html" title="next chapter">Python unicode cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-basic.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

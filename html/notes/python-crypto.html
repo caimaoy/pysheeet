@@ -1,0 +1,485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python cryptography cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python Concurrency Cheatsheet" href="python-concurrency.html" />
+    <link rel="prev" title="Python socket cheatsheet" href="python-socket.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-cryptography-cheatsheet">
+<h1>Python cryptography cheatsheet<a class="headerlink" href="#python-cryptography-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="simple-https-server">
+<h2>simple https server<a class="headerlink" href="#simple-https-server" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># python2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">BaseHTTPServer</span><span class="o">,</span> <span class="nn">SimpleHTTPServer</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ssl</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5566</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">SimpleHTTPServer</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">httpd</span> <span class="o">=</span> <span class="n">BaseHTTPServer</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">handler</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">httpd</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">wrap_socket</span><span class="p">(</span><span class="n">httpd</span><span class="o">.</span><span class="n">socket</span><span class="p">,</span>
+<span class="o">...</span>                                <span class="n">certfile</span><span class="o">=</span><span class="s1">&#39;./cert.crt&#39;</span><span class="p">,</span>
+<span class="o">...</span>                                <span class="n">keyfile</span><span class="o">=</span><span class="s1">&#39;./cert.key&#39;</span><span class="p">,</span>
+<span class="o">...</span>                                <span class="n">server_side</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+<span class="c1"># python3</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">http</span> <span class="kn">import</span> <span class="n">server</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ssl</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5566</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">httpd</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">handler</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">httpd</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">wrap_socket</span><span class="p">(</span><span class="n">httpd</span><span class="o">.</span><span class="n">socket</span><span class="p">,</span>
+<span class="o">...</span>                                <span class="n">certfile</span><span class="o">=</span><span class="s1">&#39;./cert.crt&#39;</span><span class="p">,</span>
+<span class="o">...</span>                                <span class="n">keyfile</span><span class="o">=</span><span class="s1">&#39;./cert.key&#39;</span><span class="p">,</span>
+<span class="o">...</span>                                <span class="n">server_side</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-certificate-information">
+<h2>check certificate information<a class="headerlink" href="#check-certificate-information" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cryptography</span> <span class="kn">import</span> <span class="n">x509</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.backends</span> <span class="kn">import</span> <span class="n">default_backend</span>
+
+<span class="n">backend</span> <span class="o">=</span> <span class="n">default_backend</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./cert.crt&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">crt_data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">cert</span> <span class="o">=</span> <span class="n">x509</span><span class="o">.</span><span class="n">load_pem_x509_certificate</span><span class="p">(</span><span class="n">crt_data</span><span class="p">,</span> <span class="n">backend</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Certificate</span><span class="p">:</span>
+
+    <span class="n">_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;country_name&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;state_or_province_name&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;locality_name&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;organization_name&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;organizational_unit_name&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;common_name&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;email_address&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cert</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cert</span><span class="p">,</span> <span class="n">x509</span><span class="o">.</span><span class="n">Certificate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cert</span> <span class="o">=</span> <span class="n">cert</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
+            <span class="n">oid</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x509</span><span class="p">,</span> <span class="s1">&#39;OID_&#39;</span> <span class="o">+</span> <span class="n">attr</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="n">cert</span><span class="o">.</span><span class="n">subject</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="n">subject</span><span class="o">.</span><span class="n">get_attributes_for_oid</span><span class="p">(</span><span class="n">oid</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+
+
+<span class="n">cert</span> <span class="o">=</span> <span class="n">Certificate</span><span class="p">(</span><span class="n">cert</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">cert</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">cert</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">_oid</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">_value</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ genrsa -out cert.key
+Generating RSA private key, <span class="m">1024</span> bit long modulus
+..........++++++
+...++++++
+e is <span class="m">65537</span> <span class="o">(</span>0x10001<span class="o">)</span>
+$ openssl req -x509 -new -nodes <span class="se">\</span>
+&gt;       -key cert.key -days <span class="m">365</span> <span class="se">\</span>
+&gt;       -out cert.crt
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter <span class="s1">&#39;.&#39;</span>, the field will be left blank.
+-----
+Country Name <span class="o">(</span><span class="m">2</span> letter code<span class="o">)</span> <span class="o">[</span>AU<span class="o">]</span>:TW
+State or Province Name <span class="o">(</span>full name<span class="o">)</span> <span class="o">[</span>Some-State<span class="o">]</span>:Taiwan
+Locality Name <span class="o">(</span>eg, city<span class="o">)</span> <span class="o">[]</span>:Taipei
+Organization Name <span class="o">(</span>eg, company<span class="o">)</span> <span class="o">[</span>Internet Widgits Pty Ltd<span class="o">]</span>:personal
+Organizational Unit Name <span class="o">(</span>eg, section<span class="o">)</span> <span class="o">[]</span>:perfonal
+Common Name <span class="o">(</span>e.g. server FQDN or YOUR name<span class="o">)</span> <span class="o">[]</span>:localhost
+Email Address <span class="o">[]</span>:test@example.com
+$ python3 cert.py
+countryName: TW
+stateOrProvinceName: Taiwan
+localityName: Taipei
+organizationName: personal
+organizationalUnitName: perfonal
+commonName: localhost
+emailAddress: test@example.com
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-rsa-keyfile-without-passphrase">
+<h2>generate RSA keyfile without passphrase<a class="headerlink" href="#generate-rsa-keyfile-without-passphrase" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># $ openssl genrsa cert.key 2048</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">cryptography.hazmat.backends</span> <span class="kn">import</span> <span class="n">default_backend</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives</span> <span class="kn">import</span> <span class="n">serialization</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives.asymmetric</span> <span class="kn">import</span> <span class="n">rsa</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">key</span> <span class="o">=</span> <span class="n">rsa</span><span class="o">.</span><span class="n">generate_private_key</span><span class="p">(</span>
+<span class="o">...</span> <span class="n">public_exponent</span><span class="o">=</span><span class="mi">65537</span><span class="p">,</span>
+<span class="o">...</span> <span class="n">key_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span>
+<span class="o">...</span> <span class="n">backend</span><span class="o">=</span><span class="n">default_backend</span><span class="p">())</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;cert.key&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">private_bytes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">encoding</span><span class="o">=</span><span class="n">serialization</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">PEM</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">format</span><span class="o">=</span><span class="n">serialization</span><span class="o">.</span><span class="n">PrivateFormat</span><span class="o">.</span><span class="n">TraditionalOpenSSL</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">encryption_algorithm</span><span class="o">=</span><span class="n">serialization</span><span class="o">.</span><span class="n">NoEncryption</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hmac-check-integrity-of-a-message">
+<h2>HMAC - check integrity of a message<a class="headerlink" href="#hmac-check-integrity-of-a-message" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hmac</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">secret_key</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Alice &amp; Bob secret key&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="n">digest</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">h</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_key</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span> <span class="o">!=</span> <span class="n">digest</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Check integrity fail&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alice_msg</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Hello Bob&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_key</span><span class="p">,</span> <span class="n">alice_msg</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alice_digest</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alice</span><span class="p">,</span> <span class="n">bob</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socketpair</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">alice</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">alice_msg</span><span class="p">)</span>    <span class="c1"># Alice send msg to Bob</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="n">bob</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>         <span class="c1"># Bob recv msg from Alice</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">alice</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">alice_digest</span><span class="p">)</span> <span class="c1"># Alice send digest to Bob</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">digest</span> <span class="o">=</span> <span class="n">bob</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>      <span class="c1"># Bob recv digest from Alice</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verify</span><span class="p">(</span><span class="n">digest</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>          <span class="c1"># Bob check msg integrity</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># if message be modified by someone, check integrity fail</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verify</span><span class="p">(</span><span class="n">digest</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;Hello Attack&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">4</span>, in <span class="n">verify</span>
+<span class="gr">ValueError</span>: <span class="n">Check integrity fail</span>
+<span class="go">Check integrity fail</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-dsa-to-proof-of-identity">
+<h2>Using DSA to proof of identity<a class="headerlink" href="#using-dsa-to-proof-of-identity" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="kn">from</span> <span class="nn">cryptography.exceptions</span> <span class="kn">import</span> <span class="n">InvalidSignature</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.backends</span> <span class="kn">import</span> <span class="n">default_backend</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives</span> <span class="kn">import</span> <span class="n">hashes</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives.asymmetric</span> <span class="kn">import</span> <span class="n">dsa</span>
+
+<span class="n">alice</span><span class="p">,</span> <span class="n">bob</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socketpair</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">gen_dsa_key</span><span class="p">():</span>
+    <span class="n">private_key</span> <span class="o">=</span> <span class="n">dsa</span><span class="o">.</span><span class="n">generate_private_key</span><span class="p">(</span>
+        <span class="n">key_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">default_backend</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">private_key</span><span class="o">.</span><span class="n">public_key</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">sign_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">private_key</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hashes</span><span class="o">.</span><span class="n">SHA256</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">signature</span>
+
+
+<span class="k">def</span> <span class="nf">verify_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">public_key</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">public_key</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hashes</span><span class="o">.</span><span class="n">SHA256</span><span class="p">())</span>
+    <span class="k">except</span> <span class="n">InvalidSignature</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;recv msg: {} not trust!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;check msg: {} success!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+
+<span class="c1"># generate alice private &amp; public key</span>
+<span class="n">alice_private_key</span><span class="p">,</span> <span class="n">alice_public_key</span> <span class="o">=</span> <span class="n">gen_dsa_key</span><span class="p">()</span>
+
+<span class="c1"># alice send message to bob, then bob recv</span>
+<span class="n">alice_msg</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Hello Bob&quot;</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">alice</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">alice_msg</span><span class="p">)</span>
+<span class="n">bob_recv_msg</span> <span class="o">=</span> <span class="n">bob</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="c1"># alice send signature to bob, then bob recv</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">sign_data</span><span class="p">(</span><span class="n">alice_msg</span><span class="p">,</span> <span class="n">alice_private_key</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">alice</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">signature</span><span class="p">)</span>
+<span class="n">bob_recv_signature</span> <span class="o">=</span> <span class="n">bob</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="c1"># bob check message recv from alice</span>
+<span class="n">verify_data</span><span class="p">(</span><span class="n">bob_recv_msg</span><span class="p">,</span> <span class="n">bob_recv_signature</span><span class="p">,</span> <span class="n">alice_public_key</span><span class="p">)</span>
+
+<span class="c1"># attacker modify the msg will make the msg check fail</span>
+<span class="n">verify_data</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;I&#39;m attacker!&quot;</span><span class="p">,</span> <span class="n">bob_recv_signature</span><span class="p">,</span> <span class="n">alice_public_key</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python3 test_dsa.py
+check msg: b<span class="s1">&#39;Hello Bob&#39;</span> success!
+recv msg: b<span class="s2">&quot;I&#39;m attacker!&quot;</span> not trust!
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-diffie-hellman-key-exchange">
+<h2>Simple Diffie-Hellman key exchange<a class="headerlink" href="#simple-diffie-hellman-key-exchange" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">p (public know)</span>
+<span class="sd">n (public know)</span>
+<span class="sd">Alice                               Bob</span>
+
+<span class="sd">alice_y = 23                        bob_y = 16</span>
+<span class="sd">alice_x = (n ** alice_y) % p  ---&gt;</span>
+<span class="sd">                              &lt;---  bob_x = (n ** bob_y) % p</span>
+<span class="sd">k = (bob_x ** alice_y) %p           k = (alice_x ** bob_y) % p</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">socket</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice</span><span class="p">,</span> <span class="n">bob</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socketpair</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">353</span>       <span class="c1"># public know</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span>         <span class="c1"># public know</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice_y</span> <span class="o">=</span> <span class="mi">23</span>  <span class="c1"># only alice know</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bob_y</span> <span class="o">=</span> <span class="mi">16</span>    <span class="c1"># only bob know</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="n">alice_y</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_bytes</span> <span class="o">=</span> <span class="n">alice</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">alice_x</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">bob</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bob_recv_x</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bob_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="n">bob_y</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_bytes</span> <span class="o">=</span> <span class="n">bob</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">bob_x</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">alice</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice_recv_x</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">alice_recv_x</span> <span class="o">**</span> <span class="n">alice_y</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bob_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">bob_recv_x</span> <span class="o">**</span> <span class="n">bob_y</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice_key</span>
+<span class="mi">136</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bob_key</span>
+<span class="mi">136</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="aes-cbc-mode-encrypt-and-decrypt">
+<h2>AES CBC mode encrypt and decrypt<a class="headerlink" href="#aes-cbc-mode-encrypt-and-decrypt" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives</span> <span class="kn">import</span> <span class="n">padding</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.backends</span> <span class="kn">import</span> <span class="n">default_backend</span>
+<span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives.ciphers</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">Cipher</span><span class="p">,</span>
+        <span class="n">algorithms</span><span class="p">,</span>
+        <span class="n">modes</span><span class="p">)</span>
+
+<span class="n">backend</span> <span class="o">=</span> <span class="n">default_backend</span><span class="p">()</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">iv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">cipher</span> <span class="o">=</span> <span class="n">Cipher</span><span class="p">(</span><span class="n">algorithms</span><span class="o">.</span><span class="n">AES</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+                <span class="n">modes</span><span class="o">.</span><span class="n">CBC</span><span class="p">(</span><span class="n">iv</span><span class="p">),</span>
+                <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+
+<span class="c1"># PS. CBC mode need padding</span>
+
+<span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="n">p_text</span><span class="p">,</span> <span class="n">cipher</span><span class="p">):</span>
+    <span class="c1"># add padding to plain text</span>
+    <span class="n">padder</span> <span class="o">=</span> <span class="n">padding</span><span class="o">.</span><span class="n">PKCS7</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="o">.</span><span class="n">padder</span><span class="p">()</span> <span class="c1"># 128 bit</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">padder</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">p_text</span><span class="p">)</span> <span class="o">+</span> <span class="n">padder</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+
+    <span class="c1"># encrypt plain text</span>
+    <span class="n">encryptor</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encryptor</span><span class="p">()</span>
+    <span class="n">c_text</span> <span class="o">=</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">c_text</span>
+
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">c_text</span><span class="p">,</span> <span class="n">cipher</span><span class="p">):</span>
+    <span class="c1"># decrypt plain text with padding</span>
+    <span class="n">decryptor</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">decryptor</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">decryptor</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">c_text</span><span class="p">)</span> <span class="o">+</span> <span class="n">decryptor</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+
+    <span class="c1"># remove padding</span>
+    <span class="n">unpadder</span> <span class="o">=</span> <span class="n">padding</span><span class="o">.</span><span class="n">PKCS7</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="o">.</span><span class="n">unpadder</span><span class="p">()</span> <span class="c1"># 128 bit</span>
+    <span class="n">p_text</span> <span class="o">=</span> <span class="n">unpadder</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="n">unpadder</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">p_text</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Hello Encrypt&quot;</span>
+<span class="n">c_text</span> <span class="o">=</span> <span class="n">encrypt</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">cipher</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">c_text</span><span class="p">)</span>
+<span class="n">p_text</span> <span class="o">=</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">c_text</span><span class="p">,</span> <span class="n">cipher</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">p_text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python3 aes_cbc.py
+b<span class="s1">&#39;,n\xcb\xd3\x95\xfayvX\xa6q\\\x19\xdb\x12C&#39;</span>
+b<span class="s1">&#39;Hello Encrypt&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="aes-ctr-mode-encrypt-and-decrypt">
+<h2>AES CTR mode encrypt and decrypt<a class="headerlink" href="#aes-ctr-mode-encrypt-and-decrypt" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cryptography.hazmat.backends</span> <span class="kn">import</span> <span class="n">default_backend</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives.ciphers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="gp">... </span><span class="n">Cipher</span><span class="p">,</span>
+<span class="gp">... </span><span class="n">algorithms</span><span class="p">,</span>
+<span class="gp">... </span><span class="n">modes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">backend</span> <span class="o">=</span> <span class="n">default_backend</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nonce</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># CTR mode does not require padding</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cipher</span> <span class="o">=</span> <span class="n">Cipher</span><span class="p">(</span><span class="n">algorithms</span><span class="o">.</span><span class="n">AES</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+<span class="gp">... </span>                <span class="n">modes</span><span class="o">.</span><span class="n">CTR</span><span class="p">(</span><span class="n">nonce</span><span class="p">),</span>
+<span class="gp">... </span>                <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encryptor</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encryptor</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p_text</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;Hello Encrypt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ct</span> <span class="o">=</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">p_text</span><span class="p">)</span> <span class="o">+</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ct</span>
+<span class="go">b&#39;o\xb3;\x079\xde\x86@\xec^o\x1f\x9f&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decryptor</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">decryptor</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">decryptor</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span> <span class="o">+</span> <span class="n">decryptor</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span>
+<span class="go">b&#39;Hello Encrypt&#39;</span>
+</pre></div>
+</div>
+<div class="section" id="require-padding-or-not">
+<h3>Require padding or not<a class="headerlink" href="#require-padding-or-not" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="63%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">mode</th>
+<th class="head">require padding</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>CBC(initialization_vector)</td>
+<td>YES</td>
+</tr>
+<tr class="row-odd"><td>CTR(nonce)</td>
+<td>NO</td>
+</tr>
+<tr class="row-even"><td>OFB(initialization_vector)</td>
+<td>NO</td>
+</tr>
+<tr class="row-odd"><td>CFB(initialization_vector)</td>
+<td>NO</td>
+</tr>
+<tr class="row-even"><td>CFB8(initialization_vector)</td>
+<td>NO</td>
+</tr>
+<tr class="row-odd"><td>GCM(initialization_vector)</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python cryptography cheatsheet</a><ul>
+<li><a class="reference internal" href="#simple-https-server">simple https server</a></li>
+<li><a class="reference internal" href="#check-certificate-information">check certificate information</a></li>
+<li><a class="reference internal" href="#generate-rsa-keyfile-without-passphrase">generate RSA keyfile without passphrase</a></li>
+<li><a class="reference internal" href="#hmac-check-integrity-of-a-message">HMAC - check integrity of a message</a></li>
+<li><a class="reference internal" href="#using-dsa-to-proof-of-identity">Using DSA to proof of identity</a></li>
+<li><a class="reference internal" href="#simple-diffie-hellman-key-exchange">Simple Diffie-Hellman key exchange</a></li>
+<li><a class="reference internal" href="#aes-cbc-mode-encrypt-and-decrypt">AES CBC mode encrypt and decrypt</a></li>
+<li><a class="reference internal" href="#aes-ctr-mode-encrypt-and-decrypt">AES CTR mode encrypt and decrypt</a><ul>
+<li><a class="reference internal" href="#require-padding-or-not">Require padding or not</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-socket.html" title="previous chapter">Python socket cheatsheet</a></li>
+      <li>Next: <a href="python-concurrency.html" title="next chapter">Python Concurrency Cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-crypto.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

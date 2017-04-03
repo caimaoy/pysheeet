@@ -1,0 +1,963 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Concurrency Cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python SQLAlchemy Cheatsheet" href="python-sqlalchemy.html" />
+    <link rel="prev" title="Python cryptography cheatsheet" href="python-crypto.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-concurrency-cheatsheet">
+<h1>Python Concurrency Cheatsheet<a class="headerlink" href="#python-concurrency-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="execute-a-shell-command">
+<h2>Execute a shell command<a class="headerlink" href="#execute-a-shell-command" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># get stdout, stderr, returncode</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;echo&#39;</span><span class="p">,</span> <span class="s1">&#39;hello python&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">out</span>
+<span class="sa">b</span><span class="s1">&#39;hello python</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">err</span>
+<span class="sa">b</span><span class="s1">&#39;        0.00 real         0.00 user         0.00 sys</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ret</span><span class="o">.</span><span class="n">returncode</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-thread-via-threading">
+<h2>Create a thread via &#8220;threading&#8221;<a class="headerlink" href="#create-a-thread-via-threading" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Worker</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">super</span><span class="p">(</span><span class="n">Worker</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;I am worker </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span> <span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="go">I am worker 1</span>
+<span class="go">I am worker 2</span>
+
+<span class="go"># using function could be more flexible</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">Worker</span><span class="p">(</span><span class="n">worker_id</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="s2">&quot;I am worker </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">worker_id</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">Worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">Worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="go">I am worker 1</span>
+<span class="go">I am worker 2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="performance-problem-gil">
+<h2>Performance Problem - GIL<a class="headerlink" href="#performance-problem-gil" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># GIL - Global Interpreter Lock</span>
+<span class="c1"># see: Understanding the Python GIL</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="o">...</span>   <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="o">...</span>     <span class="kn">import</span> <span class="nn">time</span>
+<span class="o">...</span>     <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="o">...</span>     <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">end</span>   <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">wrapper</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@profile</span>
+<span class="o">...</span> <span class="k">def</span> <span class="nf">nothread</span><span class="p">():</span>
+<span class="o">...</span>   <span class="n">fib</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span>
+<span class="o">...</span>   <span class="n">fib</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nd">@profile</span>
+<span class="o">...</span> <span class="k">def</span> <span class="nf">hasthread</span><span class="p">():</span>
+<span class="o">...</span>   <span class="n">t1</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fib</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">35</span><span class="p">,))</span>
+<span class="o">...</span>   <span class="n">t2</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fib</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">35</span><span class="p">,))</span>
+<span class="o">...</span>   <span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span> <span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="o">...</span>   <span class="n">t1</span><span class="o">.</span><span class="n">join</span><span class="p">();</span> <span class="n">t2</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nothread</span><span class="p">()</span>
+<span class="mf">9.51164007187</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">hasthread</span><span class="p">()</span>
+<span class="mf">11.3131771088</span>
+<span class="c1"># !Thread get bad Performance</span>
+<span class="c1"># since cost on context switch</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="consumer-and-producer">
+<h2>Consumer and Producer<a class="headerlink" href="#consumer-and-producer" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># This architecture make concurrency easy</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Queue</span> <span class="kn">import</span> <span class="n">Queue</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>   <span class="k">if</span> <span class="n">n</span><span class="o">&lt;=</span><span class="mi">2</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="mi">1</span>
+<span class="o">...</span>   <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">producer</span><span class="p">():</span>
+<span class="o">...</span>   <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">wt</span> <span class="o">=</span> <span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">5</span>
+<span class="o">...</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wt</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">fib</span><span class="p">,</span><span class="mi">35</span><span class="p">))</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">consumer</span><span class="p">():</span>
+<span class="o">...</span>   <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">task</span><span class="p">,</span><span class="n">arg</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="n">task</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">q</span><span class="o">.</span><span class="n">task_done</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">producer</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">consumer</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span><span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="thread-pool-template">
+<h2>Thread Pool Template<a class="headerlink" href="#thread-pool-template" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># producer and consumer architecture</span>
+<span class="kn">from</span> <span class="nn">Queue</span> <span class="kn">import</span> <span class="n">Queue</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+
+<span class="k">class</span> <span class="nc">Worker</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">queue</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">(</span><span class="n">Worker</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_q</span> <span class="o">=</span> <span class="n">queue</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+   <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+         <span class="n">f</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+         <span class="k">try</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">e</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="o">.</span><span class="n">task_done</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ThreadPool</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_t</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">num_t</span><span class="p">)</span>
+      <span class="c1"># Create Worker Thread</span>
+      <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_t</span><span class="p">):</span>
+         <span class="n">Worker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="p">)</span>
+   <span class="k">def</span> <span class="nf">add_task</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+   <span class="k">def</span> <span class="nf">wait_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">return</span> <span class="mi">1</span>
+   <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+   <span class="n">pool</span> <span class="o">=</span> <span class="n">ThreadPool</span><span class="p">()</span>
+   <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+      <span class="n">pool</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">fib</span><span class="p">,</span><span class="mi">35</span><span class="p">)</span>
+   <span class="n">pool</span><span class="o">.</span><span class="n">wait_complete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-multiprocessing-threadpool">
+<h2>Using multiprocessing ThreadPool<a class="headerlink" href="#using-multiprocessing-threadpool" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ThreadPool is not in python doc</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">multiprocessing.pool</span> <span class="kn">import</span> <span class="n">ThreadPool</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pool</span> <span class="o">=</span> <span class="n">ThreadPool</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Compare with &#8220;map&#8221; performance</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># pool will get bad result since GIL</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">multiprocessing.pool</span> <span class="kn">import</span> \
+     <span class="n">ThreadPool</span>
+
+<span class="n">pool</span> <span class="o">=</span> <span class="n">ThreadPool</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+       <span class="k">print</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+       <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+       <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+       <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+       <span class="k">print</span> <span class="s2">&quot;cost: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">-</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="nd">@profile</span>
+<span class="k">def</span> <span class="nf">pool_map</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+                   <span class="nb">range</span><span class="p">(</span><span class="mi">999999</span><span class="p">))</span>
+
+<span class="nd">@profile</span>
+<span class="k">def</span> <span class="nf">ordinary_map</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+              <span class="nb">range</span><span class="p">(</span><span class="mi">999999</span><span class="p">))</span>
+
+<span class="n">pool_map</span><span class="p">()</span>
+<span class="n">ordinary_map</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python test_threadpool.py
+<span class="go">pool_map</span>
+<span class="go">cost: 0.562669038773</span>
+<span class="go">ordinary_map</span>
+<span class="go">cost: 0.38525390625</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mutex-lock">
+<h2>Mutex lock<a class="headerlink" href="#mutex-lock" title="Permalink to this headline">¶</a></h2>
+<p>Simplest synchronization primitive lock</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">getlock</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="s2">&quot;task{0} get&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">getlock</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">getlock</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span><span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="go">task1 get</span>
+<span class="go">task2 get</span>
+
+<span class="go"># using lock manager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">getlock</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;task</span><span class="si">%d</span><span class="s2"> get&quot;</span> <span class="o">%</span> <span class="nb">id</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">getlock</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">getlock</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span><span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="go">task1 get</span>
+<span class="go">task2 get</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deadlock">
+<h2>Deadlock<a class="headerlink" href="#deadlock" title="Permalink to this headline">¶</a></h2>
+<p>Happen when more than one mutex lock.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">threading</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock1</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lock2</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">task1</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="k">with</span> <span class="n">lock1</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;get lock1&quot;</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="n">lock2</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">print</span> <span class="s2">&quot;No deadlock&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">task2</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="k">with</span> <span class="n">lock2</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;get lock2&quot;</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="n">lock1</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">print</span> <span class="s2">&quot;No deadlock&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">task1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">task2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span><span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="go">get lock1</span>
+<span class="go"> get lock2</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="o">.</span><span class="n">isAlive</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span><span class="o">.</span><span class="n">isAlive</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implement-monitor">
+<h2>Implement &#8220;Monitor&#8221;<a class="headerlink" href="#implement-monitor" title="Permalink to this headline">¶</a></h2>
+<p>Using RLock</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ref: An introduction to Python Concurrency - David Beazley</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">RLock</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">class</span> <span class="nc">monitor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+   <span class="n">lock</span> <span class="o">=</span> <span class="n">RLock</span><span class="p">()</span>
+   <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tid</span><span class="p">):</span>
+      <span class="k">with</span> <span class="n">monitor</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+         <span class="k">print</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> in foo&quot;</span> <span class="o">%</span> <span class="n">tid</span>
+         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">ker</span><span class="p">(</span><span class="n">tid</span><span class="p">)</span>
+
+   <span class="k">def</span> <span class="nf">ker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tid</span><span class="p">):</span>
+      <span class="k">with</span> <span class="n">monitor</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+         <span class="k">print</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> in ker&quot;</span> <span class="o">%</span> <span class="n">tid</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">monitor</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">task1</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+   <span class="n">m</span><span class="o">.</span><span class="n">foo</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">task2</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+   <span class="n">m</span><span class="o">.</span><span class="n">ker</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+<span class="n">t1</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">task1</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">task2</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python monitor.py
+<span class="go">1 in foo</span>
+<span class="go">1 in ker</span>
+<span class="go">2 in ker</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="control-primitive-resources">
+<h2>Control primitive resources<a class="headerlink" href="#control-primitive-resources" title="Permalink to this headline">¶</a></h2>
+<p>Using Semaphore</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Semaphore</span>
+<span class="kn">from</span> <span class="nn">random</span>    <span class="kn">import</span> <span class="n">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># limit resource to 3</span>
+<span class="n">sema</span> <span class="o">=</span> <span class="n">Semaphore</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">tid</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">sema</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> acquire sema&quot;</span> <span class="o">%</span> <span class="n">tid</span>
+        <span class="n">wt</span> <span class="o">=</span> <span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">5</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wt</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> release sema&quot;</span> <span class="o">%</span> <span class="n">tid</span>
+
+<span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">foo</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">_t</span><span class="p">,))</span>
+    <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+    <span class="n">_t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">python semaphore.py</span>
+<span class="go">0 acquire sema</span>
+<span class="go">1 acquire sema</span>
+<span class="go">2 acquire sema</span>
+<span class="go">0 release sema</span>
+<span class="go"> 3 acquire sema</span>
+<span class="go">2 release sema</span>
+<span class="go"> 4 acquire sema</span>
+<span class="go">1 release sema</span>
+<span class="go">4 release sema</span>
+<span class="go">3 release sema</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ensure-tasks-has-done">
+<h2>Ensure tasks has done<a class="headerlink" href="#ensure-tasks-has-done" title="Permalink to this headline">¶</a></h2>
+<p>Using &#8216;event&#8217;</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">e</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+   <span class="k">print</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> wait event&quot;</span> <span class="o">%</span> <span class="nb">id</span>
+   <span class="n">e</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+   <span class="k">print</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> get event set&quot;</span> <span class="o">%</span> <span class="nb">id</span>
+
+<span class="n">t1</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<span class="n">t2</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="n">t3</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">t3</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="c1"># wait sleep task(event) happen</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">e</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">python event.py</span>
+<span class="go">1 wait event</span>
+<span class="go">2 wait event</span>
+<span class="go">3 wait event</span>
+<span class="go">2 get event set</span>
+<span class="go"> 3 get event set</span>
+<span class="go">1 get event set</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="thread-safe-priority-queue">
+<h2>Thread-safe priority queue<a class="headerlink" href="#thread-safe-priority-queue" title="Permalink to this headline">¶</a></h2>
+<p>Using &#8216;condition&#8217;</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">heapq</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">class</span> <span class="nc">PriorityQueue</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_q</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cv</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Condition</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_q</span>
+
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">priority</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cv</span><span class="p">:</span>
+            <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">priority</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_count</span><span class="p">,</span><span class="n">item</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cv</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cv</span><span class="p">:</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;wait...&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cv</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_q</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<span class="n">priq</span> <span class="o">=</span> <span class="n">PriorityQueue</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">producer</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">priq</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">consumer</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;consumer put value&quot;</span><span class="p">)</span>
+        <span class="n">priority</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+        <span class="n">priq</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">priority</span><span class="p">,</span><span class="n">priority</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="n">priq</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">priority</span><span class="p">,</span><span class="n">priority</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">t1</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">producer</span><span class="p">)</span>
+<span class="n">t2</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">consumer</span><span class="p">)</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span><span class="n">t2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">join</span><span class="p">();</span><span class="n">t2</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">python3 thread_safe.py</span>
+<span class="go">0.6657491871045683</span>
+<span class="go">0.5278797439991247</span>
+<span class="go">0.20990624606296315</span>
+<span class="go">wait...</span>
+<span class="go">consumer put value</span>
+<span class="go">0.09123101305407577</span>
+<span class="go">wait...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multiprocessing">
+<h2>Multiprocessing<a class="headerlink" href="#multiprocessing" title="Permalink to this headline">¶</a></h2>
+<p>Solving GIL problem via processes</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">... </span>        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">end</span>   <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">wrapper</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@profile</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">nomultiprocess</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">map</span><span class="p">(</span><span class="n">fib</span><span class="p">,[</span><span class="mi">35</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@profile</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">hasmultiprocess</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">fib</span><span class="p">,[</span><span class="mi">35</span><span class="p">]</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nomultiprocess</span><span class="p">()</span>
+<span class="go">23.8454811573</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hasmultiprocess</span><span class="p">()</span>
+<span class="go">13.2433719635</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="custom-multiprocessing-map">
+<h2>Custom multiprocessing map<a class="headerlink" href="#custom-multiprocessing-map" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Pipe</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip</span>
+
+<span class="k">def</span> <span class="nf">spawn</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fun</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">pipe</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">pipe</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">fun</span>
+
+<span class="k">def</span> <span class="nf">parmap</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">pipe</span><span class="o">=</span><span class="p">[</span><span class="n">Pipe</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+    <span class="n">proc</span><span class="o">=</span><span class="p">[</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">spawn</span><span class="p">(</span><span class="n">f</span><span class="p">),</span>
+          <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">x</span><span class="p">))</span>
+          <span class="k">for</span> <span class="n">x</span><span class="p">,(</span><span class="n">p</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">pipe</span><span class="p">)]</span>
+    <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">proc</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">proc</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span> <span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">pipe</span><span class="p">]</span>
+
+<span class="k">print</span> <span class="n">parmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="n">x</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="graceful-way-to-kill-all-child-processes">
+<h2>Graceful way to kill all child processes<a class="headerlink" href="#graceful-way-to-kill-all-child-processes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Pipe</span>
+
+<span class="n">NUM_PROCESS</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="k">def</span> <span class="nf">aurora</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">procs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">aurora</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,))</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NUM_PROCESS</span><span class="p">)]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">procs</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">procs</span><span class="p">]</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">procs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span> <span class="k">continue</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIGKILL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-round-robin-scheduler">
+<h2>Simple round-robin scheduler<a class="headerlink" href="#simple-round-robin-scheduler" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mi">1</span>
+<span class="gp">... </span>  <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">gen_fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">yield</span> <span class="n">fib</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">=</span><span class="p">[</span><span class="n">gen_fib</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span><span class="n">gen_fib</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tasks</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tasks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">tasks</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">while</span> <span class="n">tasks</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="n">task</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="k">print</span> <span class="n">task</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="gp">... </span>      <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+<span class="gp">... </span>      <span class="k">print</span> <span class="s2">&quot;done&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">run</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="go">1</span>
+<span class="go">1</span>
+<span class="go">1</span>
+<span class="go">2</span>
+<span class="go">2</span>
+<span class="go">3</span>
+<span class="go">done</span>
+<span class="go">5</span>
+<span class="go">done</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scheduler-with-blocking-function">
+<h2>Scheduler with blocking function<a class="headerlink" href="#scheduler-with-blocking-function" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ref: PyCon 2015 - David Beazley</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">select</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+<span class="n">tasks</span>  <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+<span class="n">r_wait</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">s_wait</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="k">while</span> <span class="nb">any</span><span class="p">([</span><span class="n">tasks</span><span class="p">,</span><span class="n">r_wait</span><span class="p">,</span><span class="n">s_wait</span><span class="p">]):</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">tasks</span><span class="p">:</span>
+            <span class="c1"># polling</span>
+            <span class="n">rr</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">r_wait</span><span class="p">,</span> <span class="n">s_wait</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">rr</span><span class="p">:</span>
+                <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_wait</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">sr</span><span class="p">:</span>
+                <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s_wait</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">why</span><span class="p">,</span><span class="n">what</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">why</span> <span class="o">==</span> <span class="s1">&#39;recv&#39;</span><span class="p">:</span>
+                <span class="n">r_wait</span><span class="p">[</span><span class="n">what</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
+            <span class="k">elif</span> <span class="n">why</span> <span class="o">==</span> <span class="s1">&#39;send&#39;</span><span class="p">:</span>
+                <span class="n">s_wait</span><span class="p">[</span><span class="n">what</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">fib_server</span><span class="p">():</span>
+    <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">))</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s1">&#39;recv&#39;</span><span class="p">,</span> <span class="n">sock</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fib_handler</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">fib_handler</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s1">&#39;recv&#39;</span><span class="p">,</span> <span class="n">client</span>
+        <span class="n">req</span>  <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">req</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">req</span><span class="p">))</span>
+        <span class="k">yield</span> <span class="s1">&#39;send&#39;</span><span class="p">,</span> <span class="n">client</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fib_server</span><span class="p">())</span>
+<span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output: (bash 1)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc loalhost <span class="m">5566</span>
+<span class="go">20</span>
+<span class="go">6765</span>
+</pre></div>
+</div>
+<p>output: (bash 2)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">10</span>
+<span class="go">55</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="poolexecutor">
+<h2>PoolExecutor<a class="headerlink" href="#poolexecutor" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># python2.x is module futures on PyPI</span>
+<span class="c1"># new in Python3.2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> \
+<span class="o">...</span>     <span class="n">ThreadPoolExecutor</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="n">n</span><span class="o">&lt;=</span><span class="mi">2</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="mi">1</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">res</span><span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">fib</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">5</span> <span class="o">&gt;&gt;&gt;</span>
+<span class="c1"># result is generator?!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="o">...</span>   <span class="n">res</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">fib</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="o">...</span>   <span class="n">inspect</span><span class="o">.</span><span class="n">isgenerator</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="bp">True</span>
+
+<span class="c1"># demo GIL</span>
+<span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">thread</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">fib</span><span class="p">,</span> <span class="p">[</span><span class="mi">35</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;thread cost: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">-</span><span class="n">s</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">process</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">fib</span><span class="p">,</span> <span class="p">[</span><span class="mi">35</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;pocess cost: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">-</span><span class="n">s</span><span class="p">))</span>
+
+
+<span class="c1"># bash&gt; python3 -i test.py</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">thread</span><span class="p">()</span>
+<span class="mi">9227465</span>
+<span class="mi">9227465</span>
+<span class="n">thread</span> <span class="n">cost</span><span class="p">:</span> <span class="mf">12.550225019454956</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">process</span><span class="p">()</span>
+<span class="mi">9227465</span>
+<span class="mi">9227465</span>
+<span class="n">pocess</span> <span class="n">cost</span><span class="p">:</span> <span class="mf">5.538189888000488</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-with-threadpoolexecutor-doing">
+<h2>What &#8220;with ThreadPoolExecutor&#8221; doing?<a class="headerlink" href="#what-with-threadpoolexecutor-doing" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">fut</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">fib</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">fut</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="c1"># equal to</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fut</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">fib</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">fut</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="n">e</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 thread_pool_exec.py
+<span class="go">832040</span>
+<span class="go">832040</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="future-object">
+<h2>Future Object<a class="headerlink" href="#future-object" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># future: deferred computation</span>
+<span class="c1"># add_done_callback</span>
+<span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">future</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;res: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">thread_v1</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">fib</span><span class="p">,</span> <span class="mi">30</span><span class="o">+</span><span class="n">_</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">thread_v2</span><span class="p">():</span>
+    <span class="n">to_do</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">fut</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">fib</span><span class="p">,</span> <span class="mi">30</span><span class="o">+</span><span class="n">_</span><span class="p">)</span>
+            <span class="n">to_do</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fut</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">to_do</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">_f</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;res: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -i fut.py
+<span class="gp">&gt;</span>&gt;&gt; thread_v1<span class="o">()</span>
+<span class="go">res: 832040</span>
+<span class="go">res: 1346269</span>
+<span class="go">res: 2178309</span>
+<span class="go">end</span>
+<span class="gp">&gt;</span>&gt;&gt; thread_v2<span class="o">()</span>
+<span class="go">res: 832040</span>
+<span class="go">res: 1346269</span>
+<span class="go">res: 2178309</span>
+<span class="go">end</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="future-error-handling">
+<h2>Future error handling<a class="headerlink" href="#future-error-handling" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
+
+<span class="k">def</span> <span class="nf">spam</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span>
+
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">future</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;callback handler&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;get RuntimeError&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">thread_spam</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">spam</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python -i fut_err.py
+<span class="gp">&gt;</span>&gt;&gt; thread_spam<span class="o">()</span>
+<span class="go">callback handler</span>
+<span class="go">get RuntimeError</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Concurrency Cheatsheet</a><ul>
+<li><a class="reference internal" href="#execute-a-shell-command">Execute a shell command</a></li>
+<li><a class="reference internal" href="#create-a-thread-via-threading">Create a thread via &#8220;threading&#8221;</a></li>
+<li><a class="reference internal" href="#performance-problem-gil">Performance Problem - GIL</a></li>
+<li><a class="reference internal" href="#consumer-and-producer">Consumer and Producer</a></li>
+<li><a class="reference internal" href="#thread-pool-template">Thread Pool Template</a></li>
+<li><a class="reference internal" href="#using-multiprocessing-threadpool">Using multiprocessing ThreadPool</a></li>
+<li><a class="reference internal" href="#mutex-lock">Mutex lock</a></li>
+<li><a class="reference internal" href="#deadlock">Deadlock</a></li>
+<li><a class="reference internal" href="#implement-monitor">Implement &#8220;Monitor&#8221;</a></li>
+<li><a class="reference internal" href="#control-primitive-resources">Control primitive resources</a></li>
+<li><a class="reference internal" href="#ensure-tasks-has-done">Ensure tasks has done</a></li>
+<li><a class="reference internal" href="#thread-safe-priority-queue">Thread-safe priority queue</a></li>
+<li><a class="reference internal" href="#multiprocessing">Multiprocessing</a></li>
+<li><a class="reference internal" href="#custom-multiprocessing-map">Custom multiprocessing map</a></li>
+<li><a class="reference internal" href="#graceful-way-to-kill-all-child-processes">Graceful way to kill all child processes</a></li>
+<li><a class="reference internal" href="#simple-round-robin-scheduler">Simple round-robin scheduler</a></li>
+<li><a class="reference internal" href="#scheduler-with-blocking-function">Scheduler with blocking function</a></li>
+<li><a class="reference internal" href="#poolexecutor">PoolExecutor</a></li>
+<li><a class="reference internal" href="#what-with-threadpoolexecutor-doing">What &#8220;with ThreadPoolExecutor&#8221; doing?</a></li>
+<li><a class="reference internal" href="#future-object">Future Object</a></li>
+<li><a class="reference internal" href="#future-error-handling">Future error handling</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-crypto.html" title="previous chapter">Python cryptography cheatsheet</a></li>
+      <li>Next: <a href="python-sqlalchemy.html" title="next chapter">Python SQLAlchemy Cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-concurrency.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

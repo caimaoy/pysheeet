@@ -1,0 +1,505 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Regular Expression cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python socket cheatsheet" href="python-socket.html" />
+    <link rel="prev" title="Python generator cheatsheet" href="python-generator.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-regular-expression-cheatsheet">
+<h1>Python Regular Expression cheatsheet<a class="headerlink" href="#python-regular-expression-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="compare-html-tags">
+<h2>Compare HTML tags<a class="headerlink" href="#compare-html-tags" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="35%" />
+<col width="35%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">tag type</th>
+<th class="head">format</th>
+<th class="head">example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>all tag</td>
+<td>&lt;[^&gt;]+&gt;</td>
+<td>&lt;br /&gt;, &lt;a&gt;</td>
+</tr>
+<tr class="row-odd"><td>open tag</td>
+<td>&lt;[^/&gt;][^&gt;]*&gt;</td>
+<td>&lt;a&gt;, &lt;table&gt;</td>
+</tr>
+<tr class="row-even"><td>close tag</td>
+<td>&lt;/[^&gt;]+&gt;</td>
+<td>&lt;/p&gt;, &lt;/a&gt;</td>
+</tr>
+<tr class="row-odd"><td>self close</td>
+<td>&lt;[^/&gt;]+/&gt;</td>
+<td>&lt;br /&gt;</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># open tag</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;&lt;[^/&gt;][^&gt;]*&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;table&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;&lt;[^/&gt;][^&gt;]*&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;a href=&quot;#label&quot;&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;&lt;[^/&gt;][^&gt;]*&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;img src=&quot;/img&quot;&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;&lt;[^/&gt;][^&gt;]*&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;/table&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">False</span>
+
+<span class="c1"># close tag</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;&lt;/[^&gt;]+&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;/table&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+
+<span class="c1"># self close</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;&lt;[^/&gt;]+/&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;br /&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="re-findall-match-string">
+<h2><code class="docutils literal"><span class="pre">re.findall()</span></code> match string<a class="headerlink" href="#re-findall-match-string" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># split all string</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;Hello World Ker HAHA&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;[\w]+&#39;</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;Hello&#39;</span><span class="p">,</span> <span class="s1">&#39;World&#39;</span><span class="p">,</span> <span class="s1">&#39;Ker&#39;</span><span class="p">,</span> <span class="s1">&#39;HAHA&#39;</span><span class="p">]</span>
+
+<span class="c1"># parsing python.org website</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">urllib</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">re</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">&#39;https://www.python.org&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">html</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s2">&quot;open tags&quot;</span>
+<span class="nb">open</span> <span class="n">tags</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&lt;[^/&gt;][^&gt;]*&gt;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;&lt;!doctype html&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;!--[if lt IE 7]&gt;&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s2">&quot;close tags&quot;</span>
+<span class="n">close</span> <span class="n">tags</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&lt;/[^&gt;]+&gt;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;&lt;/script&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;/title&gt;&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s2">&quot;self-closing tags&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="group-comparison">
+<h2>Group Comparison<a class="headerlink" href="#group-comparison" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># (...) group a regular expression</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d{4})-(\d{2})-(\d{2})&#39;</span><span class="p">,</span> <span class="s1">&#39;2016-01-01&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span><span class="p">;</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39;2016-01-01&#39;</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+<span class="p">(</span><span class="s1">&#39;2016&#39;</span><span class="p">,</span> <span class="s1">&#39;01&#39;</span><span class="p">,</span> <span class="s1">&#39;01&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<span class="s1">&#39;2016-01-01&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="s1">&#39;2016&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="s1">&#39;01&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="s1">&#39;01&#39;</span>
+
+<span class="c1"># Nesting groups</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(((\d{4})-\d{2})-\d{2})&#39;</span><span class="p">,</span> <span class="s1">&#39;2016-01-01&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+<span class="p">(</span><span class="s1">&#39;2016-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2016-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2016&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<span class="s1">&#39;2016-01-01&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="s1">&#39;2016-01-01&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="s1">&#39;2016-01&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="s1">&#39;2016&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="non-capturing-group">
+<h2>Non capturing group<a class="headerlink" href="#non-capturing-group" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># non capturing group</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://stackoverflow.com/&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;(?:http|ftp)://([^/</span><span class="se">\r\n</span><span class="s1">]+)(/[^</span><span class="se">\r\n</span><span class="s1">]*)?&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+<span class="p">(</span><span class="s1">&#39;stackoverflow.com&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+<span class="c1"># capturing group</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;(http|ftp)://([^/</span><span class="se">\r\n</span><span class="s1">]+)(/[^</span><span class="se">\r\n</span><span class="s1">]*)?&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+<span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="s1">&#39;stackoverflow.com&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="back-reference">
+<h2>Back Reference<a class="headerlink" href="#back-reference" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># compare &#39;aa&#39;, &#39;bb&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-z])\1$&#39;</span><span class="p">,</span><span class="s1">&#39;aa&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-z])\1$&#39;</span><span class="p">,</span><span class="s1">&#39;bb&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-z])\1$&#39;</span><span class="p">,</span><span class="s1">&#39;ab&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">False</span>
+
+<span class="c1"># compare open tag and close tag</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&lt;([^&gt;]+)&gt;[\s\S]*?&lt;/\1&gt;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;&lt;bold&gt; test &lt;/bold&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;&lt;h1&gt; test &lt;/h1&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;&lt;bold&gt; test &lt;/h1&gt;&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span>
+<span class="bp">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="named-grouping-p-name">
+<h2>Named Grouping <code class="docutils literal"><span class="pre">(?P&lt;name&gt;)</span></code><a class="headerlink" href="#named-grouping-p-name" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># group reference ``(?P&lt;name&gt;...)``</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;(?P&lt;year&gt;\d{4})-(?P&lt;month&gt;\d{2})-(?P&lt;day&gt;\d{2})&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;2016-01-01&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
+<span class="s1">&#39;2016&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">)</span>
+<span class="s1">&#39;01&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
+<span class="s1">&#39;01&#39;</span>
+
+<span class="c1"># back reference ``(?P=name)``</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;^(?P&lt;char&gt;[a-z])(?P=char)&#39;</span><span class="p">,</span><span class="s1">&#39;aa&#39;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10ae0f288</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="substitute-string">
+<h2>Substitute String<a class="headerlink" href="#substitute-string" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># basic substitute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="s2">&quot;1a2b3c&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[a-z]&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+<span class="s1">&#39;1 2 3 &#39;</span>
+
+<span class="c1"># substitute with group reference</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">date</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;2016-01-01&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d{4})-(\d{2})-(\d{2})&#39;</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;\2/\3/\1/&#39;</span><span class="p">,</span><span class="n">date</span><span class="p">)</span>
+<span class="s1">&#39;01/01/2016/&#39;</span>
+
+<span class="c1"># camelcase to underscore</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">res</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(.)([A-Z][a-z]+)&#39;</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;\1_\2&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-z])([A-Z])&#39;</span><span class="p">,</span><span class="sa">r</span><span class="s1">&#39;\1_\2&#39;</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">convert</span><span class="p">(</span><span class="s1">&#39;CamelCase&#39;</span><span class="p">)</span>
+<span class="s1">&#39;camel_case&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">convert</span><span class="p">(</span><span class="s1">&#39;CamelCamelCase&#39;</span><span class="p">)</span>
+<span class="s1">&#39;camel_camel_case&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">convert</span><span class="p">(</span><span class="s1">&#39;SimpleHTTPServer&#39;</span><span class="p">)</span>
+<span class="s1">&#39;simple_http_server&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="look-around">
+<h2>Look around<a class="headerlink" href="#look-around" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">notation</th>
+<th class="head">compare direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">(?=...)</span></code></td>
+<td>left to right</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">(?!...)</span></code></td>
+<td>left to right</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">(?&lt;=...)</span></code></td>
+<td>right to left</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">(?!&lt;...)</span></code></td>
+<td>right to left</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># basic</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;(?=\d{3})&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;12345&#39;</span><span class="p">)</span>
+<span class="s1">&#39; 1 2 345&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;(?!\d{3})&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;12345&#39;</span><span class="p">)</span>
+<span class="s1">&#39;123 4 5 &#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;(?&lt;=\d{3})&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;12345&#39;</span><span class="p">)</span>
+<span class="s1">&#39;123 4 5 &#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;(?&lt;!\d{3})&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;12345&#39;</span><span class="p">)</span>
+<span class="s1">&#39; 1 2 345&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="match-common-username-or-password">
+<h2>Match common username or password<a class="headerlink" href="#match-common-username-or-password" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^[a-zA-Z0-9-_]{3,16}$&#39;</span><span class="p">,</span> <span class="s1">&#39;Foo&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^\w|[-_]{3,16}$&#39;</span><span class="p">,</span> <span class="s1">&#39;Foo&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="match-hex-color-value">
+<h2>Match hex color value<a class="headerlink" href="#match-hex-color-value" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10886f288</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^#?([a-f0-9]{6}|[a-f0-9]{3})$&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">_sre</span><span class="o">.</span><span class="n">SRE_Match</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x10886f6c0</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^#?([a-f0-9]{6}|[a-f0-9]{3})$&#39;</span><span class="p">,</span> <span class="s1">&#39;#fffffh&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="match-email">
+<h2>Match email<a class="headerlink" href="#match-email" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$&#39;</span><span class="p">,</span>
+<span class="gp">... </span>         <span class="s1">&#39;hello.world@example.com&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x1087a4d40&gt;</span>
+
+<span class="go"># or</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;^([a-zA-Z0-9._%-]+@</span>
+<span class="gp">... </span><span class="s1">                  [a-zA-Z0-9.-]+</span>
+<span class="go">                      \.[a-zA-Z]{2,4})*$&#39;&#39;&#39;, re.X)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;hello.world@example.hello.com&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x1083efd50&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;hello%world@example.hello.com&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x1083efeb8&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="match-url">
+<h2>Match URL<a class="headerlink" href="#match-url" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;^(https?:\/\/)? # match http or https</span>
+<span class="gp">... </span><span class="s1">            ([\da-z\.-]+)            # match domain</span>
+<span class="gp">... </span><span class="s1">            \.([a-z\.]{2,6})         # match domain</span>
+<span class="gp">... </span><span class="s1">            ([\/\w \.-]*)\/?$        # match api or file</span>
+<span class="gp">... </span><span class="s1">            &#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;www.google.com&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x10f01ddf8&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;http://www.example&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x10f01dd50&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;http://www.example/file.html&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x10f01ddf8&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;http://www.example/file!.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="match-ip-address">
+<h2>Match IP address<a class="headerlink" href="#match-ip-address" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>notation</td>
+<td>description</td>
+</tr>
+<tr class="row-even"><td>(?:...)</td>
+<td>Don&#8217;t capture group</td>
+</tr>
+<tr class="row-odd"><td>25[0-5]</td>
+<td>Match 251-255 pattern</td>
+</tr>
+<tr class="row-even"><td>2[0-4][0-9]</td>
+<td>Match 200-249 pattern</td>
+</tr>
+<tr class="row-odd"><td>[1]?[0-9][0-9]</td>
+<td>Match 0-199   pattern</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;^(?:(?:25[0-5]</span>
+<span class="gp">... </span><span class="s1">                     |2[0-4][0-9]</span>
+<span class="gp">... </span><span class="s1">                     |[1]?[0-9][0-9]?)\.){3}</span>
+<span class="gp">... </span><span class="s1">                     (?:25[0-5]</span>
+<span class="gp">... </span><span class="s1">                     |2[0-4][0-9]</span>
+<span class="gp">... </span><span class="s1">                     |[1]?[0-9][0-9]?)$&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;192.168.1.1&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x108f47ac0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;255.255.255.0&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x108f47b28&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;172.17.0.5&#39;</span><span class="p">)</span>
+<span class="go">&lt;_sre.SRE_Match object at 0x108f47ac0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;256.0.0.0&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="match-mac-address">
+<h2>Match Mac address<a class="headerlink" href="#match-mac-address" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mac</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x7f</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x7f</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x7f</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x7f</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x7f</span><span class="p">),</span>
+<span class="gp">... </span>       <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x7f</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mac</span> <span class="o">=</span> <span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%02x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">x</span><span class="p">,</span> <span class="n">mac</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mac</span>
+<span class="go">&#39;3c:38:51:05:03:1e&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;[0-9a-f]{2}([:])</span>
+<span class="gp">... </span><span class="s1">                     [0-9a-f]{2}</span>
+<span class="gp">... </span><span class="s1">                     (\1[0-9a-f]{2}){4}$&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">mac</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lexer">
+<h2>Lexer<a class="headerlink" href="#lexer" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">re</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;NUMBER&gt;\d+)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="sa">r</span><span class="s1">&#39;(?P&lt;PLUS&gt;\+)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="sa">r</span><span class="s1">&#39;(?P&lt;MINUS&gt;-)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="sa">r</span><span class="s1">&#39;(?P&lt;TIMES&gt;\*)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="sa">r</span><span class="s1">&#39;(?P&lt;DIVIDE&gt;/)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>          <span class="sa">r</span><span class="s1">&#39;(?P&lt;WS&gt;\s+)&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Token</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Token&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">scan</span> <span class="o">=</span> <span class="n">lex</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">lastgroup</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">lastgroup</span> <span class="o">!=</span> <span class="s1">&#39;WS&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">tokenize</span><span class="p">(</span><span class="s1">&#39;9 + 5 * 2 - 7&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">_t</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Token(type=&#39;NUMBER&#39;, value=&#39;9&#39;)</span>
+<span class="go">Token(type=&#39;PLUS&#39;, value=&#39;+&#39;)</span>
+<span class="go">Token(type=&#39;NUMBER&#39;, value=&#39;5&#39;)</span>
+<span class="go">Token(type=&#39;TIMES&#39;, value=&#39;*&#39;)</span>
+<span class="go">Token(type=&#39;NUMBER&#39;, value=&#39;2&#39;)</span>
+<span class="go">Token(type=&#39;MINUS&#39;, value=&#39;-&#39;)</span>
+<span class="go">Token(type=&#39;NUMBER&#39;, value=&#39;7&#39;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Regular Expression cheatsheet</a><ul>
+<li><a class="reference internal" href="#compare-html-tags">Compare HTML tags</a></li>
+<li><a class="reference internal" href="#re-findall-match-string"><code class="docutils literal"><span class="pre">re.findall()</span></code> match string</a></li>
+<li><a class="reference internal" href="#group-comparison">Group Comparison</a></li>
+<li><a class="reference internal" href="#non-capturing-group">Non capturing group</a></li>
+<li><a class="reference internal" href="#back-reference">Back Reference</a></li>
+<li><a class="reference internal" href="#named-grouping-p-name">Named Grouping <code class="docutils literal"><span class="pre">(?P&lt;name&gt;)</span></code></a></li>
+<li><a class="reference internal" href="#substitute-string">Substitute String</a></li>
+<li><a class="reference internal" href="#look-around">Look around</a></li>
+<li><a class="reference internal" href="#match-common-username-or-password">Match common username or password</a></li>
+<li><a class="reference internal" href="#match-hex-color-value">Match hex color value</a></li>
+<li><a class="reference internal" href="#match-email">Match email</a></li>
+<li><a class="reference internal" href="#match-url">Match URL</a></li>
+<li><a class="reference internal" href="#match-ip-address">Match IP address</a></li>
+<li><a class="reference internal" href="#match-mac-address">Match Mac address</a></li>
+<li><a class="reference internal" href="#lexer">Lexer</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-generator.html" title="previous chapter">Python generator cheatsheet</a></li>
+      <li>Next: <a href="python-socket.html" title="next chapter">Python socket cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-rexp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

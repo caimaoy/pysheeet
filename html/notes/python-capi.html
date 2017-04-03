@@ -1,0 +1,500 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python C API cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python Design Pattern in C" href="python-cstyle.html" />
+    <link rel="prev" title="Python test cheatsheet" href="python-tests.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-c-api-cheatsheet">
+<h1>Python C API cheatsheet<a class="headerlink" href="#python-c-api-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pyobject-header">
+<h2>PyObject header<a class="headerlink" href="#pyobject-header" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">// ref: python source code</span>
+<span class="c1">// Python/Include/object.c</span>
+<span class="cp">#define _PyObject_HEAD_EXTRA \</span>
+<span class="cp">    struct _object *_ob_next;\</span>
+<span class="cp">    struct _object *_ob_prev;</span>
+
+<span class="cp">#define PyObject_HEAD    \</span>
+<span class="cp">    _PyObject_HEAD_EXTRA \</span>
+<span class="cp">    Py_ssize_t ob_refcnt;\</span>
+<span class="cp">    struct _typeobject *ob_type;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python-c-api-template">
+<h2>Python C API Template<a class="headerlink" href="#python-c-api-template" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="c-api-source">
+<h3>C API source<a class="headerlink" href="#c-api-source" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">PyObject_HEAD</span>
+<span class="p">}</span> <span class="n">spamObj</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">spamType</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">PyObject_HEAD_INIT</span><span class="p">(</span><span class="o">&amp;</span><span class="n">PyType_Type</span><span class="p">)</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//ob_size</span>
+    <span class="s">&quot;spam.Spam&quot;</span><span class="p">,</span>        <span class="c1">//tp_name</span>
+    <span class="k">sizeof</span><span class="p">(</span><span class="n">spamObj</span><span class="p">),</span>    <span class="c1">//tp_basicsize</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_itemsize</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_dealloc</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_print</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_getattr</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_setattr</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_compare</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_repr</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_as_number</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_as_sequence</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_as_mapping</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_hash</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_call</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_str</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_getattro</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_setattro</span>
+    <span class="mi">0</span><span class="p">,</span>                  <span class="c1">//tp_as_buffer</span>
+    <span class="n">Py_TPFLAGS_DEFAULT</span><span class="p">,</span> <span class="c1">//tp_flags</span>
+    <span class="s">&quot;spam objects&quot;</span><span class="p">,</span>     <span class="c1">//tp_doc</span>
+<span class="p">};</span>
+
+<span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">spam_methods</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="nb">NULL</span><span class="p">}</span>  <span class="cm">/* Sentinel */</span>
+<span class="p">};</span>
+
+<span class="cm">/* declarations for DLL import */</span>
+<span class="cp">#ifndef PyMODINIT_FUNC</span>
+<span class="cp">#define PyMODINIT_FUNC void</span>
+<span class="cp">#endif</span>
+
+<span class="n">PyMODINIT_FUNC</span>
+<span class="nf">initspam</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">m</span><span class="p">;</span>
+    <span class="n">spamType</span><span class="p">.</span><span class="n">tp_new</span> <span class="o">=</span> <span class="n">PyType_GenericNew</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">PyType_Ready</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spamType</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">goto</span> <span class="n">END</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">Py_InitModule3</span><span class="p">(</span><span class="s">&quot;spam&quot;</span><span class="p">,</span> <span class="n">spam_methods</span><span class="p">,</span> <span class="s">&quot;Example of Module&quot;</span><span class="p">);</span>
+    <span class="n">Py_INCREF</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spamType</span><span class="p">);</span>
+    <span class="n">PyModule_AddObject</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s">&quot;spam&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">spamType</span><span class="p">);</span>
+<span class="nl">END</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prepare-setup-py">
+<h3>Prepare setup.py<a class="headerlink" href="#prepare-setup-py" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+<span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">Extension</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span>
+      <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
+      <span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s2">&quot;spam&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;spam.c&quot;</span><span class="p">])])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-c-api-source">
+<h3>Build C API source<a class="headerlink" href="#build-c-api-source" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py build
+<span class="gp">$</span> python setup.py install
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-c-module">
+<h3>Run the C module<a class="headerlink" href="#run-the-c-module" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">spam</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spam</span><span class="o">.</span><span class="vm">__doc__</span>
+<span class="go">&#39;Example of Module&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spam</span><span class="o">.</span><span class="n">spam</span>
+<span class="go">&lt;type &#39;spam.Spam&#39;&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pyobject-with-member-and-methods">
+<h2>PyObject with Member and Methods<a class="headerlink" href="#pyobject-with-member-and-methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>C API source<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;Python.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;structmember.h&gt;</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">PyObject_HEAD</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">hello</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">world</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">spam_id</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">spamObj</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+<span class="nf">spamdealloc</span><span class="p">(</span><span class="n">spamObj</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">hello</span><span class="p">);</span>
+    <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">world</span><span class="p">);</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">ob_type</span>
+        <span class="o">-&gt;</span><span class="n">tp_free</span><span class="p">((</span><span class="n">PyObject</span><span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* __new__ */</span>
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span>
+<span class="nf">spamNew</span><span class="p">(</span><span class="n">PyTypeObject</span> <span class="o">*</span><span class="n">type</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwds</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">spamObj</span> <span class="o">*</span><span class="n">self</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+    <span class="n">self</span> <span class="o">=</span> <span class="p">(</span><span class="n">spamObj</span> <span class="o">*</span><span class="p">)</span>
+           <span class="n">type</span><span class="o">-&gt;</span><span class="n">tp_alloc</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">goto</span> <span class="n">END</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* alloc str to hello */</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">hello</span> <span class="o">=</span>
+        <span class="n">PyString_FromString</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">hello</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+        <span class="n">self</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="k">goto</span> <span class="n">END</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* alloc str to world */</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">world</span> <span class="o">=</span>
+        <span class="n">PyString_FromString</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">world</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">self</span><span class="p">);</span>
+        <span class="n">self</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="k">goto</span> <span class="n">END</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">self</span><span class="o">-&gt;</span><span class="n">spam_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nl">END</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* __init__ */</span>
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">spamInit</span><span class="p">(</span><span class="n">spamObj</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwds</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">PyObject</span> <span class="o">*</span><span class="n">hello</span><span class="o">=</span><span class="nb">NULL</span><span class="p">,</span>
+             <span class="o">*</span><span class="n">world</span><span class="o">=</span><span class="nb">NULL</span><span class="p">,</span>
+             <span class="o">*</span><span class="n">tmp</span><span class="o">=</span><span class="nb">NULL</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="kt">char</span> <span class="o">*</span><span class="n">kwlist</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&quot;hello&quot;</span><span class="p">,</span>
+        <span class="s">&quot;world&quot;</span><span class="p">,</span>
+        <span class="s">&quot;spam_id&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+
+    <span class="cm">/* parse input arguments */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="n">PyArg_ParseTupleAndKeywords</span><span class="p">(</span>
+          <span class="n">args</span><span class="p">,</span> <span class="n">kwds</span><span class="p">,</span>
+          <span class="s">&quot;|OOi&quot;</span><span class="p">,</span>
+          <span class="n">kwlist</span><span class="p">,</span>
+          <span class="o">&amp;</span><span class="n">hello</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">world</span><span class="p">,</span>
+          <span class="o">&amp;</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">spam_id</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">goto</span> <span class="n">END</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="cm">/* set attr hello */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">hello</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">hello</span><span class="p">;</span>
+        <span class="n">Py_INCREF</span><span class="p">(</span><span class="n">hello</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">hello</span> <span class="o">=</span> <span class="n">hello</span><span class="p">;</span>
+        <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="cm">/* set attr world */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">world</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">world</span><span class="p">;</span>
+        <span class="n">Py_INCREF</span><span class="p">(</span><span class="n">world</span><span class="p">);</span>
+        <span class="n">self</span><span class="o">-&gt;</span><span class="n">world</span> <span class="o">=</span> <span class="n">world</span><span class="p">;</span>
+        <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">tmp</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nl">END</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">long</span>
+<span class="nf">fib</span><span class="p">(</span><span class="kt">long</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">&lt;=</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span>
+<span class="nf">spamFib</span><span class="p">(</span><span class="n">spamObj</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PyObject</span>  <span class="o">*</span><span class="n">ret</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="n">arg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">&quot;i&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">arg</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">goto</span> <span class="n">END</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">PyInt_FromLong</span><span class="p">(</span><span class="n">fib</span><span class="p">(</span><span class="n">arg</span><span class="p">));</span>
+<span class="nl">END</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//ref: python doc</span>
+<span class="k">static</span> <span class="n">PyMemberDef</span> <span class="n">spam_members</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="cm">/* spameObj.hello*/</span>
+    <span class="p">{</span><span class="s">&quot;hello&quot;</span><span class="p">,</span>                   <span class="c1">//name</span>
+     <span class="n">T_OBJECT_EX</span><span class="p">,</span>               <span class="c1">//type</span>
+     <span class="n">offsetof</span><span class="p">(</span><span class="n">spamObj</span><span class="p">,</span> <span class="n">hello</span><span class="p">),</span>  <span class="c1">//offset</span>
+     <span class="mi">0</span><span class="p">,</span>                         <span class="c1">//flags</span>
+     <span class="s">&quot;spam hello&quot;</span><span class="p">},</span>             <span class="c1">//doc</span>
+    <span class="cm">/* spamObj.world*/</span>
+    <span class="p">{</span><span class="s">&quot;world&quot;</span><span class="p">,</span>
+     <span class="n">T_OBJECT_EX</span><span class="p">,</span>
+     <span class="n">offsetof</span><span class="p">(</span><span class="n">spamObj</span><span class="p">,</span> <span class="n">world</span><span class="p">),</span>
+     <span class="mi">0</span><span class="p">,</span>
+     <span class="s">&quot;spam world&quot;</span><span class="p">},</span>
+    <span class="cm">/* spamObj.spam_id*/</span>
+    <span class="p">{</span><span class="s">&quot;spam_id&quot;</span><span class="p">,</span>
+     <span class="n">T_INT</span><span class="p">,</span>
+     <span class="n">offsetof</span><span class="p">(</span><span class="n">spamObj</span><span class="p">,</span> <span class="n">spam_id</span><span class="p">),</span>
+     <span class="mi">0</span><span class="p">,</span>
+     <span class="s">&quot;spam id&quot;</span><span class="p">},</span>
+    <span class="cm">/* Sentiel */</span>
+    <span class="p">{</span><span class="nb">NULL</span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">spam_methods</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="cm">/* fib */</span>
+    <span class="p">{</span><span class="s">&quot;spam_fib&quot;</span><span class="p">,</span>
+     <span class="p">(</span><span class="n">PyCFunction</span><span class="p">)</span><span class="n">spamFib</span><span class="p">,</span>
+     <span class="n">METH_VARARGS</span><span class="p">,</span>
+     <span class="s">&quot;Calculate fib number&quot;</span><span class="p">},</span>
+    <span class="cm">/* Sentiel */</span>
+    <span class="p">{</span><span class="nb">NULL</span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">static</span> <span class="n">PyMethodDef</span> <span class="n">module_methods</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="nb">NULL</span><span class="p">}</span>  <span class="cm">/* Sentinel */</span>
+<span class="p">};</span>
+
+<span class="k">static</span> <span class="n">PyTypeObject</span> <span class="n">spamKlass</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">PyObject_HEAD_INIT</span><span class="p">(</span><span class="nb">NULL</span><span class="p">)</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//ob_size</span>
+    <span class="s">&quot;spam.spamKlass&quot;</span><span class="p">,</span>                <span class="c1">//tp_name</span>
+    <span class="k">sizeof</span><span class="p">(</span><span class="n">spamObj</span><span class="p">),</span>                 <span class="c1">//tp_basicsize</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_itemsize</span>
+    <span class="p">(</span><span class="n">destructor</span><span class="p">)</span> <span class="n">spamdealloc</span><span class="p">,</span>        <span class="c1">//tp_dealloc</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_print</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_getattr</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_setattr</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_compare</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_repr</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_as_number</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_as_sequence</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_as_mapping</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_hash</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_call</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_str</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_getattro</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_setattro</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_as_buffer</span>
+    <span class="n">Py_TPFLAGS_DEFAULT</span> <span class="o">|</span>
+    <span class="n">Py_TPFLAGS_BASETYPE</span><span class="p">,</span>             <span class="c1">//tp_flags</span>
+    <span class="s">&quot;spamKlass objects&quot;</span><span class="p">,</span>             <span class="c1">//tp_doc</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_traverse</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_clear</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_richcompare</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_weaklistoffset</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_iter</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_iternext</span>
+    <span class="n">spam_methods</span><span class="p">,</span>                    <span class="c1">//tp_methods</span>
+    <span class="n">spam_members</span><span class="p">,</span>                    <span class="c1">//tp_members</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_getset</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_base</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_dict</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_descr_get</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_descr_set</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_dictoffset</span>
+    <span class="p">(</span><span class="n">initproc</span><span class="p">)</span><span class="n">spamInit</span><span class="p">,</span>              <span class="c1">//tp_init</span>
+    <span class="mi">0</span><span class="p">,</span>                               <span class="c1">//tp_alloc</span>
+    <span class="n">spamNew</span><span class="p">,</span>                         <span class="c1">//tp_new</span>
+<span class="p">};</span>
+
+<span class="cm">/* declarations for DLL import */</span>
+<span class="cp">#ifndef PyMODINIT_FUNC</span>
+<span class="cp">#define PyMODINIT_FUNC void</span>
+<span class="cp">#endif</span>
+
+<span class="n">PyMODINIT_FUNC</span>
+<span class="nf">initspam</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PyObject</span><span class="o">*</span> <span class="n">m</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">PyType_Ready</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spamKlass</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">goto</span> <span class="n">END</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">Py_InitModule3</span><span class="p">(</span>
+      <span class="s">&quot;spam&quot;</span><span class="p">,</span>         <span class="c1">// Mod name</span>
+      <span class="n">module_methods</span><span class="p">,</span> <span class="c1">// Mod methods</span>
+      <span class="s">&quot;Spam Module&quot;</span><span class="p">);</span> <span class="c1">// Mod doc</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">goto</span> <span class="n">END</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">Py_INCREF</span><span class="p">(</span><span class="o">&amp;</span><span class="n">spamKlass</span><span class="p">);</span>
+    <span class="n">PyModule_AddObject</span><span class="p">(</span>
+      <span class="n">m</span><span class="p">,</span>                           <span class="c1">// Module</span>
+      <span class="s">&quot;SpamKlass&quot;</span><span class="p">,</span>                 <span class="c1">// Class Name</span>
+      <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">spamKlass</span><span class="p">);</span>    <span class="c1">// Class</span>
+<span class="nl">END</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="compare-performance-with-pure-python">
+<h3>Compare performance with pure Python<a class="headerlink" href="#compare-performance-with-pure-python" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">spam</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span> <span class="o">=</span> <span class="n">spam</span><span class="o">.</span><span class="n">SpamKlass</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">e</span><span class="o">-</span><span class="n">s</span>
+<span class="gp">... </span>  <span class="k">return</span> <span class="n">wrapper</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">n</span>
+<span class="gp">... </span>  <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@profile</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">cfib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">o</span><span class="o">.</span><span class="n">spam_fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@profile</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">pyfib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cfib</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="go">0.0106310844421</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyfib</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="go">0.399799108505</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python C API cheatsheet</a><ul>
+<li><a class="reference internal" href="#pyobject-header">PyObject header</a></li>
+<li><a class="reference internal" href="#python-c-api-template">Python C API Template</a><ul>
+<li><a class="reference internal" href="#c-api-source">C API source</a></li>
+<li><a class="reference internal" href="#prepare-setup-py">Prepare setup.py</a></li>
+<li><a class="reference internal" href="#build-c-api-source">Build C API source</a></li>
+<li><a class="reference internal" href="#run-the-c-module">Run the C module</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pyobject-with-member-and-methods">PyObject with Member and Methods</a><ul>
+<li><a class="reference internal" href="#id1">C API source</a></li>
+<li><a class="reference internal" href="#compare-performance-with-pure-python">Compare performance with pure Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-tests.html" title="previous chapter">Python test cheatsheet</a></li>
+      <li>Next: <a href="python-cstyle.html" title="next chapter">Python Design Pattern in C</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-capi.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

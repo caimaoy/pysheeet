@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Python cheatsheet! &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Python basic cheatsheet" href="notes/python-basic.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-python-cheatsheet">
+<h1>Welcome to Python cheatsheet!<a class="headerlink" href="#welcome-to-python-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-basic.html">Python basic cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#python-naming-rule">Python Naming Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#using-future-backport-features">Using <code class="docutils literal"><span class="pre">__future__</span></code> backport features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-object-attributes">Check object attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#define-a-function-doc">Define a function <code class="docutils literal"><span class="pre">__doc__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-instance-type">Check instance type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-get-set-attribute">Check, Get, Set attribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-inheritance">Check inheritance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-all-global-variables">Check all global variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-callable">Check <strong>callable</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#get-function-class-name">Get function/class name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#new-init"><code class="docutils literal"><span class="pre">__new__</span></code> &amp; <code class="docutils literal"><span class="pre">__init__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#the-diamond-problem">The diamond problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#representations-of-your-class-behave">Representations of your class behave</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#break-up-a-long-string">Break up a long string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#get-list-item-smart">Get list item <strong>SMART</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#get-dictionary-item-smart">Get dictionary item <strong>SMART</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#set-a-list-dict-smart">Set a list/dict <strong>SMART</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#namedtuple">NamedTuple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#iter-delegating-iteration"><code class="docutils literal"><span class="pre">__iter__</span></code> - Delegating Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#using-generator-as-iterator">Using Generator as Iterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#emulating-a-list">Emulating a list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#emulating-a-dictionary">Emulating a dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#emulating-a-matrix-multiplication">Emulating a matrix multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#decorator">Decorator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#decorator-with-arguments">Decorator with arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#for-exp-else-exp">for: exp else: exp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#try-exp-else-exp">try: exp else: exp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#lambda-function">Lambda function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#option-arguments-args-kwargs">Option arguments - (*args, **kwargs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#type-declare-create-a-class"><code class="docutils literal"><span class="pre">type()</span></code> declare (create) a <code class="docutils literal"><span class="pre">class</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#callable-object">Callable object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#context-manager-with-statement">Context Manager - <code class="docutils literal"><span class="pre">with</span></code> statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#using-contextmanager">Using <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#using-with-statement-open-file">Using <code class="docutils literal"><span class="pre">with</span></code> statement open file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#property-managed-attributes">Property - Managed attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#computed-attributes-using-property">Computed attributes - Using property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#descriptor-manage-attributes">Descriptor - manage attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#staticmethod-classmethod"><code class="docutils literal"><span class="pre">&#64;staticmethod</span></code>, <code class="docutils literal"><span class="pre">&#64;classmethod</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#abstract-method-metaclass">Abstract method - Metaclass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#common-use-magic">Common Use <strong>Magic</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#parsing-csv-string">Parsing csv string</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-unicode.html">Python unicode cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-unicode.html#encode-unicode-code-point-to-bytes">Encode: unicode code point to bytes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-unicode.html#decode-bytes-to-unicode-code-point">Decode: bytes to unicode code point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-unicode.html#get-unicode-code-point">Get unicode code point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-unicode.html#python2-str-is-equivalent-to-byte-string">python2 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to byte string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-unicode.html#python3-str-is-equivalent-to-unicode-string">python3 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to unicode string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-unicode.html#python2-take-str-char-as-byte-character">python2 take <code class="docutils literal"><span class="pre">str</span></code> char as byte character</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-unicode.html#python3-take-str-char-as-unicode-character">python3 take <code class="docutils literal"><span class="pre">str</span></code> char as unicode character</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-unicode.html#unicode-normalization">unicode normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-generator.html">Python generator cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#glossary-of-generator">Glossary of Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#produce-value-via-generator">Produce value via generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#unpacking-generators">Unpacking Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#implement-iterable-object-via-generator">Implement Iterable object via generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#send-message-to-generator">Send message to generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#yield-from-expression"><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code> expression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#yield-from-expr-return-res">yield (from) EXPR return RES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#generate-sequences">Generate sequences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#what-res-yield-from-exp-actually-do">What <code class="docutils literal"><span class="pre">RES</span> <span class="pre">=</span> <span class="pre">yield</span> <span class="pre">from</span> <span class="pre">EXP</span></code> actually do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#for-in-gen-simulate-yield-from"><code class="docutils literal"><span class="pre">for</span> <span class="pre">_</span> <span class="pre">in</span> <span class="pre">gen()</span></code> simulate <code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#check-generator-type">Check generator type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#check-generator-state">Check Generator State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#simple-compiler">Simple compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#context-manager-and-generator">Context manager and generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#what-contextmanager-actually-doing">What <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code> actually doing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#profile-code-block">profile code block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#yield-from-and-iter"><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code> and <code class="docutils literal"><span class="pre">__iter__</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#yield-from-await-expression"><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span> <span class="pre">==</span> <span class="pre">await</span></code> expression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#closure-in-python-using-generator">Closure in Python - using generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#implement-a-simple-scheduler">Implement a simple scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#simple-round-robin-with-blocking">Simple round-robin with blocking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#simple-round-robin-with-blocking-and-non-blocking">simple round-robin with blocking and non-blocking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#asynchronous-generators">Asynchronous Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#asynchronous-generators-can-have-try-finally-blocks">Asynchronous generators can have <code class="docutils literal"><span class="pre">try..finally</span></code> blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#send-value-and-throw-exception-into-async-generator">send value and throw exception into async generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#simple-async-round-robin">Simple async round-robin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#async-generator-get-better-performance-than-async-iterator">Async generator get better performance than async iterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-generator.html#asynchronous-comprehensions">Asynchronous Comprehensions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-rexp.html">Python Regular Expression cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#compare-html-tags">Compare HTML tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#re-findall-match-string"><code class="docutils literal"><span class="pre">re.findall()</span></code> match string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#group-comparison">Group Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#non-capturing-group">Non capturing group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#back-reference">Back Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#named-grouping-p-name">Named Grouping <code class="docutils literal"><span class="pre">(?P&lt;name&gt;)</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#substitute-string">Substitute String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#look-around">Look around</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#match-common-username-or-password">Match common username or password</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#match-hex-color-value">Match hex color value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#match-email">Match email</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#match-url">Match URL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#match-ip-address">Match IP address</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#match-mac-address">Match Mac address</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-rexp.html#lexer">Lexer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-socket.html">Python socket cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#get-hostname">Get Hostname</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#transform-host-network-endian">Transform Host &amp; Network Endian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#ip-dotted-quad-string-byte-format-convert">IP dotted-quad string &amp; byte format convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#mac-address-byte-format-convert">Mac address &amp; byte format convert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-tcp-echo-server">Simple TCP Echo Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-tcp-echo-server-via-socketserver">Simple TCP Echo Server Via SocketServer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-ssl-tcp-echo-server">Simple SSL TCP Echo Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-udp-echo-server">Simple UDP Echo Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-udp-echo-server-via-socketserver">Simple UDP Echo Server Via SocketServer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-udp-client-sender">Simple UDP client - Sender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#broadcast-udp-packets">Broadcast UDP Packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-unix-domain-socket">Simple UNIX Domain Socket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-duplex-processes-communication">Simple duplex processes communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-asynchronous-tcp-server-thread">Simple Asynchronous TCP Server - Thread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#simple-asynchronous-tcp-server-select">Simple Asynchronous TCP Server - select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#high-level-api-selectors">High-Level API - selectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#socketpair-similar-to-pipe">&#8220;socketpair&#8221; - Similar to PIPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#sniffer-ip-packets">Sniffer IP packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-socket.html#sniffer-arp-packet">Sniffer ARP packet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-crypto.html">Python cryptography cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-crypto.html#simple-https-server">simple https server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-crypto.html#check-certificate-information">check certificate information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-crypto.html#generate-rsa-keyfile-without-passphrase">generate RSA keyfile without passphrase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-crypto.html#hmac-check-integrity-of-a-message">HMAC - check integrity of a message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-crypto.html#using-dsa-to-proof-of-identity">Using DSA to proof of identity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-crypto.html#simple-diffie-hellman-key-exchange">Simple Diffie-Hellman key exchange</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-crypto.html#aes-cbc-mode-encrypt-and-decrypt">AES CBC mode encrypt and decrypt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-crypto.html#aes-ctr-mode-encrypt-and-decrypt">AES CTR mode encrypt and decrypt</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-concurrency.html">Python Concurrency Cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#execute-a-shell-command">Execute a shell command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#create-a-thread-via-threading">Create a thread via &#8220;threading&#8221;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#performance-problem-gil">Performance Problem - GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#consumer-and-producer">Consumer and Producer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#thread-pool-template">Thread Pool Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#using-multiprocessing-threadpool">Using multiprocessing ThreadPool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#mutex-lock">Mutex lock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#deadlock">Deadlock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#implement-monitor">Implement &#8220;Monitor&#8221;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#control-primitive-resources">Control primitive resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#ensure-tasks-has-done">Ensure tasks has done</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#thread-safe-priority-queue">Thread-safe priority queue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#multiprocessing">Multiprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#custom-multiprocessing-map">Custom multiprocessing map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#graceful-way-to-kill-all-child-processes">Graceful way to kill all child processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#simple-round-robin-scheduler">Simple round-robin scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#scheduler-with-blocking-function">Scheduler with blocking function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#poolexecutor">PoolExecutor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#what-with-threadpoolexecutor-doing">What &#8220;with ThreadPoolExecutor&#8221; doing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#future-object">Future Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-concurrency.html#future-error-handling">Future error handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-sqlalchemy.html">Python SQLAlchemy Cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#set-a-database-url">Set a database URL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#sqlalchemy-support-dbapi-pep249">Sqlalchemy Support DBAPI - PEP249</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#transaction-and-connect-object">Transaction and Connect Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#metadata-generating-database-schema">Metadata - Generating Database Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#inspect-get-database-information">Inspect - Get Database Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#reflection-loading-table-from-existing-database">Reflection - Loading Table from Existing Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#get-table-from-metadata">Get Table from MetaData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#create-all-tables-store-in-metadata">Create all Tables Store in &#8220;MetaData&#8221;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#create-specific-table">Create Specific Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#create-table-with-same-columns">Create table with same columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#drop-a-table">Drop a Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#some-table-object-operation">Some Table Object Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#sql-expression-language">SQL Expression Language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#insert-create-an-insert-statement">insert() - Create an &#8220;INSERT&#8221; Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#select-create-a-select-statement">select() - Create a &#8220;SELECT&#8221; Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#join-joined-two-tables-via-join-statement">join() - Joined Two Tables via &#8220;JOIN&#8221; Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#delete-rows-from-table">Delete Rows from Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#check-table-existing">Check Table Existing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#create-multiple-tables-at-once">Create multiple tables at once</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#create-tables-with-dynamic-columns-table">Create tables with dynamic columns (Table)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#object-relational-add-data">Object Relational add data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#object-relational-update-data">Object Relational update data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#object-relational-delete-row">Object Relational delete row</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#object-relational-relationship">Object Relational relationship</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#object-relational-self-association">Object Relational self association</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#object-relational-basic-query">Object Relational basic query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#mapper-map-table-to-class">mapper: Map <code class="docutils literal"><span class="pre">Table</span></code> to <code class="docutils literal"><span class="pre">class</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#get-table-dynamically">Get table dynamically</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#object-relational-join-two-tables">Object Relational join two tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#join-on-relationship-and-group-by-count">join on relationship and group_by count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#create-tables-with-dynamic-columns-orm">Create tables with dynamic columns (ORM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#close-database-connection">Close database connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-sqlalchemy.html#cannot-use-the-object-after-close-the-session">Cannot use the object after close the session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-asyncio.html">Python asyncio cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#what-is-asyncio-coroutine">What is &#64;asyncio.coroutine?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#what-is-a-task">What is a Task?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#what-event-loop-doing-without-polling">What event loop doing? (Without polling)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#what-asyncio-wait-doing">What <code class="docutils literal"><span class="pre">asyncio.wait</span></code> doing?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#future-like-object">Future like object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#future-like-object-await-other-task">Future like object <code class="docutils literal"><span class="pre">__await__</span></code> other task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#patch-loop-runner-run-once">Patch loop runner <code class="docutils literal"><span class="pre">_run_once</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#put-blocking-task-into-executor">Put blocking task into Executor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#socket-with-asyncio">Socket with asyncio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#event-loop-with-polling">Event Loop with polling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#transport-and-protocol">Transport and Protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#transport-and-protocol-with-ssl">Transport and Protocol with SSL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#what-loop-create-server-do">What <code class="docutils literal"><span class="pre">loop.create_server</span></code> do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#inline-callback">Inline callback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#asynchronous-iterator">Asynchronous Iterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#what-is-asynchronous-iterator">What is asynchronous iterator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#asynchronous-context-manager">Asynchronous context manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#what-is-asynchronous-context-manager">What is asynchronous context manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#what-loop-sock-do">What <cite>loop.sock_*</cite> do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#simple-asyncio-connection-pool">Simple asyncio connection pool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#simple-asyncio-udp-echo-server">Simple asyncio UDP echo server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#simple-asyncio-web-server">Simple asyncio web server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#simple-https-asyncio-web-server">Simple HTTPS asyncio web server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-asyncio.html#simple-asyncio-wsgi-web-server">Simple asyncio WSGI web server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-tests.html">Python test cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#a-simple-python-unittest">A simple Python unittest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#python-unittest-setup-teardown-hierarchy">Python unittest setup &amp; teardown hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#different-module-of-setup-teardown-hierarchy">Different module of setUp &amp; tearDown hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#run-tests-via-unittest-texttestrunner">Run tests via unittest.TextTestRunner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#test-raise-exception">Test raise exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#pass-arguments-into-a-testcase">Pass arguments into a TestCase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#group-multiple-testcases-into-a-suite">Group multiple testcases into a suite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#group-multiple-tests-from-different-testcase">Group multiple tests from different TestCase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#skip-some-tests-in-the-testcase">Skip some tests in the TestCase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#monolithic-test">Monolithic Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#cross-module-variables-to-test-files">Cross-module variables to Test files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#skip-setup-teardown-when-the-test-is-skipped">skip setup &amp; teardown when the test is skipped</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#re-using-old-test-code">Re-using old test code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#testing-your-document-is-right">Testing your document is right</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#re-using-doctest-to-unittest">Re-using doctest to unittest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#customize-test-report">Customize test report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#mock-using-patch-substitute-original-method">Mock - using <code class="docutils literal"><span class="pre">&#64;patch</span></code> substitute original method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#what-with-unittest-mock-patch-do">What <code class="docutils literal"><span class="pre">with</span> <span class="pre">unittest.mock.patch</span></code> do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-tests.html#mock-substitute-open">Mock - substitute <code class="docutils literal"><span class="pre">open</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-capi.html">Python C API cheatsheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-capi.html#pyobject-header">PyObject header</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-capi.html#python-c-api-template">Python C API Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-capi.html#pyobject-with-member-and-methods">PyObject with Member and Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-cstyle.html">Python Design Pattern in C</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#decorator-in-c">Decorator in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#a-set-of-functions">A Set of Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#closure-in-c">Closure in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#generator">Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#context-manager-in-c">Context Manager in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#tuple-in-c">Tuple in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#simple-try-exp-except-exp-finally-in-c">Simple <code class="docutils literal"><span class="pre">try:</span> <span class="pre">exp</span> <span class="pre">except:</span> <span class="pre">exp</span> <span class="pre">finally:</span></code> in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#simple-coroutine-in-c">Simple coroutine in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#keyword-arguments-in-c">Keyword Arguments in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#function-map">Function &#8220;MAP&#8221;</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#foreach-in-c">foreach in C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-cstyle.html#simple-oop-in-c">Simple OOP in C</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="#" style="border:0;">
+    <img class="logo" src="_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="notes/python-basic.html" title="next chapter">Python basic cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

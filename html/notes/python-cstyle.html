@@ -1,0 +1,909 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Design Pattern in C &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Python C API cheatsheet" href="python-capi.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-design-pattern-in-c">
+<h1>Python Design Pattern in C<a class="headerlink" href="#python-design-pattern-in-c" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="decorator-in-c">
+<h2>Decorator in C<a class="headerlink" href="#decorator-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;I am decorator&quot;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">ret</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">wrapper</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@decorator</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@decorator</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;add </span><span class="si">%d</span><span class="s2">+</span><span class="si">%d</span><span class="s2">=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hello</span><span class="p">(</span><span class="s2">&quot;KerKer&quot;</span><span class="p">)</span>
+<span class="go">I am decorator</span>
+<span class="go">Hello KerKer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">I am decorator</span>
+<span class="go">add 1+2=3</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define DECORATOR(t, f, declar, input) \</span>
+<span class="cp">   t decor_##f(declar) { \</span>
+<span class="cp">      printf(&quot;I am decorator\n&quot;); \</span>
+<span class="cp">      return f(input);\</span>
+<span class="cp">   }</span>
+<span class="cp">#define FUNC_DEC(func, ...) \</span>
+<span class="cp">   decor_##func(__VA_ARGS__)</span>
+
+<span class="c1">// Original function</span>
+<span class="kt">void</span> <span class="nf">hello</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;add %d + %d = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">);</span>
+   <span class="k">return</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// Patch function</span>
+<span class="cp">#define DECLAR    char *str</span>
+<span class="cp">#define INPUT     str</span>
+<span class="n">DECORATOR</span><span class="p">(</span><span class="kt">void</span><span class="p">,</span> <span class="n">hello</span><span class="p">,</span> <span class="n">DECLAR</span><span class="p">,</span> <span class="n">INPUT</span><span class="p">)</span>
+<span class="cp">#undef DECLAR</span>
+<span class="cp">#undef INPUT</span>
+
+<span class="cp">#define DECLAR    int a, int b</span>
+<span class="cp">#define INPUT     a,b</span>
+<span class="n">DECORATOR</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="n">add</span><span class="p">,</span> <span class="n">DECLAR</span><span class="p">,</span> <span class="n">INPUT</span><span class="p">)</span>
+<span class="cp">#undef DECLAR</span>
+<span class="cp">#undef INPUT</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="n">FUNC_DEC</span><span class="p">(</span><span class="n">hello</span><span class="p">,</span> <span class="s">&quot;KerKer&quot;</span><span class="p">);</span>
+   <span class="n">FUNC_DEC</span><span class="p">(</span><span class="n">add</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> gcc example.c
+<span class="gp">$</span> ./a.out
+<span class="go">I am decorator</span>
+<span class="go">Hello KerKer</span>
+<span class="go">I am decorator</span>
+<span class="go">add 1 + 2 = 3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-set-of-functions">
+<h2>A Set of Functions<a class="headerlink" href="#a-set-of-functions" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">func_1</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;Hello&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">func_2</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;World&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">func_3</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;!!!&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">func_1</span><span class="p">,</span><span class="n">func_2</span><span class="p">,</span><span class="n">func_3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="n">_</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="go">Hello</span>
+<span class="go">World</span>
+<span class="go">!!!</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="k">enum</span> <span class="n">func_id</span><span class="p">{</span>
+   <span class="n">FUNC_1</span><span class="p">,</span><span class="n">FUNC_2</span><span class="p">,</span><span class="n">FUNC_3</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">func_1</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello &quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">func_2</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;World &quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">func_3</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;!!!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">gFuncTable</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="n">func_1</span><span class="p">,</span><span class="n">func_2</span><span class="p">,</span><span class="n">func_3</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="n">gFuncTable</span><span class="p">[</span><span class="n">FUNC_1</span><span class="p">]();</span>
+   <span class="n">gFuncTable</span><span class="p">[</span><span class="n">FUNC_2</span><span class="p">]();</span>
+   <span class="n">gFuncTable</span><span class="p">[</span><span class="n">FUNC_3</span><span class="p">]();</span>
+
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="closure-in-c">
+<h2>Closure in C<a class="headerlink" href="#closure-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># implement via __call__</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">closure</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">5566</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">var</span><span class="p">):</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">+=</span> <span class="n">var</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">closure</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">(</span><span class="mi">9527</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">val</span>
+<span class="mi">15093</span>
+<span class="c1"># using &quot;global&quot; keyword</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">closure</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">():</span>
+<span class="o">...</span>         <span class="k">global</span> <span class="n">x</span>
+<span class="o">...</span>         <span class="n">x</span> <span class="o">+=</span> <span class="n">val</span>
+<span class="o">...</span>         <span class="k">print</span> <span class="n">x</span>
+<span class="o">...</span>     <span class="n">wrapper</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">closure</span><span class="p">(</span><span class="mi">5566</span><span class="p">)</span>
+<span class="mi">5566</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">closure</span><span class="p">(</span><span class="mi">9527</span><span class="p">)</span>
+<span class="mi">15093</span>
+<span class="c1"># using &quot;nonlocal&quot; (only in python3)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">closure</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">():</span>
+<span class="o">...</span>         <span class="n">nonlocal</span> <span class="n">x</span>
+<span class="o">...</span>         <span class="n">x</span> <span class="o">+=</span> <span class="n">val</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">wrapper</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">closure</span><span class="p">(</span><span class="mi">5566</span><span class="p">)</span>
+<span class="mi">5566</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">closure</span><span class="p">(</span><span class="mi">9527</span><span class="p">)</span>
+<span class="mi">9527</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">Closure</span> <span class="p">{</span>
+   <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+   <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">add</span><span class="p">)</span> <span class="p">(</span><span class="k">struct</span> <span class="n">Closure</span> <span class="o">**</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span>
+<span class="p">}</span><span class="n">closure</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">add_func</span><span class="p">(</span><span class="n">closure</span> <span class="o">**</span><span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">var</span><span class="p">)</span> <span class="p">{</span>
+   <span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">+=</span> <span class="n">var</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="n">closure</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+   <span class="n">c</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">closure</span><span class="p">));</span>
+   <span class="n">c</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">=</span> <span class="mi">5566</span><span class="p">;</span>
+   <span class="n">c</span><span class="o">-&gt;</span><span class="n">add</span> <span class="o">=</span> <span class="n">add_func</span><span class="p">;</span>
+   <span class="n">c</span><span class="o">-&gt;</span><span class="n">add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="p">,</span><span class="mi">9527</span><span class="p">);</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;result: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span>
+
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generator">
+<h2>Generator<a class="headerlink" href="#generator" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">gen</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">var</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">... </span>    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">var</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="k">yield</span> <span class="n">var</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">gen</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">),</span>
+<span class="gp">...</span>
+<span class="go">1 2 3</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="k">struct</span> <span class="n">gen</span> <span class="p">{</span>
+   <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">next</span><span class="p">)</span> <span class="p">(</span><span class="k">struct</span> <span class="n">gen</span> <span class="o">*</span><span class="p">);</span>
+   <span class="kt">int</span> <span class="n">var</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">next_func</span><span class="p">(</span><span class="k">struct</span> <span class="n">gen</span> <span class="o">*</span><span class="n">g</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;var = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">g</span><span class="o">-&gt;</span><span class="n">var</span><span class="p">);</span>
+   <span class="n">g</span><span class="o">-&gt;</span><span class="n">var</span> <span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+   <span class="k">return</span> <span class="n">g</span><span class="o">-&gt;</span><span class="n">var</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">struct</span> <span class="n">gen</span> <span class="o">*</span> <span class="nf">new_gen</span><span class="p">()</span> <span class="p">{</span>
+   <span class="k">struct</span> <span class="n">gen</span> <span class="o">*</span><span class="n">g</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+   <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">gen</span><span class="o">*</span><span class="p">)</span>
+         <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">gen</span><span class="p">));</span>
+   <span class="n">g</span><span class="o">-&gt;</span><span class="n">var</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="n">g</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">next_func</span><span class="p">;</span>
+   <span class="k">return</span> <span class="n">g</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="k">struct</span> <span class="n">gen</span> <span class="o">*</span><span class="n">g</span> <span class="o">=</span> <span class="n">new_gen</span><span class="p">();</span>
+   <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;gen var = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">g</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">(</span><span class="n">g</span><span class="p">));</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="context-manager-in-c">
+<h2>Context Manager in C<a class="headerlink" href="#context-manager-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">CtxManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span> <span class="o">=</span> <span class="s2">&quot;KerKer&quot;</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">e_info</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">CtxManager</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">c</span>
+<span class="gp">...</span>
+<span class="go">KerKer</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define ENTER(type,ptr,len) \</span>
+<span class="cp">   printf(&quot;enter context manager\n&quot;);\</span>
+<span class="cp">   ptr = malloc(sizeof(type)*len);\</span>
+<span class="cp">   if (NULL == ptr) { \</span>
+<span class="cp">      printf(&quot;malloc get error\n&quot;);\</span>
+<span class="cp">      goto exit;\</span>
+<span class="cp">   }\</span>
+
+<span class="cp">#define EXIT(ptr) \</span>
+<span class="cp">exit:\</span>
+<span class="cp">   printf(&quot;exit context manager\n&quot;);\</span>
+<span class="cp">   if (NULL != ptr) {\</span>
+<span class="cp">      free(ptr);\</span>
+<span class="cp">      ptr = NULL;  \</span>
+<span class="cp">   }\</span>
+
+<span class="cp">#define CONTEXT_MANAGER(t, p, l,...){\</span>
+<span class="cp">   ENTER(t,p,l)\</span>
+<span class="cp">   __VA_ARGS__ \</span>
+<span class="cp">   EXIT(p)\</span>
+<span class="cp">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="kt">char</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+   <span class="n">CONTEXT_MANAGER</span><span class="p">(</span><span class="kt">char</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span>
+      <span class="n">sprintf</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="s">&quot;Hello World&quot;</span><span class="p">);</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">ptr</span><span class="p">);</span>
+   <span class="p">);</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;ptr = %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">ptr</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tuple-in-c">
+<h2>Tuple in C<a class="headerlink" href="#tuple-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span><span class="s2">&quot;World&quot;</span><span class="p">,</span><span class="mi">123</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span> <span class="k">print</span> <span class="n">_</span><span class="p">,</span>
+<span class="gp">...</span>
+<span class="go">Hello World 123</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
+   <span class="kt">void</span> <span class="o">*</span> <span class="k">const</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Hello&quot;</span><span class="p">,</span>
+                        <span class="s">&quot;World&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">a</span><span class="p">};</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s %s, %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="o">*</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">spam</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="s2">&quot;listdir get error&quot;</span>
+<span class="gp">... </span>        <span class="k">return</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">a</span><span class="o">/</span><span class="n">b</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="s2">&quot;zero division&quot;</span>
+<span class="gp">... </span>        <span class="k">return</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spam</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">zero division</span>
+<span class="go"># single exit -&gt; using decorator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="n">e</span> <span class="o">-</span> <span class="n">s</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">ret</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">wrapper</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@profile</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">spam</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">a</span><span class="o">/</span><span class="n">b</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spam</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">0.000284910202026</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+   <span class="kt">char</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+   <span class="n">ptr</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="o">*</span><span class="mi">128</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="n">ptr</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">perror</span><span class="p">(</span><span class="s">&quot;malloc get error&quot;</span><span class="p">);</span>
+      <span class="k">goto</span> <span class="n">exit</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="n">strcpy</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span><span class="s">&quot;KerKer&quot;</span><span class="p">);</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ptr</span><span class="p">);</span>
+   <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nl">exit</span><span class="p">:</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">ptr</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">free</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
+      <span class="n">ptr</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-try-exp-except-exp-finally-in-c">
+<h2>Simple <code class="docutils literal"><span class="pre">try:</span> <span class="pre">exp</span> <span class="pre">except:</span> <span class="pre">exp</span> <span class="pre">finally:</span></code> in C<a class="headerlink" href="#simple-try-exp-except-exp-finally-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="c1"># do something...</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">OSError</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;get error OSError&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">finally</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;finally block&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">get error OSError</span>
+<span class="go">finally block</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;setjmp.h&gt;</span><span class="cp"></span>
+
+<span class="k">enum</span> <span class="p">{</span>
+    <span class="n">ERR_EPERM</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">ERR_ENOENT</span><span class="p">,</span>
+    <span class="n">ERR_ESRCH</span><span class="p">,</span>
+    <span class="n">ERR_EINTR</span><span class="p">,</span>
+    <span class="n">ERR_EIO</span>
+<span class="p">};</span>
+
+<span class="cp">#define try    do { jmp_buf jmp_env__;             \</span>
+<span class="cp">                    switch ( setjmp(jmp_env__) ) { \</span>
+<span class="cp">                        case 0: while(1) {</span>
+<span class="cp">#define except(exc)         break;                 \</span>
+<span class="cp">                        case exc:</span>
+<span class="cp">#define finally         break; }                   \</span>
+<span class="cp">                    default:</span>
+<span class="cp">#define end  } } while(0)</span>
+
+<span class="cp">#define raise(exc) longjmp(jmp_env__, exc)</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">try</span> <span class="p">{</span>
+        <span class="n">raise</span><span class="p">(</span><span class="n">ERR_ENOENT</span><span class="p">);</span>
+    <span class="p">}</span> <span class="n">except</span><span class="p">(</span><span class="n">ERR_EPERM</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;get exception: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">strerror</span><span class="p">(</span><span class="n">ERR_EPERM</span><span class="p">));</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">except</span><span class="p">(</span><span class="n">ERR_ENOENT</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;get exception: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">strerror</span><span class="p">(</span><span class="n">ERR_ENOENT</span><span class="p">));</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">except</span><span class="p">(</span><span class="n">ERR_ESRCH</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;get exception: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">strerror</span><span class="p">(</span><span class="n">ERR_ENOENT</span><span class="p">));</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">finally</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;finally block</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="p">}</span> <span class="n">end</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-coroutine-in-c">
+<h2>Simple coroutine in C<a class="headerlink" href="#simple-coroutine-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+<span class="n">_registry</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+<span class="n">_msg_queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="n">_msg_queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">actor</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">gen</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+        <span class="n">_registry</span><span class="p">[</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">gen</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="nd">@actor</span>
+<span class="k">def</span> <span class="nf">ping</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; coroutine ping &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="k">yield</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;ping </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">send</span><span class="p">(</span><span class="s1">&#39;pong&#39;</span><span class="p">,</span> <span class="mi">20001</span><span class="p">)</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="k">yield</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;ping </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">send</span><span class="p">(</span><span class="s1">&#39;pong&#39;</span><span class="p">,</span> <span class="mi">20002</span><span class="p">)</span>
+
+<span class="nd">@actor</span>
+<span class="k">def</span> <span class="nf">pong</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; coroutine pong &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="k">yield</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;pong </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">send</span><span class="p">(</span><span class="s1">&#39;ping&#39;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">)</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="k">yield</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;pong </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">send</span><span class="p">(</span><span class="s1">&#39;ping&#39;</span><span class="p">,</span> <span class="mi">10002</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="k">while</span> <span class="n">_msg_queue</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">_msg_queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">_registry</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+<span class="n">ping</span><span class="p">()</span>
+<span class="n">pong</span><span class="p">()</span>
+<span class="n">send</span><span class="p">(</span><span class="s1">&#39;ping&#39;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">)</span>
+<span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python coro.py
+ping <span class="m">10001</span>
+pong <span class="m">20001</span>
+ping <span class="m">10001</span>
+pong <span class="m">20002</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;setjmp.h&gt;</span><span class="cp"></span>
+
+<span class="k">static</span> <span class="kt">jmp_buf</span> <span class="n">jmp_ping</span><span class="p">,</span> <span class="n">jmp_pong</span><span class="p">;</span>
+
+<span class="cp">#define send(buf_a, buf_b, val)  \</span>
+<span class="cp">    do {                         \</span>
+<span class="cp">        r = setjmp(buf_a);       \</span>
+<span class="cp">        if (r == 0) {            \</span>
+<span class="cp">            longjmp(buf_b, val); \</span>
+<span class="cp">        }                        \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define GEN_FUNC(func) void func</span>
+
+
+<span class="n">GEN_FUNC</span><span class="p">(</span><span class="n">ping</span><span class="p">)</span> <span class="p">();</span>
+<span class="n">GEN_FUNC</span><span class="p">(</span><span class="n">pong</span><span class="p">)</span> <span class="p">();</span>
+
+<span class="n">GEN_FUNC</span><span class="p">(</span><span class="n">ping</span><span class="p">)</span> <span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">setjmp</span><span class="p">(</span><span class="n">jmp_ping</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">pong</span><span class="p">();</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;ping %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+
+    <span class="cm">/* ping -- 20001 -&gt; pong */</span>
+    <span class="n">send</span><span class="p">(</span><span class="n">jmp_ping</span><span class="p">,</span> <span class="n">jmp_pong</span><span class="p">,</span> <span class="mi">20001</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;ping %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+
+    <span class="cm">/* ping -- 20002 -&gt; pong */</span>
+    <span class="n">send</span><span class="p">(</span><span class="n">jmp_ping</span><span class="p">,</span> <span class="n">jmp_pong</span><span class="p">,</span> <span class="mi">20002</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="n">GEN_FUNC</span><span class="p">(</span><span class="n">pong</span><span class="p">)</span> <span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="cm">/* pong -- 10001 -&gt; ping */</span>
+    <span class="n">send</span><span class="p">(</span><span class="n">jmp_pong</span><span class="p">,</span> <span class="n">jmp_ping</span><span class="p">,</span> <span class="mi">10001</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;pong %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+
+    <span class="cm">/* pong -- 10002 -&gt; ping */</span>
+    <span class="n">send</span><span class="p">(</span><span class="n">jmp_pong</span><span class="p">,</span> <span class="n">jmp_ping</span><span class="p">,</span> <span class="mi">10002</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;pong %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">ping</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ ./a.out
+ping <span class="m">10001</span>
+pong <span class="m">20001</span>
+ping <span class="m">10002</span>
+pong <span class="m">20002</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="keyword-arguments-in-c">
+<h2>Keyword Arguments in C<a class="headerlink" href="#keyword-arguments-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">str_</span><span class="p">,</span> <span class="n">float_</span><span class="p">,</span><span class="n">int_</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">str_</span><span class="p">,</span> <span class="n">float_</span><span class="p">,</span> <span class="n">int_</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">(</span><span class="s2">&quot;KerKer&quot;</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">KerKer 2.0 2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">(</span><span class="s2">&quot;HaHa&quot;</span><span class="p">,</span><span class="mf">3.</span><span class="p">)</span>
+<span class="go">HaHa 3.0 0</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define FUNC(...) \</span>
+<span class="cp">   base_func((struct input ){.var=0, ##__VA_ARGS__});</span>
+
+<span class="k">struct</span> <span class="n">input</span> <span class="p">{</span>
+   <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">var</span><span class="p">;</span>
+   <span class="kt">double</span> <span class="n">dvar</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">base_func</span><span class="p">(</span><span class="k">struct</span> <span class="n">input</span> <span class="n">in</span><span class="p">){</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;str = %s, var = %d&quot;</span>
+      <span class="s">&quot;, dvar = %lf</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+      <span class="n">in</span><span class="p">.</span><span class="n">str</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">var</span><span class="p">,</span><span class="n">in</span><span class="p">.</span><span class="n">dvar</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="n">FUNC</span><span class="p">(.</span><span class="n">str</span><span class="o">=</span><span class="s">&quot;KerKer&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
+   <span class="n">FUNC</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">.</span><span class="n">str</span><span class="o">=</span><span class="s">&quot;KerKer&quot;</span><span class="p">);</span>
+   <span class="n">FUNC</span><span class="p">(.</span><span class="n">var</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="p">.</span><span class="n">dvar</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="p">.</span><span class="n">str</span><span class="o">=</span><span class="s">&quot;HAHA&quot;</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="function-map">
+<h2>Function &#8220;MAP&#8221;<a class="headerlink" href="#function-map" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">y</span>
+<span class="go">[2, 4, 6, 8, 10]</span>
+<span class="go">#or</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">y</span>
+<span class="go">[2, 4, 6, 8, 10]</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define MAP(func, src, dst, len) \</span>
+<span class="cp">   do {\</span>
+<span class="cp">      unsigned i=0;\</span>
+<span class="cp">      for(i=0; i&lt;len; i++) {\</span>
+<span class="cp">         dst[i] = func(src[i]);\</span>
+<span class="cp">      }\</span>
+<span class="cp">   }while(0);</span>
+
+<span class="kt">int</span> <span class="nf">multi2</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="kt">int</span> <span class="n">x</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">};</span>
+   <span class="kt">int</span> <span class="n">y</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+   <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+   <span class="n">MAP</span><span class="p">(</span><span class="n">multi2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+   <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+   <span class="p">}</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="foreach-in-c">
+<h2>foreach in C<a class="headerlink" href="#foreach-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span><span class="s2">&quot;World&quot;</span><span class="p">,</span><span class="s2">&quot;!!!&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span><span class="k">print</span> <span class="n">_</span><span class="p">,</span>
+<span class="gp">...</span>
+<span class="go">Hello World !!!</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define foreach(it, x,...) \</span>
+<span class="cp">   for(char **it=x;*it;it++) {__VA_ARGS__}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="kt">char</span> <span class="o">*</span><span class="n">x</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;Hello&quot;</span><span class="p">,</span><span class="s">&quot;World&quot;</span><span class="p">,</span>
+                <span class="s">&quot;!!!&quot;</span><span class="p">,</span><span class="nb">NULL</span><span class="p">};</span>
+   <span class="n">foreach</span><span class="p">(</span><span class="n">it</span><span class="p">,</span><span class="n">x</span><span class="p">,</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s &quot;</span><span class="p">,</span><span class="o">*</span><span class="n">it</span><span class="p">);</span>
+   <span class="p">)</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-oop-in-c">
+<h2>Simple OOP in C<a class="headerlink" href="#simple-oop-in-c" title="Permalink to this headline">¶</a></h2>
+<p>Python</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># common declaration</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">obj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span> <span class="o">=</span> <span class="n">obj</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">9527</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">5566</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+<span class="mi">15093</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">sub</span><span class="p">()</span>
+<span class="mi">3961</span>
+<span class="c1"># patch class (more like ooc)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">obj</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span><span class="o">.</span><span class="n">add</span> <span class="o">=</span> <span class="n">add</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span><span class="o">.</span><span class="n">sub</span> <span class="o">=</span> <span class="n">sub</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span> <span class="o">=</span> <span class="n">obj</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">9527</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">5566</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+<span class="mi">15093</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="o">.</span><span class="n">sub</span><span class="p">()</span>
+<span class="mi">3961</span>
+</pre></div>
+</div>
+<p>C</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">object</span> <span class="n">Obj</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="nf">int</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="n">Obj</span> <span class="o">*</span><span class="p">);</span>
+
+<span class="k">struct</span> <span class="n">object</span> <span class="p">{</span>
+   <span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+   <span class="c1">// virtual</span>
+   <span class="n">func</span> <span class="n">add</span><span class="p">;</span>
+   <span class="n">func</span> <span class="n">sub</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="kt">int</span> <span class="nf">add_func</span><span class="p">(</span><span class="n">Obj</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">+</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">sub_func</span><span class="p">(</span><span class="n">Obj</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">-</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">init_obj</span><span class="p">(</span><span class="n">Obj</span> <span class="o">**</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+   <span class="o">*</span><span class="n">self</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Obj</span><span class="p">));</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="p">(</span><span class="o">*</span><span class="n">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="p">(</span><span class="o">*</span><span class="n">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="p">(</span><span class="o">*</span><span class="n">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">add</span> <span class="o">=</span> <span class="n">add_func</span><span class="p">;</span>
+   <span class="p">(</span><span class="o">*</span><span class="n">self</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">sub</span> <span class="o">=</span> <span class="n">sub_func</span><span class="p">;</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+   <span class="n">Obj</span> <span class="o">*</span><span class="n">o</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+   <span class="n">init_obj</span><span class="p">(</span><span class="o">&amp;</span><span class="n">o</span><span class="p">);</span>
+   <span class="n">o</span><span class="o">-&gt;</span><span class="n">a</span> <span class="o">=</span> <span class="mi">9527</span><span class="p">;</span>
+   <span class="n">o</span><span class="o">-&gt;</span><span class="n">b</span> <span class="o">=</span> <span class="mi">5566</span><span class="p">;</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;add = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">o</span><span class="o">-&gt;</span><span class="n">add</span><span class="p">(</span><span class="n">o</span><span class="p">));</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;sub = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">o</span><span class="o">-&gt;</span><span class="n">sub</span><span class="p">(</span><span class="n">o</span><span class="p">));</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Design Pattern in C</a><ul>
+<li><a class="reference internal" href="#decorator-in-c">Decorator in C</a></li>
+<li><a class="reference internal" href="#a-set-of-functions">A Set of Functions</a></li>
+<li><a class="reference internal" href="#closure-in-c">Closure in C</a></li>
+<li><a class="reference internal" href="#generator">Generator</a></li>
+<li><a class="reference internal" href="#context-manager-in-c">Context Manager in C</a></li>
+<li><a class="reference internal" href="#tuple-in-c">Tuple in C</a></li>
+<li><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li><a class="reference internal" href="#simple-try-exp-except-exp-finally-in-c">Simple <code class="docutils literal"><span class="pre">try:</span> <span class="pre">exp</span> <span class="pre">except:</span> <span class="pre">exp</span> <span class="pre">finally:</span></code> in C</a></li>
+<li><a class="reference internal" href="#simple-coroutine-in-c">Simple coroutine in C</a></li>
+<li><a class="reference internal" href="#keyword-arguments-in-c">Keyword Arguments in C</a></li>
+<li><a class="reference internal" href="#function-map">Function &#8220;MAP&#8221;</a></li>
+<li><a class="reference internal" href="#foreach-in-c">foreach in C</a></li>
+<li><a class="reference internal" href="#simple-oop-in-c">Simple OOP in C</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-capi.html" title="previous chapter">Python C API cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-cstyle.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

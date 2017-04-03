@@ -1,0 +1,840 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python socket cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python cryptography cheatsheet" href="python-crypto.html" />
+    <link rel="prev" title="Python Regular Expression cheatsheet" href="python-rexp.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-socket-cheatsheet">
+<h1>Python socket cheatsheet<a class="headerlink" href="#python-socket-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="get-hostname">
+<h2>Get Hostname<a class="headerlink" href="#get-hostname" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+<span class="go">&#39;MacBookPro-4380.local&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hostname</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">hostname</span><span class="p">)</span>
+<span class="go">&#39;172.20.10.4&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">)</span>
+<span class="go">&#39;127.0.0.1&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="transform-host-network-endian">
+<h2>Transform Host &amp; Network Endian<a class="headerlink" href="#transform-host-network-endian" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># little-endian machine</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">socket</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># host endian</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">htons</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># network endian</span>
+<span class="mi">256</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">htonl</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># network endian</span>
+<span class="mi">16777216</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">ntohs</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span> <span class="c1"># host endian</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">ntohl</span><span class="p">(</span><span class="mi">16777216</span><span class="p">)</span> <span class="c1"># host endian</span>
+<span class="mi">1</span>
+
+<span class="c1"># big-endian machine</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">socket</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># host endian</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">htons</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># network endian</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">htonl</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c1"># network endian</span>
+<span class="il">1L</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">ntohs</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># host endian</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">socket</span><span class="o">.</span><span class="n">ntohl</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># host endian</span>
+<span class="il">1L</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ip-dotted-quad-string-byte-format-convert">
+<h2>IP dotted-quad string &amp; byte format convert<a class="headerlink" href="#ip-dotted-quad-string-byte-format-convert" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">addr</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_aton</span><span class="p">(</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">addr</span>
+<span class="go">&#39;\x7f\x00\x00\x01&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="go">&#39;127.0.0.1&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mac-address-byte-format-convert">
+<h2>Mac address &amp; byte format convert<a class="headerlink" href="#mac-address-byte-format-convert" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mac</span> <span class="o">=</span> <span class="s1">&#39;00:11:32:3c:c3:0b&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byte</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">unhexlify</span><span class="p">(</span><span class="n">mac</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">byte</span>
+<span class="go">&#39;\x00\x112&lt;\xc3\x0b&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+<span class="go">&#39;0011323cc30b&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-tcp-echo-server">
+<h2>Simple TCP Echo Server<a class="headerlink" href="#simple-tcp-echo-server" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_port</span> <span class="o">=</span> <span class="n">port</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_host</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">))</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span> <span class="o">=</span> <span class="n">sock</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exc_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="kn">import</span> <span class="nn">traceback</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exception</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="mi">5566</span>
+    <span class="k">with</span> <span class="n">Server</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="mi">5566</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">Hello World</span>
+<span class="go">Hello World</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-tcp-echo-server-via-socketserver">
+<h2>Simple TCP Echo Server Via SocketServer<a class="headerlink" href="#simple-tcp-echo-server-via-socketserver" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">SocketServer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bh</span> <span class="o">=</span> <span class="n">SocketServer</span><span class="o">.</span><span class="n">BaseRequestHandler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">handler</span><span class="p">(</span><span class="n">bh</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_address</span>
+<span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">host</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">SocketServer</span><span class="o">.</span><span class="n">TCPServer</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">host</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc -u localhost <span class="m">5566</span>
+<span class="go">Hello World</span>
+<span class="go">Hello World</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-ssl-tcp-echo-server">
+<h2>Simple SSL TCP Echo Server<a class="headerlink" href="#simple-ssl-tcp-echo-server" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">ssl</span>
+
+<span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5566</span><span class="p">))</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">sslctx</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLContext</span><span class="p">(</span><span class="n">ssl</span><span class="o">.</span><span class="n">PROTOCOL_TLSv1</span><span class="p">)</span>
+<span class="n">sslctx</span><span class="o">.</span><span class="n">load_cert_chain</span><span class="p">(</span><span class="n">certfile</span><span class="o">=</span><span class="s1">&#39;./root-ca.crt&#39;</span><span class="p">,</span>
+                       <span class="n">keyfile</span><span class="o">=</span><span class="s1">&#39;./root-ca.key&#39;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="n">sslconn</span> <span class="o">=</span> <span class="n">sslctx</span><span class="o">.</span><span class="n">wrap_socket</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">server_side</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">sslconn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="n">sslconn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">sslconn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># console 1</span>
+$ openssl genrsa -out root-ca.key <span class="m">2048</span>
+$ openssl req -x509 -new -nodes -key root-ca.key -days <span class="m">365</span> -out root-ca.crt
+$ python3 ssl_tcp_server.py
+
+<span class="c1"># console 2</span>
+$ openssl s_client -connect localhost:5566
+...
+Hello SSL
+Hello SSL
+read:errno<span class="o">=</span><span class="m">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-udp-echo-server">
+<h2>Simple UDP Echo Server<a class="headerlink" href="#simple-udp-echo-server" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="k">class</span> <span class="nc">UDPServer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_port</span> <span class="o">=</span> <span class="n">port</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_host</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span> <span class="o">=</span> <span class="n">sock</span>
+        <span class="k">return</span> <span class="n">sock</span>
+   <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exc_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="kn">import</span> <span class="nn">traceback</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exception</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="mi">5566</span>
+    <span class="k">with</span> <span class="n">UDPServer</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">msg</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recvfrom</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc -u localhost <span class="m">5566</span>
+<span class="go">Hello World</span>
+<span class="go">Hello World</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-udp-echo-server-via-socketserver">
+<h2>Simple UDP Echo Server Via SocketServer<a class="headerlink" href="#simple-udp-echo-server-via-socketserver" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">SocketServer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bh</span> <span class="o">=</span> <span class="n">SocketServer</span><span class="o">.</span><span class="n">BaseRequestHandler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">handler</span><span class="p">(</span><span class="n">bh</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">m</span><span class="p">,</span><span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span>
+<span class="gp">... </span>    <span class="n">s</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">client_address</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_address</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">host</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">SocketServer</span><span class="o">.</span><span class="n">UDPServer</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">host</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc -u localhost <span class="m">5566</span>
+<span class="go">Hello World</span>
+<span class="go">Hello World</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-udp-client-sender">
+<h2>Simple UDP client - Sender<a class="headerlink" href="#simple-udp-client-sender" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">host</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">sock</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="s2">&quot;Hello</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">host</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc -lu localhost <span class="m">5566</span>
+<span class="go">Hello</span>
+<span class="go">Hello</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="broadcast-udp-packets">
+<h2>Broadcast UDP Packets<a class="headerlink" href="#broadcast-udp-packets" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_BROADCAST</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">m</span> <span class="o">=</span> <span class="s1">&#39;{0}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+<span class="gp">... </span>  <span class="n">sock</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="n">m</span><span class="p">,(</span><span class="s1">&#39;&lt;broadcast&gt;&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">))</span>
+<span class="gp">... </span>  <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc -k -w <span class="m">1</span> -ul <span class="m">5566</span>
+<span class="go">1431473025.72</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-unix-domain-socket">
+<h2>Simple UNIX Domain Socket<a class="headerlink" href="#simple-unix-domain-socket" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="nd">@contextlib.contextmanager</span>
+<span class="k">def</span> <span class="nf">DomainServer</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">sock</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+
+<span class="n">addr</span> <span class="o">=</span> <span class="s2">&quot;./domain.sock&quot;</span>
+<span class="k">with</span> <span class="n">DomainServer</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="k">as</span> <span class="n">sock</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">conn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc -U ./domain.sock
+<span class="go">Hello</span>
+<span class="go">Hello</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-duplex-processes-communication">
+<h2>Simple duplex processes communication<a class="headerlink" href="#simple-duplex-processes-communication" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="n">child</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socketpair</span><span class="p">()</span>
+<span class="n">pid</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fork</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;chlid pid: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()))</span>
+
+        <span class="n">child</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Hello Parent&#39;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;p[{}] ---&gt; c[{}]: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">getppid</span><span class="p">(),</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">(),</span> <span class="n">msg</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;parent pid: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()))</span>
+
+        <span class="c1"># simple echo server (parent)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;c[{}] ---&gt; p[{}]: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">pid</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">(),</span> <span class="n">msg</span><span class="p">))</span>
+        <span class="n">parent</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">child</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">parent</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python3 socketpair_demo.py
+parent pid: <span class="m">9497</span>
+chlid pid: <span class="m">9498</span>
+c<span class="o">[</span><span class="m">9498</span><span class="o">]</span> ---&gt; p<span class="o">[</span><span class="m">9497</span><span class="o">]</span>: b<span class="s1">&#39;Hello Parent&#39;</span>
+p<span class="o">[</span><span class="m">9497</span><span class="o">]</span> ---&gt; c<span class="o">[</span><span class="m">9498</span><span class="o">]</span>: b<span class="s1">&#39;Hello Parent&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-asynchronous-tcp-server-thread">
+<h2>Simple Asynchronous TCP Server - Thread<a class="headerlink" href="#simple-asynchronous-tcp-server-thread" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">work</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">conn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">conn</span><span class="p">,</span><span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="n">t</span><span class="o">=</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">work</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">conn</span><span class="p">,))</span>
+<span class="gp">... </span>  <span class="n">t</span><span class="o">.</span><span class="n">daemon</span><span class="o">=</span><span class="bp">True</span>
+<span class="gp">... </span>  <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>output: (bash 1)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">Hello</span>
+<span class="go">Hello</span>
+</pre></div>
+</div>
+<p>output: (bash 2)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">Ker Ker</span>
+<span class="go">Ker Ker</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-asynchronous-tcp-server-select">
+<h2>Simple Asynchronous TCP Server - select<a class="headerlink" href="#simple-asynchronous-tcp-server-select" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">select</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="n">host</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">)</span>
+<span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">rl</span> <span class="o">=</span> <span class="p">[</span><span class="n">sock</span><span class="p">]</span>
+<span class="n">wl</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ml</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">rl</span><span class="p">,</span><span class="n">wl</span><span class="p">,[])</span>
+        <span class="c1"># process ready to ready</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_</span> <span class="o">==</span> <span class="n">sock</span><span class="p">:</span>
+                <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+                <span class="n">rl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="n">ml</span><span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">msg</span>
+                <span class="n">wl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+        <span class="c1"># process ready to write</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">w</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">ml</span><span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span>
+            <span class="n">_</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">wl</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">ml</span><span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output: (bash 1)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">Hello</span>
+<span class="go">Hello</span>
+</pre></div>
+</div>
+<p>output: (bash 2)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">Ker Ker</span>
+<span class="go">Ker Ker</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="high-level-api-selectors">
+<h2>High-Level API - selectors<a class="headerlink" href="#high-level-api-selectors" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Pyton3.4+ only</span>
+<span class="c1"># Reference: selectors</span>
+<span class="kn">import</span> <span class="nn">selectors</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+
+<span class="nd">@contextlib.contextmanager</span>
+<span class="k">def</span> <span class="nf">Server</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">):</span>
+   <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">sel</span> <span class="o">=</span> <span class="n">selectors</span><span class="o">.</span><span class="n">DefaultSelector</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">s</span><span class="p">,</span> <span class="n">sel</span>
+    <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Get socket error&quot;</span><span class="p">)</span>
+        <span class="k">raise</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">read_handler</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">sel</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sel</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">accept_handler</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">sel</span><span class="p">):</span>
+    <span class="n">conn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+    <span class="n">sel</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">selectors</span><span class="o">.</span><span class="n">EVENT_READ</span><span class="p">,</span> <span class="n">read_handler</span><span class="p">)</span>
+
+<span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">5566</span>
+<span class="k">with</span> <span class="n">Server</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">sel</span><span class="p">):</span>
+    <span class="n">sel</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">selectors</span><span class="o">.</span><span class="n">EVENT_READ</span><span class="p">,</span> <span class="n">accept_handler</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="n">sel</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">sel_key</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">sel_key</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">handler</span><span class="p">(</span><span class="n">sel_key</span><span class="o">.</span><span class="n">fileobj</span><span class="p">,</span> <span class="n">sel</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output: (bash 1)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">Hello</span>
+<span class="go">Hello</span>
+</pre></div>
+</div>
+<p>output: (bash 1)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">Hi</span>
+<span class="go">Hi</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="socketpair-similar-to-pipe">
+<h2>&#8220;socketpair&#8221; - Similar to PIPE<a class="headerlink" href="#socketpair-similar-to-pipe" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">c_s</span><span class="p">,</span> <span class="n">p_s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socketpair</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fork</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&quot;Fork Error&quot;</span>
+    <span class="k">raise</span>
+
+<span class="k">if</span> <span class="n">pid</span><span class="p">:</span>
+    <span class="c1"># parent process</span>
+    <span class="n">c_s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">p_s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s2">&quot;Hi! Child!&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">p_s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">print</span> <span class="n">msg</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># child process</span>
+    <span class="n">p_s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">c_s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">print</span> <span class="n">msg</span>
+        <span class="n">c_s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s2">&quot;Hi! Parent!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python ex.py
+<span class="go">Hi! Child!</span>
+<span class="go">Hi! Parent!</span>
+<span class="go">Hi! Child!</span>
+<span class="go">Hi! Parent!</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sniffer-ip-packets">
+<h2>Sniffer IP packets<a class="headerlink" href="#sniffer-ip-packets" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+
+<span class="c1"># ref: IP protocol numbers</span>
+<span class="n">PROTO_MAP</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">1</span> <span class="p">:</span> <span class="s2">&quot;ICMP&quot;</span><span class="p">,</span>
+        <span class="mi">2</span> <span class="p">:</span> <span class="s2">&quot;IGMP&quot;</span><span class="p">,</span>
+        <span class="mi">6</span> <span class="p">:</span> <span class="s2">&quot;TCP&quot;</span><span class="p">,</span>
+        <span class="mi">17</span><span class="p">:</span> <span class="s2">&quot;UDP&quot;</span><span class="p">,</span>
+        <span class="mi">27</span><span class="p">:</span> <span class="s2">&quot;RDP&quot;</span><span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">IP</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; IP header Structure</span>
+
+<span class="sd">    In linux api, it define as below:</span>
+
+<span class="sd">    strcut ip {</span>
+<span class="sd">        u_char         ip_hl:4; /* header_len */</span>
+<span class="sd">        u_char         ip_v:4;  /* version */</span>
+<span class="sd">        u_char         ip_tos;  /* type of service */</span>
+<span class="sd">        short          ip_len;  /* total len */</span>
+<span class="sd">        u_short        ip_id;   /* identification */</span>
+<span class="sd">        short          ip_off;  /* offset field */</span>
+<span class="sd">        u_char         ip_ttl;  /* time to live */</span>
+<span class="sd">        u_char         ip_p;    /* protocol */</span>
+<span class="sd">        u_short        ip_sum;  /* checksum */</span>
+<span class="sd">        struct in_addr ip_src;  /* source */</span>
+<span class="sd">        struct in_addr ip_dst;  /* destination */</span>
+<span class="sd">    };</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;ip_hl&quot;</span> <span class="p">,</span> <span class="n">c_ubyte</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="c1"># 4 bit</span>
+                <span class="p">(</span><span class="s2">&quot;ip_v&quot;</span>  <span class="p">,</span> <span class="n">c_ubyte</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="c1"># 1 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_tos&quot;</span><span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span>    <span class="c1"># 2 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_len&quot;</span><span class="p">,</span> <span class="n">c_uint16</span><span class="p">),</span>   <span class="c1"># 4 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_id&quot;</span> <span class="p">,</span> <span class="n">c_uint16</span><span class="p">),</span>   <span class="c1"># 6 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_off&quot;</span><span class="p">,</span> <span class="n">c_uint16</span><span class="p">),</span>   <span class="c1"># 8 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_ttl&quot;</span><span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span>    <span class="c1"># 9 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_p&quot;</span>  <span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span>    <span class="c1"># 10 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_sum&quot;</span><span class="p">,</span> <span class="n">c_uint16</span><span class="p">),</span>   <span class="c1"># 12 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_src&quot;</span><span class="p">,</span> <span class="n">c_uint32</span><span class="p">),</span>   <span class="c1"># 16 byte</span>
+                <span class="p">(</span><span class="s2">&quot;ip_dst&quot;</span><span class="p">,</span> <span class="n">c_uint32</span><span class="p">)]</span>   <span class="c1"># 20 byte</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buf</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;L&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_src</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+        <span class="n">dst</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;L&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_dst</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dst</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proto</span> <span class="o">=</span> <span class="n">PROTO_MAP</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_p</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s2">&quot;{} Not in map&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_p</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+<span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;0.0.0.0&#39;</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
+                  <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_RAW</span><span class="p">,</span>
+                  <span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_ICMP</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">IPPROTO_IP</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">IP_HDRINCL</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="k">print</span> <span class="s2">&quot;Sniffer start...&quot;</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recvfrom</span><span class="p">(</span><span class="mi">65535</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ip_header</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">buf</span><span class="p">[:</span><span class="mi">20</span><span class="p">])</span>
+        <span class="k">print</span> <span class="s1">&#39;{0}: {1} -&gt; {2}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ip_header</span><span class="o">.</span><span class="n">proto</span><span class="p">,</span>
+                                       <span class="n">ip_header</span><span class="o">.</span><span class="n">src</span><span class="p">,</span>
+                                       <span class="n">ip_header</span><span class="o">.</span><span class="n">dst</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output: (bash 1)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">python sniffer.py</span>
+<span class="go">Sniffer start...</span>
+<span class="go">ICMP: 127.0.0.1 -&gt; 127.0.0.1</span>
+<span class="go">ICMP: 127.0.0.1 -&gt; 127.0.0.1</span>
+<span class="go">ICMP: 127.0.0.1 -&gt; 127.0.0.1</span>
+</pre></div>
+</div>
+<p>output: (bash 2)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> ping -c <span class="m">3</span> localhost
+<span class="go">PING localhost (127.0.0.1): 56 data bytes</span>
+<span class="go">64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.063 ms</span>
+<span class="go">64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.087 ms</span>
+<span class="go">64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.159 ms</span>
+
+<span class="go">--- localhost ping statistics ---</span>
+<span class="go">3 packets transmitted, 3 packets received, 0.0% packet loss</span>
+<span class="go">round-trip min/avg/max/stddev = 0.063/0.103/0.159/0.041 ms</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sniffer-arp-packet">
+<h2>Sniffer ARP packet<a class="headerlink" href="#sniffer-arp-packet" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Ehternet Packet Header</span>
+
+<span class="sd">struct ethhdr {</span>
+<span class="sd">    unsigned char h_dest[ETH_ALEN];   /* destination eth addr */</span>
+<span class="sd">    unsigned char h_source[ETH_ALEN]; /* source ether addr    */</span>
+<span class="sd">    __be16        h_proto;            /* packet type ID field */</span>
+<span class="sd">} __attribute__((packed));</span>
+
+<span class="sd">ARP Packet Header</span>
+
+<span class="sd">struct arphdr {</span>
+<span class="sd">    uint16_t htype;    /* Hardware Type           */</span>
+<span class="sd">    uint16_t ptype;    /* Protocol Type           */</span>
+<span class="sd">    u_char   hlen;     /* Hardware Address Length */</span>
+<span class="sd">    u_char   plen;     /* Protocol Address Length */</span>
+<span class="sd">    uint16_t opcode;   /* Operation Code          */</span>
+<span class="sd">    u_char   sha[6];   /* Sender hardware address */</span>
+<span class="sd">    u_char   spa[4];   /* Sender IP address       */</span>
+<span class="sd">    u_char   tha[6];   /* Target hardware address */</span>
+<span class="sd">    u_char   tpa[4];   /* Target IP address       */</span>
+<span class="sd">};</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">binascii</span>
+
+<span class="n">rawSocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_PACKET</span><span class="p">,</span>
+                          <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_RAW</span><span class="p">,</span>
+                          <span class="n">socket</span><span class="o">.</span><span class="n">htons</span><span class="p">(</span><span class="mh">0x0003</span><span class="p">))</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+
+    <span class="n">packet</span> <span class="o">=</span> <span class="n">rawSocket</span><span class="o">.</span><span class="n">recvfrom</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+    <span class="n">ethhdr</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">14</span><span class="p">]</span>
+    <span class="n">eth</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;!6s6s2s&quot;</span><span class="p">,</span> <span class="n">ethhdr</span><span class="p">)</span>
+
+    <span class="n">arphdr</span> <span class="o">=</span> <span class="n">packet</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">14</span><span class="p">:</span><span class="mi">42</span><span class="p">]</span>
+    <span class="n">arp</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;2s2s1s1s2s6s4s6s4s&quot;</span><span class="p">,</span> <span class="n">arphdr</span><span class="p">)</span>
+    <span class="c1"># skip non-ARP packets</span>
+    <span class="n">ethtype</span> <span class="o">=</span> <span class="n">eth</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">ethtype</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="se">\x08\x06</span><span class="s1">&#39;</span><span class="p">:</span> <span class="k">continue</span>
+
+    <span class="k">print</span> <span class="s2">&quot;---------------- ETHERNET_FRAME ----------------&quot;</span>
+    <span class="k">print</span> <span class="s2">&quot;Dest MAC:        &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">eth</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Source MAC:      &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">eth</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Type:            &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">ethtype</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s2">&quot;----------------- ARP_HEADER -------------------&quot;</span>
+    <span class="k">print</span> <span class="s2">&quot;Hardware type:   &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Protocol type:   &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Hardware size:   &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Protocol size:   &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Opcode:          &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Source MAC:      &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Source IP:       &quot;</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Dest MAC:        &quot;</span><span class="p">,</span> <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;Dest IP:         &quot;</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">arp</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s2">&quot;------------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python arp.py
+<span class="go">---------------- ETHERNET_FRAME ----------------</span>
+<span class="go">Dest MAC:         ffffffffffff</span>
+<span class="go">Source MAC:       f0257252f5ca</span>
+<span class="go">Type:             0806</span>
+<span class="go">----------------- ARP_HEADER -------------------</span>
+<span class="go">Hardware type:    0001</span>
+<span class="go">Protocol type:    0800</span>
+<span class="go">Hardware size:    06</span>
+<span class="go">Protocol size:    04</span>
+<span class="go">Opcode:           0001</span>
+<span class="go">Source MAC:       f0257252f5ca</span>
+<span class="go">Source IP:        140.112.91.254</span>
+<span class="go">Dest MAC:         000000000000</span>
+<span class="go">Dest IP:          140.112.91.20</span>
+<span class="go">------------------------------------------------</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python socket cheatsheet</a><ul>
+<li><a class="reference internal" href="#get-hostname">Get Hostname</a></li>
+<li><a class="reference internal" href="#transform-host-network-endian">Transform Host &amp; Network Endian</a></li>
+<li><a class="reference internal" href="#ip-dotted-quad-string-byte-format-convert">IP dotted-quad string &amp; byte format convert</a></li>
+<li><a class="reference internal" href="#mac-address-byte-format-convert">Mac address &amp; byte format convert</a></li>
+<li><a class="reference internal" href="#simple-tcp-echo-server">Simple TCP Echo Server</a></li>
+<li><a class="reference internal" href="#simple-tcp-echo-server-via-socketserver">Simple TCP Echo Server Via SocketServer</a></li>
+<li><a class="reference internal" href="#simple-ssl-tcp-echo-server">Simple SSL TCP Echo Server</a></li>
+<li><a class="reference internal" href="#simple-udp-echo-server">Simple UDP Echo Server</a></li>
+<li><a class="reference internal" href="#simple-udp-echo-server-via-socketserver">Simple UDP Echo Server Via SocketServer</a></li>
+<li><a class="reference internal" href="#simple-udp-client-sender">Simple UDP client - Sender</a></li>
+<li><a class="reference internal" href="#broadcast-udp-packets">Broadcast UDP Packets</a></li>
+<li><a class="reference internal" href="#simple-unix-domain-socket">Simple UNIX Domain Socket</a></li>
+<li><a class="reference internal" href="#simple-duplex-processes-communication">Simple duplex processes communication</a></li>
+<li><a class="reference internal" href="#simple-asynchronous-tcp-server-thread">Simple Asynchronous TCP Server - Thread</a></li>
+<li><a class="reference internal" href="#simple-asynchronous-tcp-server-select">Simple Asynchronous TCP Server - select</a></li>
+<li><a class="reference internal" href="#high-level-api-selectors">High-Level API - selectors</a></li>
+<li><a class="reference internal" href="#socketpair-similar-to-pipe">&#8220;socketpair&#8221; - Similar to PIPE</a></li>
+<li><a class="reference internal" href="#sniffer-ip-packets">Sniffer IP packets</a></li>
+<li><a class="reference internal" href="#sniffer-arp-packet">Sniffer ARP packet</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-rexp.html" title="previous chapter">Python Regular Expression cheatsheet</a></li>
+      <li>Next: <a href="python-crypto.html" title="next chapter">Python cryptography cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-socket.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

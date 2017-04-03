@@ -1,0 +1,1647 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python SQLAlchemy Cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python asyncio cheatsheet" href="python-asyncio.html" />
+    <link rel="prev" title="Python Concurrency Cheatsheet" href="python-concurrency.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-sqlalchemy-cheatsheet">
+<h1>Python SQLAlchemy Cheatsheet<a class="headerlink" href="#python-sqlalchemy-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="set-a-database-url">
+<h2>Set a database URL<a class="headerlink" href="#set-a-database-url" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+
+<span class="n">postgres_db</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+<span class="k">print</span> <span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">postgres_db</span><span class="p">)</span>
+
+<span class="n">sqlite_db</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;sqlite&#39;</span><span class="p">,</span> <span class="s1">&#39;database&#39;</span><span class="p">:</span> <span class="s1">&#39;db.sqlite&#39;</span><span class="p">}</span>
+<span class="k">print</span> <span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">sqlite_db</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_url.py
+postgres://postgres:postgres@192.168.99.100:5432
+sqlite:///db.sqlite
+</pre></div>
+</div>
+</div>
+<div class="section" id="sqlalchemy-support-dbapi-pep249">
+<h2>Sqlalchemy Support DBAPI - PEP249<a class="headerlink" href="#sqlalchemy-support-dbapi-pep249" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s2">&quot;sqlite:///db.sqlite&quot;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="c1"># DBAPI - PEP249</span>
+<span class="c1"># create table</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;CREATE TABLE &quot;EX1&quot; (&#39;</span>
+               <span class="s1">&#39;id INTEGER NOT NULL,&#39;</span>
+               <span class="s1">&#39;name VARCHAR, &#39;</span>
+               <span class="s1">&#39;PRIMARY KEY (id));&#39;</span><span class="p">)</span>
+<span class="c1"># insert a raw</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;INSERT INTO &quot;EX1&quot; &#39;</span>
+               <span class="s1">&#39;(id, name) &#39;</span>
+               <span class="s1">&#39;VALUES (1,&quot;raw1&quot;)&#39;</span><span class="p">)</span>
+
+<span class="c1"># select *</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM &#39;</span>
+                        <span class="s1">&#39;&quot;EX1&quot;&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+   <span class="k">print</span> <span class="n">_r</span>
+
+<span class="c1"># delete *</span>
+<span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;DELETE from &quot;EX1&quot; where id=1;&#39;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM &quot;EX1&quot;&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="transaction-and-connect-object">
+<h2>Transaction and Connect Object<a class="headerlink" href="#transaction-and-connect-object" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="c1"># Create connection</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="c1"># Begin transaction</span>
+<span class="n">trans</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;INSERT INTO &quot;EX1&quot; (name) &#39;</span>
+             <span class="s1">&#39;VALUES (&quot;Hello&quot;)&#39;</span><span class="p">)</span>
+<span class="n">trans</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="c1"># Close connection</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="metadata-generating-database-schema">
+<h2>Metadata - Generating Database Schema<a class="headerlink" href="#metadata-generating-database-schema" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="c1"># Create a metadata instance</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="c1"># Declare a table</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;Example&#39;</span><span class="p">,</span><span class="n">metadata</span><span class="p">,</span>
+              <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+              <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="n">String</span><span class="p">))</span>
+<span class="c1"># Create all tables</span>
+<span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
+   <span class="k">print</span> <span class="s2">&quot;Table: &quot;</span><span class="p">,</span> <span class="n">_t</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inspect-get-database-information">
+<h2>Inspect - Get Database Information<a class="headerlink" href="#inspect-get-database-information" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">inspect</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="n">inspector</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># Get table information</span>
+<span class="k">print</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">()</span>
+
+<span class="c1"># Get column information</span>
+<span class="k">print</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="s1">&#39;EX1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reflection-loading-table-from-existing-database">
+<h2>Reflection - Loading Table from Existing Database<a class="headerlink" href="#reflection-loading-table-from-existing-database" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="c1"># Create a MetaData instance</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">metadata</span><span class="o">.</span><span class="n">tables</span>
+
+<span class="c1"># reflect db schema to MetaData</span>
+<span class="n">metadata</span><span class="o">.</span><span class="n">reflect</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">metadata</span><span class="o">.</span><span class="n">tables</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-table-from-metadata">
+<h2>Get Table from MetaData<a class="headerlink" href="#get-table-from-metadata" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="c1"># Create MetaData instance</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">reflect</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">metadata</span><span class="o">.</span><span class="n">tables</span>
+
+<span class="c1"># Get Table</span>
+<span class="n">ex_table</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;Example&#39;</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">ex_table</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-all-tables-store-in-metadata">
+<h2>Create all Tables Store in &#8220;MetaData&#8221;<a class="headerlink" href="#create-all-tables-store-in-metadata" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># Register t1, t2 to metadata</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;EX1&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+           <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+           <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="n">String</span><span class="p">))</span>
+
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;EX2&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+           <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+           <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;val&#39;</span><span class="p">,</span><span class="n">Integer</span><span class="p">))</span>
+<span class="c1"># Create all tables in meta</span>
+<span class="n">meta</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-specific-table">
+<h2>Create Specific Table<a class="headerlink" href="#create-specific-table" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;Table_1&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+           <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+           <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="n">String</span><span class="p">))</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;Table_2&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+           <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+           <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;val&#39;</span><span class="p">,</span><span class="n">Integer</span><span class="p">))</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-table-with-same-columns">
+<h2>Create table with same columns<a class="headerlink" href="#create-table-with-same-columns" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_engine</span><span class="p">,</span>
+    <span class="n">inspect</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">,</span>
+    <span class="n">String</span><span class="p">,</span>
+    <span class="n">Integer</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="s2">&quot;sqlite://&quot;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_url</span><span class="p">)</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">TemplateTable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="nb">id</span>   <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">age</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">DowntownAPeople</span><span class="p">(</span><span class="n">TemplateTable</span><span class="p">,</span> <span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;downtown_a_people&quot;</span>
+
+<span class="k">class</span> <span class="nc">DowntownBPeople</span><span class="p">(</span><span class="n">TemplateTable</span><span class="p">,</span> <span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;downtown_b_people&quot;</span>
+
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># check table exists</span>
+<span class="n">ins</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">ins</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span> <span class="k">print</span> <span class="n">_t</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="drop-a-table">
+<h2>Drop a Table<a class="headerlink" href="#drop-a-table" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">inspect</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db_url</span><span class="p">))</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span>
+              <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+              <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+              <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;val&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">))</span>
+
+<span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">inspector</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Test&#39;</span> <span class="ow">in</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">()</span>
+
+<span class="n">table</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">inspector</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Test&#39;</span> <span class="ow">in</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_drop.py
+$ True
+$ False
+</pre></div>
+</div>
+</div>
+<div class="section" id="some-table-object-operation">
+<h2>Some Table Object Operation<a class="headerlink" href="#some-table-object-operation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;ex_table&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+          <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+          <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">),</span>
+          <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;val&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">))</span>
+<span class="c1"># Get Table Name</span>
+<span class="k">print</span> <span class="n">t</span><span class="o">.</span><span class="n">name</span>
+
+<span class="c1"># Get Columns</span>
+<span class="k">print</span> <span class="n">t</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+<span class="c1"># Get Column</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">key</span>
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span>
+<span class="c1"># Or</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">key</span>
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span>
+
+<span class="c1"># Get Table from Column</span>
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">table</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sql-expression-language">
+<h2>SQL Expression Language<a class="headerlink" href="#sql-expression-language" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Think Column as &quot;ColumnElement&quot;</span>
+<span class="c1"># Implement via overwrite special function</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">or_</span>
+
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+              <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+              <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;l_name&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">),</span>
+              <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;f_name&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">))</span>
+<span class="c1"># sql expression binary object</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;ed&#39;</span><span class="p">)</span>
+<span class="c1"># exhbit sql expression</span>
+<span class="k">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;ed&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">f_name</span> <span class="o">!=</span> <span class="s1">&#39;ed&#39;</span><span class="p">)</span>
+
+<span class="c1"># comparsion operator</span>
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># or expression</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Equal to</span>
+<span class="k">print</span> <span class="n">or_</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># compare to None produce IS NULL</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="bp">None</span><span class="p">)</span>
+<span class="c1"># Equal to</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="bp">None</span><span class="p">))</span>
+
+<span class="c1"># + means &quot;addition&quot;</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1"># or means &quot;string concatenation&quot;</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">+</span> <span class="s2">&quot;some name&quot;</span><span class="p">)</span>
+
+<span class="c1"># in expression</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span><span class="o">.</span><span class="n">in_</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="insert-create-an-insert-statement">
+<h2>insert() - Create an &#8220;INSERT&#8221; Statement<a class="headerlink" href="#insert-create-an-insert-statement" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Integer</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">String</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="c1"># create table</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+   <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+   <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;l_name&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">),</span>
+   <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;f_name&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">))</span>
+<span class="n">meta</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
+
+<span class="c1"># insert data via insert() construct</span>
+<span class="n">ins</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
+      <span class="n">l_name</span><span class="o">=</span><span class="s1">&#39;Hello&#39;</span><span class="p">,</span>
+      <span class="n">f_name</span><span class="o">=</span><span class="s1">&#39;World&#39;</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ins</span><span class="p">)</span>
+
+<span class="c1"># insert multiple data</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">insert</span><span class="p">(),[</span>
+   <span class="p">{</span><span class="s1">&#39;l_name&#39;</span><span class="p">:</span><span class="s1">&#39;Hi&#39;</span><span class="p">,</span><span class="s1">&#39;f_name&#39;</span><span class="p">:</span><span class="s1">&#39;bob&#39;</span><span class="p">},</span>
+   <span class="p">{</span><span class="s1">&#39;l_name&#39;</span><span class="p">:</span><span class="s1">&#39;yo&#39;</span><span class="p">,</span><span class="s1">&#39;f_name&#39;</span><span class="p">:</span><span class="s1">&#39;alice&#39;</span><span class="p">}])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="select-create-a-select-statement">
+<h2>select() - Create a &#8220;SELECT&#8221; Statement<a class="headerlink" href="#select-create-a-select-statement" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">or_</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span><span class="n">reflect</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span>
+
+<span class="c1"># select * from &#39;user&#39;</span>
+<span class="n">select_st</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span><span class="n">table</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+   <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">select_st</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span> <span class="k">print</span> <span class="n">_row</span>
+
+<span class="c1"># or equal to</span>
+<span class="n">select_st</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">select</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+   <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">select_st</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span> <span class="k">print</span> <span class="n">_row</span>
+
+<span class="c1"># combine with &quot;OR&quot;</span>
+<span class="n">select_st</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span>
+   <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span><span class="p">,</span>
+   <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">f_name</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">or_</span><span class="p">(</span>
+      <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;Hello&#39;</span><span class="p">,</span>
+      <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;Hi&#39;</span><span class="p">))</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">select_st</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span> <span class="k">print</span> <span class="n">_row</span>
+
+<span class="c1"># combine with &quot;ORDER_BY&quot;</span>
+<span class="n">select_st</span> <span class="o">=</span> <span class="n">select</span><span class="p">([</span><span class="n">table</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">or_</span><span class="p">(</span>
+      <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;Hello&#39;</span><span class="p">,</span>
+      <span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;Hi&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">f_name</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">select_st</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span> <span class="k">print</span> <span class="n">_row</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="join-joined-two-tables-via-join-statement">
+<h2>join() - Joined Two Tables via &#8220;JOIN&#8221; Statement<a class="headerlink" href="#join-joined-two-tables-via-join-statement" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Integer</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">select</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">reflect</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">email_t</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;email_addr&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+      <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+      <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span><span class="n">String</span><span class="p">),</span>
+      <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="n">String</span><span class="p">))</span>
+<span class="n">meta</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
+
+<span class="c1"># get user table</span>
+<span class="n">user_t</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span>
+
+<span class="c1"># insert</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">email_t</span><span class="o">.</span><span class="n">insert</span><span class="p">(),[</span>
+   <span class="p">{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span><span class="s1">&#39;ker@test&#39;</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;Hi&#39;</span><span class="p">},</span>
+   <span class="p">{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span><span class="s1">&#39;yo@test&#39;</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;Hello&#39;</span><span class="p">}])</span>
+<span class="c1"># join statement</span>
+<span class="n">join_obj</span> <span class="o">=</span> <span class="n">user_t</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">email_t</span><span class="p">,</span>
+           <span class="n">email_t</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">user_t</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span><span class="p">)</span>
+<span class="c1"># using select_from</span>
+<span class="n">sel_st</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span>
+   <span class="p">[</span><span class="n">user_t</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span><span class="p">,</span> <span class="n">email_t</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">email</span><span class="p">])</span><span class="o">.</span><span class="n">select_from</span><span class="p">(</span><span class="n">join_obj</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sel_st</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span> <span class="k">print</span> <span class="n">_row</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-rows-from-table">
+<h2>Delete Rows from Table<a class="headerlink" href="#delete-rows-from-table" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">reflect</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">user_t</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span>
+
+<span class="c1"># select * from user_t</span>
+<span class="n">sel_st</span> <span class="o">=</span> <span class="n">user_t</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sel_st</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span> <span class="k">print</span> <span class="n">_row</span>
+
+<span class="c1"># delete l_name == &#39;Hello&#39;</span>
+<span class="n">del_st</span> <span class="o">=</span> <span class="n">user_t</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+      <span class="n">user_t</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">l_name</span> <span class="o">==</span> <span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;----- delete -----&#39;</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">del_st</span><span class="p">)</span>
+
+<span class="c1"># check rows has been delete</span>
+<span class="n">sel_st</span> <span class="o">=</span> <span class="n">user_t</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sel_st</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span> <span class="k">print</span> <span class="n">_row</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-table-existing">
+<h2>Check Table Existing<a class="headerlink" href="#check-table-existing" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">inspect</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">Modal</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">Modal</span><span class="p">):</span>
+   <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;ex_t&quot;</span>
+   <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+   <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+
+<span class="n">db_uri</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///db.sqlite&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_uri</span><span class="p">)</span>
+<span class="n">Modal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># check register table exist to Modal</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">Modal</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span> <span class="k">print</span> <span class="n">_t</span>
+
+<span class="c1"># check all table in database</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">reflect</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span> <span class="k">print</span> <span class="n">_t</span>
+
+<span class="c1"># check table names exists via inspect</span>
+<span class="n">ins</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">ins</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span> <span class="k">print</span> <span class="n">_t</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-multiple-tables-at-once">
+<h2>Create multiple tables at once<a class="headerlink" href="#create-multiple-tables-at-once" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">inspect</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Integer</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+<span class="n">metadata</span><span class="o">.</span><span class="n">reflect</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                      <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                      <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">),</span>
+                      <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;val&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;table1&#39;</span><span class="p">,</span> <span class="s1">&#39;table2&#39;</span><span class="p">,</span> <span class="s1">&#39;table3&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span> <span class="n">create_table</span><span class="p">(</span><span class="n">_t</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+
+<span class="n">inspector</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_create.py
+<span class="o">[</span>u<span class="s1">&#39;table1&#39;</span>, u<span class="s1">&#39;table2&#39;</span>, u<span class="s1">&#39;table3&#39;</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-tables-with-dynamic-columns-table">
+<h2>Create tables with dynamic columns (Table)<a class="headerlink" href="#create-tables-with-dynamic-columns-table" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">inspect</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db_url</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">cols</span><span class="p">):</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+    <span class="n">meta</span><span class="o">.</span><span class="n">reflect</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span> <span class="k">return</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span> <span class="o">*</span><span class="n">cols</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">create_table</span><span class="p">(</span><span class="s1">&#39;Table1&#39;</span><span class="p">,</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">))</span>
+<span class="n">create_table</span><span class="p">(</span><span class="s1">&#39;Table2&#39;</span><span class="p">,</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">),</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;val&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">))</span>
+
+<span class="n">inspector</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span> <span class="k">print</span> <span class="n">_t</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_dynamic.py
+Table1
+Table2
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-relational-add-data">
+<h2>Object Relational add data<a class="headerlink" href="#object-relational-add-data" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">DateTime</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.exc</span> <span class="kn">import</span> <span class="n">SQLAlchemyError</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db_url</span><span class="p">))</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">TestTable</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;Test Table&#39;</span>
+    <span class="nb">id</span>   <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">key</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">val</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+
+<span class="c1"># create tables</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># create session</span>
+<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
+<span class="n">Session</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">5566</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">9527</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">183</span><span class="p">}</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">_key</span><span class="p">,</span> <span class="n">_val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">TestTable</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">_key</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">_val</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="k">except</span> <span class="n">SQLAlchemyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">e</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-relational-update-data">
+<h2>Object Relational update data<a class="headerlink" href="#object-relational-update-data" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">DateTime</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.exc</span> <span class="kn">import</span> <span class="n">SQLAlchemyError</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db_url</span><span class="p">))</span>
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">TestTable</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;Test Table&#39;</span>
+    <span class="nb">id</span>   <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">key</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">val</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+
+<span class="c1"># create tables</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># create session</span>
+<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
+<span class="n">Session</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># add row to database</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">TestTable</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="s2">&quot;world&quot;</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="c1"># update row to database</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">TestTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+          <span class="n">TestTable</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;hello&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s1">&#39;original:&#39;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">val</span>
+    <span class="n">row</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;Hello&quot;</span>
+    <span class="n">row</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;World&quot;</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="c1"># check update correct</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">TestTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+          <span class="n">TestTable</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;Hello&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s1">&#39;update:&#39;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">val</span>
+<span class="k">except</span> <span class="n">SQLAlchemyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">e</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_update.py
+original: hello world
+update: Hello World
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-relational-delete-row">
+<h2>Object Relational delete row<a class="headerlink" href="#object-relational-delete-row" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">DateTime</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.exc</span> <span class="kn">import</span> <span class="n">SQLAlchemyError</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db_url</span><span class="p">))</span>
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">TestTable</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;Test Table&#39;</span>
+    <span class="nb">id</span>   <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">key</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">val</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+
+<span class="c1"># create tables</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># create session</span>
+<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
+<span class="n">Session</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+<span class="n">row</span> <span class="o">=</span> <span class="n">TestTable</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="s1">&#39;world&#39;</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">TestTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">TestTable</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">query</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="n">query</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">TestTable</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">TestTable</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_delete.py
+&lt;__main__.TestTable object at 0x104eb8f50&gt;
+<span class="o">[]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-relational-relationship">
+<h2>Object Relational relationship<a class="headerlink" href="#object-relational-relationship" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">relationship</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;user&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">addresses</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Address&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;user.id&#39;</span><span class="p">))</span>
+
+<span class="n">u1</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+<span class="n">a1</span> <span class="o">=</span> <span class="n">Address</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">u1</span><span class="o">.</span><span class="n">addresses</span>
+<span class="k">print</span> <span class="n">a1</span><span class="o">.</span><span class="n">user</span>
+
+<span class="n">u1</span><span class="o">.</span><span class="n">addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">u1</span><span class="o">.</span><span class="n">addresses</span>
+<span class="k">print</span> <span class="n">a1</span><span class="o">.</span><span class="n">user</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_relationship.py
+<span class="o">[]</span>
+None
+<span class="o">[</span>&lt;__main__.Address object at 0x10c4edb50&gt;<span class="o">]</span>
+&lt;__main__.User object at 0x10c4ed810&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-relational-self-association">
+<h2>Object Relational self association<a class="headerlink" href="#object-relational-self-association" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Column</span><span class="p">,</span>
+    <span class="n">Integer</span><span class="p">,</span>
+    <span class="n">String</span><span class="p">,</span>
+    <span class="n">ForeignKey</span><span class="p">,</span>
+    <span class="n">Table</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">sessionmaker</span><span class="p">,</span>
+    <span class="n">relationship</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="n">association</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s2">&quot;Association&quot;</span><span class="p">,</span> <span class="n">base</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;node.id&#39;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;node.id&#39;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+
+<span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;node&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">friends</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Node&#39;</span><span class="p">,</span>
+                           <span class="n">secondary</span><span class="o">=</span><span class="n">association</span><span class="p">,</span>
+                           <span class="n">primaryjoin</span><span class="o">=</span><span class="nb">id</span><span class="o">==</span><span class="n">association</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">left</span><span class="p">,</span>
+                           <span class="n">secondaryjoin</span><span class="o">=</span><span class="nb">id</span><span class="o">==</span><span class="n">association</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">right</span><span class="p">,</span>
+                           <span class="n">backref</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">friends</span><span class="o">=</span><span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">friends</span><span class="p">])</span>
+
+<span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Node</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;node_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">friends</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+<span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">friends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;----&gt; right&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([</span><span class="n">_</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">],</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;----&gt; left&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([</span><span class="n">_n</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span> <span class="k">for</span> <span class="n">_n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">left</span><span class="p">],</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>----&gt; right
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">&quot;friends&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node_1&quot;</span>,
+      <span class="s2">&quot;node_2&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;id&quot;</span>: null
+  <span class="o">}</span>,
+  <span class="o">{</span>
+    <span class="s2">&quot;friends&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node_2&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;id&quot;</span>: null
+  <span class="o">}</span>,
+  <span class="o">{</span>
+    <span class="s2">&quot;friends&quot;</span>: <span class="o">[]</span>,
+    <span class="s2">&quot;id&quot;</span>: null
+  <span class="o">}</span>
+<span class="o">]</span>
+----&gt; left
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">&quot;friends&quot;</span>: <span class="o">[</span>
+      <span class="s2">&quot;node_1&quot;</span>,
+      <span class="s2">&quot;node_2&quot;</span>
+    <span class="o">]</span>,
+    <span class="s2">&quot;id&quot;</span>: null
+  <span class="o">}</span>
+<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-relational-basic-query">
+<h2>Object Relational basic query<a class="headerlink" href="#object-relational-basic-query" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">DateTime</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">or_</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">desc</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.exc</span> <span class="kn">import</span> <span class="n">SQLAlchemyError</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;User&#39;</span>
+    <span class="nb">id</span>       <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span>     <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">fullname</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">birth</span>    <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">)</span>
+
+<span class="c1"># create tables</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db_url</span><span class="p">))</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ed&#39;</span><span class="p">,</span>
+         <span class="n">fullname</span><span class="o">=</span><span class="s1">&#39;Ed Jones&#39;</span><span class="p">,</span>
+         <span class="n">birth</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+    <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;wendy&#39;</span><span class="p">,</span>
+         <span class="n">fullname</span><span class="o">=</span><span class="s1">&#39;Wendy Williams&#39;</span><span class="p">,</span>
+         <span class="n">birth</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1983</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span>
+    <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;mary&#39;</span><span class="p">,</span>
+         <span class="n">fullname</span><span class="o">=</span><span class="s1">&#39;Mary Contrary&#39;</span><span class="p">,</span>
+         <span class="n">birth</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">30</span><span class="p">)),</span>
+    <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;fred&#39;</span><span class="p">,</span>
+         <span class="n">fullname</span><span class="o">=</span><span class="s1">&#39;Fred Flinstone&#39;</span><span class="p">,</span>
+         <span class="n">birth</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1977</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">)),</span>
+    <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;justin&#39;</span><span class="p">,</span>
+         <span class="n">fullname</span><span class="o">=</span><span class="s2">&quot;Justin Bieber&quot;</span><span class="p">)]</span>
+
+<span class="c1"># create session</span>
+<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
+<span class="n">Session</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+<span class="c1"># add_all</span>
+<span class="n">session</span><span class="o">.</span><span class="n">add_all</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="k">print</span> <span class="s2">&quot;----&gt; order_by(id):&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; order_by(desc(id)):&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; order_by(date):&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">birth</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; EQUAL:&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">_row</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; NOT EQUAL:&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; IN:&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">in_</span><span class="p">([</span><span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="s1">&#39;wendy&#39;</span><span class="p">]))</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; NOT IN:&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">~</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">in_</span><span class="p">([</span><span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="s1">&#39;wendy&#39;</span><span class="p">]))</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; AND:&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="n">User</span><span class="o">.</span><span class="n">fullname</span><span class="o">==</span><span class="s1">&#39;Ed Jones&#39;</span><span class="p">)</span>
+<span class="n">_row</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; OR:&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">or_</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="o">==</span><span class="s1">&#39;wendy&#39;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">birth</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; NULL:&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">birth</span> <span class="o">==</span> <span class="bp">None</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; NOT NULL:&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">birth</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span>
+
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----&gt; LIKE&quot;</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%e</span><span class="s1">d%&#39;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">_row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_row</span><span class="o">.</span><span class="n">fullname</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>----&gt; order_by<span class="o">(</span>id<span class="o">)</span>:
+ed Ed Jones <span class="m">1989</span>-07-01 <span class="m">00</span>:00:00
+wendy Wendy Williams <span class="m">1983</span>-04-01 <span class="m">00</span>:00:00
+mary Mary Contrary <span class="m">1990</span>-01-30 <span class="m">00</span>:00:00
+fred Fred Flinstone <span class="m">1977</span>-03-12 <span class="m">00</span>:00:00
+justin Justin Bieber None
+
+----&gt; order_by<span class="o">(</span>desc<span class="o">(</span>id<span class="o">))</span>:
+justin Justin Bieber None
+fred Fred Flinstone <span class="m">1977</span>-03-12 <span class="m">00</span>:00:00
+mary Mary Contrary <span class="m">1990</span>-01-30 <span class="m">00</span>:00:00
+wendy Wendy Williams <span class="m">1983</span>-04-01 <span class="m">00</span>:00:00
+ed Ed Jones <span class="m">1989</span>-07-01 <span class="m">00</span>:00:00
+
+----&gt; order_by<span class="o">(</span>date<span class="o">)</span>:
+fred Fred Flinstone <span class="m">1977</span>-03-12 <span class="m">00</span>:00:00
+wendy Wendy Williams <span class="m">1983</span>-04-01 <span class="m">00</span>:00:00
+ed Ed Jones <span class="m">1989</span>-07-01 <span class="m">00</span>:00:00
+mary Mary Contrary <span class="m">1990</span>-01-30 <span class="m">00</span>:00:00
+justin Justin Bieber None
+
+----&gt; EQUAL:
+wendy Wendy Williams <span class="m">1983</span>-04-01 <span class="m">00</span>:00:00
+
+----&gt; NOT EQUAL:
+ed Ed Jones <span class="m">1989</span>-07-01 <span class="m">00</span>:00:00
+mary Mary Contrary <span class="m">1990</span>-01-30 <span class="m">00</span>:00:00
+fred Fred Flinstone <span class="m">1977</span>-03-12 <span class="m">00</span>:00:00
+justin Justin Bieber None
+
+----&gt; IN:
+ed Ed Jones <span class="m">1989</span>-07-01 <span class="m">00</span>:00:00
+wendy Wendy Williams <span class="m">1983</span>-04-01 <span class="m">00</span>:00:00
+
+----&gt; NOT IN:
+mary Mary Contrary <span class="m">1990</span>-01-30 <span class="m">00</span>:00:00
+fred Fred Flinstone <span class="m">1977</span>-03-12 <span class="m">00</span>:00:00
+justin Justin Bieber None
+
+----&gt; AND:
+ed Ed Jones <span class="m">1989</span>-07-01 <span class="m">00</span>:00:00
+
+----&gt; OR:
+ed Ed Jones <span class="m">1989</span>-07-01 <span class="m">00</span>:00:00
+wendy Wendy Williams <span class="m">1983</span>-04-01 <span class="m">00</span>:00:00
+
+----&gt; NULL:
+justin Justin Bieber
+
+----&gt; NOT NULL:
+ed Ed Jones
+wendy Wendy Williams
+mary Mary Contrary
+fred Fred Flinstone
+
+----&gt; LIKE
+ed Ed Jones
+fred Fred Flinstone
+</pre></div>
+</div>
+</div>
+<div class="section" id="mapper-map-table-to-class">
+<h2>mapper: Map <code class="docutils literal"><span class="pre">Table</span></code> to <code class="docutils literal"><span class="pre">class</span></code><a class="headerlink" href="#mapper-map-table-to-class" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_engine</span><span class="p">,</span>
+    <span class="n">Table</span><span class="p">,</span>
+    <span class="n">MetaData</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">,</span>
+    <span class="n">Integer</span><span class="p">,</span>
+    <span class="n">String</span><span class="p">,</span>
+    <span class="n">ForeignKey</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">mapper</span><span class="p">,</span>
+    <span class="n">relationship</span><span class="p">,</span>
+    <span class="n">sessionmaker</span><span class="p">)</span>
+
+<span class="c1"># classical mapping: map &quot;table&quot; to &quot;class&quot;</span>
+<span class="n">db_url</span> <span class="o">=</span> <span class="s1">&#39;sqlite://&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_url</span><span class="p">)</span>
+
+<span class="n">meta</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">),</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;fullname&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">),</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">))</span>
+
+<span class="n">addr</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s1">&#39;Address&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">),</span>
+             <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;User.id&#39;</span><span class="p">)))</span>
+
+<span class="c1"># map table to class</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fullname</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fullname</span> <span class="o">=</span> <span class="n">fullname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+
+<span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+
+<span class="n">mapper</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="p">{</span>
+       <span class="s1">&#39;addresses&#39;</span><span class="p">:</span> <span class="n">relationship</span><span class="p">(</span><span class="n">Address</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="s1">&#39;user&#39;</span><span class="p">)})</span>
+<span class="n">mapper</span><span class="p">(</span><span class="n">Address</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+
+<span class="c1"># create table</span>
+<span class="n">meta</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
+
+<span class="c1"># create session</span>
+<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
+<span class="n">Session</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+<span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Hello&#39;</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s1">&#39;HelloWorld&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;ker&#39;</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">Address</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;hello@hello.com&#39;</span><span class="p">)</span>
+<span class="n">u</span><span class="o">.</span><span class="n">addresses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="c1"># query result</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Hello&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">print</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">fullname</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">password</span>
+
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python map_table_class.py
+Hello HelloWorld ker
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-table-dynamically">
+<h2>Get table dynamically<a class="headerlink" href="#get-table-dynamically" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_engine</span><span class="p">,</span>
+    <span class="n">MetaData</span><span class="p">,</span>
+    <span class="n">Table</span><span class="p">,</span>
+    <span class="n">inspect</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">,</span>
+    <span class="n">String</span><span class="p">,</span>
+    <span class="n">Integer</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">mapper</span><span class="p">,</span>
+    <span class="n">scoped_session</span><span class="p">,</span>
+    <span class="n">sessionmaker</span><span class="p">)</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="s2">&quot;sqlite://&quot;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_url</span><span class="p">)</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TableTemp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+<span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                <span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">String</span><span class="p">))</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span> <span class="p">(</span><span class="n">TableTemp</span><span class="p">,),</span> <span class="p">{})</span>
+    <span class="n">mapper</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span>
+
+<span class="c1"># get table first times</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">get_table</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+
+<span class="c1"># get table secone times</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">get_table</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>
+
+<span class="n">Session</span> <span class="o">=</span> <span class="n">scoped_session</span><span class="p">(</span><span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">))</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;foo&#39;</span><span class="p">))</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">Session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span> <span class="k">print</span> <span class="n">_</span><span class="o">.</span><span class="n">name</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python get_table.py
+foo
+bar
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-relational-join-two-tables">
+<h2>Object Relational join two tables<a class="headerlink" href="#object-relational-join-two-tables" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">ForeignKey</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">relationship</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;user&#39;</span>
+    <span class="nb">id</span>    <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">addresses</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Address&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;user.id&#39;</span><span class="p">))</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+
+<span class="c1"># create engine</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db_url</span><span class="p">))</span>
+
+<span class="c1"># create tables</span>
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># create session</span>
+<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
+<span class="n">Session</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;user1&#39;</span><span class="p">)</span>
+<span class="n">mail1</span> <span class="o">=</span> <span class="n">Address</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;user1@foo.com&#39;</span><span class="p">)</span>
+<span class="n">mail2</span> <span class="o">=</span> <span class="n">Address</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;user1@bar.com&#39;</span><span class="p">)</span>
+<span class="n">user</span><span class="o">.</span><span class="n">addresses</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">mail1</span><span class="p">,</span> <span class="n">mail2</span><span class="p">])</span>
+
+<span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">add_all</span><span class="p">([</span><span class="n">mail1</span><span class="p">,</span> <span class="n">mail2</span><span class="p">])</span>
+<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Address</span><span class="p">,</span> <span class="n">User</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_a</span><span class="p">,</span> <span class="n">_u</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">():</span> <span class="k">print</span> <span class="n">_u</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_a</span><span class="o">.</span><span class="n">email</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_join.py
+user1 user1@foo.com
+user1 user1@bar.com
+</pre></div>
+</div>
+</div>
+<div class="section" id="join-on-relationship-and-group-by-count">
+<h2>join on relationship and group_by count<a class="headerlink" href="#join-on-relationship-and-group-by-count" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_engine</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">,</span>
+    <span class="n">String</span><span class="p">,</span>
+    <span class="n">Integer</span><span class="p">,</span>
+    <span class="n">ForeignKey</span><span class="p">,</span>
+    <span class="n">func</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">relationship</span><span class="p">,</span>
+    <span class="n">sessionmaker</span><span class="p">,</span>
+    <span class="n">scoped_session</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="s1">&#39;sqlite://&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_url</span><span class="p">)</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Parent</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;parent&#39;</span>
+    <span class="nb">id</span>       <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span>     <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;parent&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;child&#39;</span>
+    <span class="nb">id</span>        <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span>      <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">parent_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;parent.id&#39;</span><span class="p">))</span>
+    <span class="n">parent</span>    <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+
+<span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">Session</span> <span class="o">=</span> <span class="n">scoped_session</span><span class="p">(</span><span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">))</span>
+
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Parent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">Parent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Bob&quot;</span><span class="p">)</span>
+
+<span class="n">c1</span> <span class="o">=</span> <span class="n">Child</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">Child</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">Child</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ker&quot;</span><span class="p">)</span>
+<span class="n">c4</span> <span class="o">=</span> <span class="n">Child</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;cat&quot;</span><span class="p">)</span>
+
+<span class="n">p1</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span><span class="p">])</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c4</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="c1"># count number of children</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">Session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">Child</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>\
+               <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Child</span><span class="p">)</span>\
+               <span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">Parent</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="c1"># print result</span>
+    <span class="k">for</span> <span class="n">_p</span><span class="p">,</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">q</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">print</span> <span class="s1">&#39;parent: {}, num_child: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">_c</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python join_group_by.py
+parent: Alice, num_child: <span class="m">3</span>
+parent: Bob, num_child: <span class="m">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-tables-with-dynamic-columns-orm">
+<h2>Create tables with dynamic columns (ORM)<a class="headerlink" href="#create-tables-with-dynamic-columns-orm" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">inspect</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine.url</span> <span class="kn">import</span> <span class="n">URL</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">db_url</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drivername&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;postgres&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.99.100&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">5432</span><span class="p">}</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">URL</span><span class="p">(</span><span class="o">**</span><span class="n">db_url</span><span class="p">))</span>
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">reflect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span> <span class="k">return</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">Base</span><span class="p">,),</span> <span class="n">cols</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">create_table</span><span class="p">(</span><span class="s1">&#39;Table1&#39;</span><span class="p">,</span> <span class="p">{</span>
+             <span class="s1">&#39;__tablename__&#39;</span><span class="p">:</span> <span class="s1">&#39;Table1&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)})</span>
+
+<span class="n">create_table</span><span class="p">(</span><span class="s1">&#39;Table2&#39;</span><span class="p">,</span> <span class="p">{</span>
+             <span class="s1">&#39;__tablename__&#39;</span><span class="p">:</span> <span class="s1">&#39;Table2&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+             <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">),</span>
+             <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)})</span>
+
+<span class="n">inspector</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span> <span class="k">print</span> <span class="n">_t</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sqlalchemy_dynamic_orm.py
+Table1
+Table2
+</pre></div>
+</div>
+</div>
+<div class="section" id="close-database-connection">
+<h2>Close database connection<a class="headerlink" href="#close-database-connection" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_engine</span><span class="p">,</span>
+    <span class="n">event</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">,</span>
+    <span class="n">Integer</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;sqlite://&#39;</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="nd">@event.listens_for</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s1">&#39;engine_disposed&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">receive_engine_disposed</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;engine dispose&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;example table&#39;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)()</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">Table</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">raise</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">engine</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python db_dispose.py
+engine dispose
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Be careful. Close <em>session</em> does not mean close database connection.
+SQLAlchemy <em>session</em> generally represents the <em>transactions</em>, not connections.</p>
+</div>
+</div>
+<div class="section" id="cannot-use-the-object-after-close-the-session">
+<h2>Cannot use the object after close the session<a class="headerlink" href="#cannot-use-the-object-after-close-the-session" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_engine</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">,</span>
+    <span class="n">String</span><span class="p">,</span>
+    <span class="n">Integer</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;sqlite://&#39;</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;table&#39;</span>
+    <span class="nb">id</span>  <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+
+<span class="n">base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)()</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">val</span><span class="p">)</span> <span class="c1"># exception raise from here</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Cannot use the object after close the session&quot;</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">engine</span><span class="o">.</span><span class="n">dispose</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python sql.py
+key val
+Cannot use the object after close the session
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python SQLAlchemy Cheatsheet</a><ul>
+<li><a class="reference internal" href="#set-a-database-url">Set a database URL</a></li>
+<li><a class="reference internal" href="#sqlalchemy-support-dbapi-pep249">Sqlalchemy Support DBAPI - PEP249</a></li>
+<li><a class="reference internal" href="#transaction-and-connect-object">Transaction and Connect Object</a></li>
+<li><a class="reference internal" href="#metadata-generating-database-schema">Metadata - Generating Database Schema</a></li>
+<li><a class="reference internal" href="#inspect-get-database-information">Inspect - Get Database Information</a></li>
+<li><a class="reference internal" href="#reflection-loading-table-from-existing-database">Reflection - Loading Table from Existing Database</a></li>
+<li><a class="reference internal" href="#get-table-from-metadata">Get Table from MetaData</a></li>
+<li><a class="reference internal" href="#create-all-tables-store-in-metadata">Create all Tables Store in &#8220;MetaData&#8221;</a></li>
+<li><a class="reference internal" href="#create-specific-table">Create Specific Table</a></li>
+<li><a class="reference internal" href="#create-table-with-same-columns">Create table with same columns</a></li>
+<li><a class="reference internal" href="#drop-a-table">Drop a Table</a></li>
+<li><a class="reference internal" href="#some-table-object-operation">Some Table Object Operation</a></li>
+<li><a class="reference internal" href="#sql-expression-language">SQL Expression Language</a></li>
+<li><a class="reference internal" href="#insert-create-an-insert-statement">insert() - Create an &#8220;INSERT&#8221; Statement</a></li>
+<li><a class="reference internal" href="#select-create-a-select-statement">select() - Create a &#8220;SELECT&#8221; Statement</a></li>
+<li><a class="reference internal" href="#join-joined-two-tables-via-join-statement">join() - Joined Two Tables via &#8220;JOIN&#8221; Statement</a></li>
+<li><a class="reference internal" href="#delete-rows-from-table">Delete Rows from Table</a></li>
+<li><a class="reference internal" href="#check-table-existing">Check Table Existing</a></li>
+<li><a class="reference internal" href="#create-multiple-tables-at-once">Create multiple tables at once</a></li>
+<li><a class="reference internal" href="#create-tables-with-dynamic-columns-table">Create tables with dynamic columns (Table)</a></li>
+<li><a class="reference internal" href="#object-relational-add-data">Object Relational add data</a></li>
+<li><a class="reference internal" href="#object-relational-update-data">Object Relational update data</a></li>
+<li><a class="reference internal" href="#object-relational-delete-row">Object Relational delete row</a></li>
+<li><a class="reference internal" href="#object-relational-relationship">Object Relational relationship</a></li>
+<li><a class="reference internal" href="#object-relational-self-association">Object Relational self association</a></li>
+<li><a class="reference internal" href="#object-relational-basic-query">Object Relational basic query</a></li>
+<li><a class="reference internal" href="#mapper-map-table-to-class">mapper: Map <code class="docutils literal"><span class="pre">Table</span></code> to <code class="docutils literal"><span class="pre">class</span></code></a></li>
+<li><a class="reference internal" href="#get-table-dynamically">Get table dynamically</a></li>
+<li><a class="reference internal" href="#object-relational-join-two-tables">Object Relational join two tables</a></li>
+<li><a class="reference internal" href="#join-on-relationship-and-group-by-count">join on relationship and group_by count</a></li>
+<li><a class="reference internal" href="#create-tables-with-dynamic-columns-orm">Create tables with dynamic columns (ORM)</a></li>
+<li><a class="reference internal" href="#close-database-connection">Close database connection</a></li>
+<li><a class="reference internal" href="#cannot-use-the-object-after-close-the-session">Cannot use the object after close the session</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-concurrency.html" title="previous chapter">Python Concurrency Cheatsheet</a></li>
+      <li>Next: <a href="python-asyncio.html" title="next chapter">Python asyncio cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-sqlalchemy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

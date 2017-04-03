@@ -1,0 +1,1322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python generator cheatsheet &#8212; pysheeet</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python Regular Expression cheatsheet" href="python-rexp.html" />
+    <link rel="prev" title="Python unicode cheatsheet" href="python-unicode.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-generator-cheatsheet">
+<h1>Python generator cheatsheet<a class="headerlink" href="#python-generator-cheatsheet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="glossary-of-generator">
+<h2>Glossary of Generator<a class="headerlink" href="#glossary-of-generator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># generator function</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">gen_func</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">yield</span> <span class="mi">5566</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gen_func</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="n">gen_func</span> <span class="n">at</span> <span class="mh">0x1019273a</span><span class="o">&gt;</span>
+
+<span class="c1"># generator</span>
+<span class="c1">#</span>
+<span class="c1"># calling the generator function returns a generator</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">gen_func</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span>
+<span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="n">gen_func</span> <span class="n">at</span> <span class="mh">0x101238fd</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">5566</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">StopIteration</span>
+
+<span class="c1"># generator expression</span>
+<span class="c1">#</span>
+<span class="c1"># generator expression evaluating directly to a generator</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span>
+<span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="o">&lt;</span><span class="n">genexpr</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x10a9c191</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">StopIteration</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="produce-value-via-generator">
+<h2>Produce value via generator<a class="headerlink" href="#produce-value-via-generator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">p</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">... </span>    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="k">if</span> <span class="n">p</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>                <span class="k">break</span>
+<span class="gp">... </span>        <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">yield</span> <span class="n">p</span>
+<span class="gp">... </span>            <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="n">p</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">prime</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">StopIteration</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">prime</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">2 3 5 7 11 &gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unpacking-generators">
+<h2>Unpacking Generators<a class="headerlink" href="#unpacking-generators" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># PEP 448</span>
+
+<span class="c1"># unpacking inside a list</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">g1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">*</span><span class="n">g2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># equal to</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">g1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">g2</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># unpacking inside a set</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="o">*</span><span class="n">g</span><span class="p">}</span>
+<span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">}</span>
+
+<span class="c1"># unpacking to variables</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">g</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">g</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="c1"># unpacking inside a function</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implement-iterable-object-via-generator">
+<h2>Implement Iterable object via generator<a class="headerlink" href="#implement-iterable-object-via-generator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Count</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span>
+<span class="gp">... </span>        <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">yield</span> <span class="n">n</span>
+<span class="gp">... </span>            <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__reversed__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">yield</span> <span class="n">n</span>
+<span class="gp">... </span>            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">Count</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">5 4 3 2 1 &gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">Count</span><span class="p">(</span><span class="mi">5</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">1 2 3 4 5 &gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="send-message-to-generator">
+<h2>Send message to generator<a class="headerlink" href="#send-message-to-generator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">spam</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">msg</span> <span class="o">=</span> <span class="k">yield</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Message:&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">g</span> <span class="o">=</span> <span class="n">spam</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="c1"># start generator</span>
+<span class="gp">... </span>    <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># send message to generator</span>
+<span class="gp">... </span>    <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">...</span>
+<span class="go">Message: Hello World!</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="yield-from-expression">
+<h2><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code> expression<a class="headerlink" href="#yield-from-expression" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># delegating gen do nothing(pipe)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">subgen</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="mi">9527</span>
+<span class="o">...</span>     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="s2">&quot;get value error&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">delegating_gen</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">yield from</span> <span class="n">subgen</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">delegating_gen</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">g</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">)</span>
+<span class="o">...</span> <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;gen stop&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="mi">9527</span>
+<span class="n">get</span> <span class="n">value</span> <span class="n">error</span>
+<span class="n">gen</span> <span class="n">stop</span>
+
+<span class="c1"># yield from + yield from</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">inspect</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">subgen</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">yield from</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">delegating_gen</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">yield from</span> <span class="n">subgen</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">delegating_gen</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getgeneratorstate</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="s1">&#39;GEN_CREATED&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getgeneratorstate</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="s1">&#39;GEN_SUSPENDED&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getgeneratorstate</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="s1">&#39;GEN_CLOSED&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="yield-from-expr-return-res">
+<h2>yield (from) EXPR return RES<a class="headerlink" href="#yield-from-expr-return-res" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">average</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">total</span> <span class="o">=</span> <span class="o">.</span><span class="mi">0</span>
+<span class="gp">... </span>    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">... </span>    <span class="n">avg</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="gp">... </span>    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">val</span> <span class="o">=</span> <span class="k">yield</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">break</span>
+<span class="gp">... </span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">val</span>
+<span class="gp">... </span>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="n">avg</span> <span class="o">=</span> <span class="n">total</span> <span class="o">/</span> <span class="n">count</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">avg</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">average</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="c1"># start gen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">ret</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ret</span>
+<span class="go">4.0</span>
+
+<span class="go"># yield from EXP return RES</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">subgen</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">yield</span> <span class="mi">9527</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">delegating_gen</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">yield from</span> <span class="n">subgen</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mi">5566</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">g</span> <span class="o">=</span> <span class="n">delegating_gen</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">_e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">_e</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">9527</span>
+<span class="go">5566</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-sequences">
+<h2>Generate sequences<a class="headerlink" href="#generate-sequences" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># get a list via generator</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">chain</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="s1">&#39;ab&#39;</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">x</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">x</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># equivalent to</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">chain</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">yield from</span> <span class="s1">&#39;ab&#39;</span>
+<span class="o">...</span>     <span class="k">yield from</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-res-yield-from-exp-actually-do">
+<h2>What <code class="docutils literal"><span class="pre">RES</span> <span class="pre">=</span> <span class="pre">yield</span> <span class="pre">from</span> <span class="pre">EXP</span></code> actually do?<a class="headerlink" href="#what-res-yield-from-exp-actually-do" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ref: pep380</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">subgen</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">x</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">EXP</span> <span class="o">=</span> <span class="n">subgen</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">delegating_gen</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">_i</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">EXP</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">_y</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">_i</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">_e</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">RES</span> <span class="o">=</span> <span class="n">_e</span><span class="o">.</span><span class="n">value</span>
+<span class="o">...</span>     <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">_s</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">_y</span>
+<span class="o">...</span>             <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>                 <span class="n">_y</span> <span class="o">=</span> <span class="n">_i</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">_s</span><span class="p">)</span>
+<span class="o">...</span>             <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">_e</span><span class="p">:</span>
+<span class="o">...</span>                 <span class="n">RES</span> <span class="o">=</span> <span class="n">_e</span><span class="o">.</span><span class="n">value</span>
+<span class="o">...</span>                 <span class="k">break</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">delegating_gen</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">2</span>
+
+<span class="c1"># equivalent to</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">EXP</span> <span class="o">=</span> <span class="n">subgen</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">delegating_gen</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">RES</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">EXP</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">delegating_gen</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="for-in-gen-simulate-yield-from">
+<h2><code class="docutils literal"><span class="pre">for</span> <span class="pre">_</span> <span class="pre">in</span> <span class="pre">gen()</span></code> simulate <code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code><a class="headerlink" href="#for-in-gen-simulate-yield-from" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">subgen</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">yield</span> <span class="n">x</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">gen</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">yield from</span> <span class="n">subgen</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">gen</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">1</span>
+
+<span class="go"># equal to</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">gen</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">subgen</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">yield</span> <span class="n">x</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">gen</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-generator-type">
+<h2>Check generator type<a class="headerlink" href="#check-generator-type" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">GeneratorType</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">gen_func</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">yield</span> <span class="mi">5566</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">gen_func</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">GeneratorType</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="n">GeneratorType</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-generator-state">
+<h2>Check Generator State<a class="headerlink" href="#check-generator-state" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">gen_func</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">yield</span> <span class="mi">9527</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">gen_func</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inspect</span><span class="o">.</span><span class="n">getgeneratorstate</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">&#39;GEN_CREATED&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">9527</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inspect</span><span class="o">.</span><span class="n">getgeneratorstate</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">&#39;GEN_SUSPENDED&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inspect</span><span class="o">.</span><span class="n">getgeneratorstate</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">&#39;GEN_CLOSED&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-compiler">
+<h2>Simple compiler<a class="headerlink" href="#simple-compiler" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># David Beazley - Generators: The Final Frontier</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">r</span><span class="s1">&#39;(?P&lt;NUMBER&gt;\d+)&#39;</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s1">&#39;(?P&lt;PLUS&gt;\+)&#39;</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s1">&#39;(?P&lt;MINUS&gt;-)&#39;</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s1">&#39;(?P&lt;TIMES&gt;\*)&#39;</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s1">&#39;(?P&lt;DIVIDE&gt;/)&#39;</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s1">&#39;(?P&lt;WS&gt;\s+)&#39;</span><span class="p">]</span>
+
+<span class="n">Token</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Token&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">])</span>
+<span class="n">lex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">scan</span> <span class="o">=</span> <span class="n">lex</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">lastgroup</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">lastgroup</span> <span class="o">!=</span> <span class="s1">&#39;WS&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gen</span>
+
+
+<span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="n">_fields</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Number</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="n">_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">BinOp</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="n">_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;op&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">toks</span><span class="p">):</span>
+    <span class="n">lookahead</span><span class="p">,</span> <span class="n">current</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">toks</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="o">*</span><span class="n">toktypes</span><span class="p">):</span>
+        <span class="n">nonlocal</span> <span class="n">lookahead</span><span class="p">,</span> <span class="n">current</span>
+        <span class="k">if</span> <span class="n">lookahead</span> <span class="ow">and</span> <span class="n">lookahead</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">toktypes</span><span class="p">:</span>
+            <span class="n">current</span><span class="p">,</span> <span class="n">lookahead</span> <span class="o">=</span> <span class="n">lookahead</span><span class="p">,</span> <span class="nb">next</span><span class="p">(</span><span class="n">toks</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">expr</span><span class="p">():</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">term</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">accept</span><span class="p">(</span><span class="s1">&#39;PLUS&#39;</span><span class="p">,</span> <span class="s1">&#39;MINUS&#39;</span><span class="p">):</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">BinOp</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+            <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">term</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">left</span>
+
+    <span class="k">def</span> <span class="nf">term</span><span class="p">():</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">factor</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">accept</span><span class="p">(</span><span class="s1">&#39;TIMES&#39;</span><span class="p">,</span> <span class="s1">&#39;DIVIDE&#39;</span><span class="p">):</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">BinOp</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+            <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">factor</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">left</span>
+
+    <span class="k">def</span> <span class="nf">factor</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">accept</span><span class="p">(</span><span class="s1">&#39;NUMBER&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Number</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">expr</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">NodeVisitor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">genvisit</span><span class="p">(</span><span class="n">node</span><span class="p">)]</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">genvisit</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="nf">genvisit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;visit_&#39;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">GeneratorType</span><span class="p">):</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">ret</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<span class="k">class</span> <span class="nc">Evaluator</span><span class="p">(</span><span class="n">NodeVisitor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">visit_Number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">visit_BinOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">leftval</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">node</span><span class="o">.</span><span class="n">left</span>
+        <span class="n">rightval</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">node</span><span class="o">.</span><span class="n">right</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">leftval</span> <span class="o">+</span> <span class="n">rightval</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">leftval</span> <span class="o">-</span> <span class="n">rightval</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">leftval</span> <span class="o">*</span> <span class="n">rightval</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">leftval</span> <span class="o">/</span> <span class="n">rightval</span>
+
+<span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">exp</span><span class="p">):</span>
+    <span class="n">toks</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">toks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Evaluator</span><span class="p">()</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+
+<span class="n">exp</span> <span class="o">=</span> <span class="s1">&#39;2 * 3 + 5 / 2&#39;</span>
+<span class="k">print</span><span class="p">(</span><span class="n">evaluate</span><span class="p">(</span><span class="n">exp</span><span class="p">))</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">)])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">evaluate</span><span class="p">(</span><span class="n">exp</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>python3 compiler.py
+<span class="m">8</span>.5
+<span class="m">49995000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="context-manager-and-generator">
+<h2>Context manager and generator<a class="headerlink" href="#context-manager-and-generator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@contextlib.contextmanager</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">mylist</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="k">yield</span> <span class="n">l</span>
+<span class="gp">... </span>    <span class="k">finally</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;exit scope&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mylist</span><span class="p">()</span> <span class="k">as</span> <span class="n">l</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="k">print</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">[1, 2, 3, 4, 5]</span>
+<span class="go">exit scope</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-contextmanager-actually-doing">
+<h2>What <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code> actually doing?<a class="headerlink" href="#what-contextmanager-actually-doing" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ref: PyCon 2014 - David Beazley</span>
+<span class="c1"># define a context manager class</span>
+
+<span class="k">class</span> <span class="nc">GeneratorCM</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">gen</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gen</span> <span class="o">=</span> <span class="n">gen</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">exc_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gen</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_gen</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span>
+
+<span class="c1"># define a decorator</span>
+<span class="k">def</span> <span class="nf">contextmanager</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">GeneratorCM</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">run</span>
+
+<span class="c1"># example of context manager</span>
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">mylist</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">l</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s2">&quot;exit scope&quot;</span>
+
+<span class="k">with</span> <span class="n">mylist</span><span class="p">()</span> <span class="k">as</span> <span class="n">l</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">l</span>
+</pre></div>
+</div>
+<p>output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> python ctx.py
+<span class="go">[1, 2, 3, 4, 5]</span>
+<span class="go">exit scope</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="profile-code-block">
+<h2>profile code block<a class="headerlink" href="#profile-code-block" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@contextmanager</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="k">yield</span>
+<span class="gp">... </span>    <span class="k">finally</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{} cost time: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span> <span class="o">-</span> <span class="n">s</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">profile</span><span class="p">(</span><span class="s1">&#39;block1&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">block1 cost time: 1.00105595589</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">profile</span><span class="p">(</span><span class="s1">&#39;block2&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">block2 cost time: 3.00104284286</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="yield-from-and-iter">
+<h2><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code> and <code class="docutils literal"><span class="pre">__iter__</span></code><a class="headerlink" href="#yield-from-and-iter" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">FakeGen</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">... </span>        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">yield</span> <span class="n">n</span>
+<span class="gp">... </span>            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__reversed__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">n</span> <span class="o">=</span> <span class="mi">9527</span>
+<span class="gp">... </span>        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="gp">... </span>           <span class="k">yield</span> <span class="n">n</span>
+<span class="gp">... </span>           <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">spam</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">yield from</span> <span class="n">FakeGen</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">spam</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">reversed_spam</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">yield from</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">FakeGen</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">reversed_spam</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">9527</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">9526</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">9525</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="yield-from-await-expression">
+<h2><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span> <span class="pre">==</span> <span class="pre">await</span></code> expression<a class="headerlink" href="#yield-from-await-expression" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># &quot;await&quot; include in pyhton3.5</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="c1"># set socket and event loop</span>
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">5566</span>
+<span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">echo_server</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">loop</span><span class="o">.</span><span class="n">sock_accept</span><span class="p">(</span><span class="n">sock</span><span class="p">)</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">handler</span><span class="p">(</span><span class="n">conn</span><span class="p">))</span>
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">loop</span><span class="o">.</span><span class="n">sock_recv</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">yield from</span> <span class="n">loop</span><span class="o">.</span><span class="n">sock_sendall</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># equal to</span>
+<span class="n">async</span> <span class="k">def</span> <span class="nf">echo_server</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">conn</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">sock_accept</span><span class="p">(</span><span class="n">sock</span><span class="p">)</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">handler</span><span class="p">(</span><span class="n">conn</span><span class="p">))</span>
+
+<span class="n">async</span> <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">sock_recv</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">sock_sendall</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">loop</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">echo_server</span><span class="p">())</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>output: (bash 1)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">Hello</span>
+<span class="go">Hello</span>
+</pre></div>
+</div>
+<p>output: (bash 2)</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nc localhost <span class="m">5566</span>
+<span class="go">World</span>
+<span class="go">World</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="closure-in-python-using-generator">
+<h2>Closure in Python - using generator<a class="headerlink" href="#closure-in-python-using-generator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># nonlocal version</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">closure</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">x</span> <span class="o">=</span> <span class="mi">5566</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">inner_func</span><span class="p">():</span>
+<span class="o">...</span>         <span class="n">nonlocal</span> <span class="n">x</span>
+<span class="o">...</span>         <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="n">x</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">inner_func</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">closure</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">()</span>
+<span class="mi">5567</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">()</span>
+<span class="mi">5568</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">()</span>
+<span class="mi">5569</span>
+
+<span class="c1"># class version</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Closure</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="mi">5566</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Closure</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">()</span>
+<span class="mi">5567</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">()</span>
+<span class="mi">5568</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">()</span>
+<span class="mi">5569</span>
+
+<span class="c1"># generator version (best)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">closure_gen</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">x</span> <span class="o">=</span> <span class="mi">5566</span>
+<span class="o">...</span>     <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">x</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">closure_gen</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">5567</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">5568</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="mi">5569</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implement-a-simple-scheduler">
+<h2>Implement a simple scheduler<a class="headerlink" href="#implement-a-simple-scheduler" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># idea: write an event loop(scheduler)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="mi">1</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">g_fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">fib</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">g_fib</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">g_fib</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">q</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="o">...</span>     <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">t</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+<span class="o">...</span>             <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="o">...</span>             <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+<span class="o">...</span>             <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Task done&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">run</span><span class="p">()</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">2</span>
+<span class="n">Task</span> <span class="n">done</span>
+<span class="mi">3</span>
+<span class="mi">5</span>
+<span class="n">Task</span> <span class="n">done</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-round-robin-with-blocking">
+<h2>Simple round-robin with blocking<a class="headerlink" href="#simple-round-robin-with-blocking" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ref: PyCon 2015 - David Beazley</span>
+<span class="c1"># skill: using task and wait queue</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">select</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="n">tasks</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+<span class="n">w_read</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">w_send</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="k">while</span> <span class="nb">any</span><span class="p">([</span><span class="n">tasks</span><span class="p">,</span> <span class="n">w_read</span><span class="p">,</span> <span class="n">w_send</span><span class="p">]):</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">tasks</span><span class="p">:</span>
+            <span class="c1"># polling tasks</span>
+            <span class="n">can_r</span><span class="p">,</span> <span class="n">can_s</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">w_read</span><span class="p">,</span> <span class="n">w_send</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">for</span> <span class="n">_r</span> <span class="ow">in</span> <span class="n">can_r</span><span class="p">:</span>
+                <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_read</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_r</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_w</span> <span class="ow">in</span> <span class="n">can_s</span><span class="p">:</span>
+                <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_send</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_w</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">why</span><span class="p">,</span><span class="n">what</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">why</span> <span class="o">==</span> <span class="s1">&#39;recv&#39;</span><span class="p">:</span>
+                <span class="n">w_read</span><span class="p">[</span><span class="n">what</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
+            <span class="k">elif</span> <span class="n">why</span> <span class="o">==</span> <span class="s1">&#39;send&#39;</span><span class="p">:</span>
+                <span class="n">w_send</span><span class="p">[</span><span class="n">what</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">server</span><span class="p">():</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">)</span>
+    <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="c1"># tell scheduler want block</span>
+        <span class="k">yield</span> <span class="s1">&#39;recv&#39;</span><span class="p">,</span> <span class="n">sock</span>
+        <span class="n">conn</span><span class="p">,</span><span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client_handler</span><span class="p">(</span><span class="n">conn</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">client_handler</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="c1"># tell scheduler want block</span>
+        <span class="k">yield</span> <span class="s1">&#39;recv&#39;</span><span class="p">,</span> <span class="n">conn</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="c1"># tell scheduler want block</span>
+        <span class="k">yield</span> <span class="s1">&#39;send&#39;</span><span class="p">,</span> <span class="n">conn</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">server</span><span class="p">())</span>
+<span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-round-robin-with-blocking-and-non-blocking">
+<h2>simple round-robin with blocking and non-blocking<a class="headerlink" href="#simple-round-robin-with-blocking-and-non-blocking" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># this method will cause blocking hunger</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">select</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="n">tasks</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+<span class="n">w_read</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">w_send</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="k">while</span> <span class="nb">any</span><span class="p">([</span><span class="n">tasks</span><span class="p">,</span> <span class="n">w_read</span><span class="p">,</span> <span class="n">w_send</span><span class="p">]):</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">tasks</span><span class="p">:</span>
+            <span class="c1"># polling tasks</span>
+            <span class="n">can_r</span><span class="p">,</span><span class="n">can_s</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">w_read</span><span class="p">,</span> <span class="n">w_send</span><span class="p">,[])</span>
+            <span class="k">for</span> <span class="n">_r</span> <span class="ow">in</span> <span class="n">can_r</span><span class="p">:</span>
+                <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_read</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_r</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_w</span> <span class="ow">in</span> <span class="n">can_s</span><span class="p">:</span>
+                <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w_send</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_w</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">tasks</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">why</span><span class="p">,</span><span class="n">what</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">why</span> <span class="o">==</span> <span class="s1">&#39;recv&#39;</span><span class="p">:</span>
+                <span class="n">w_read</span><span class="p">[</span><span class="n">what</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
+            <span class="k">elif</span> <span class="n">why</span> <span class="o">==</span> <span class="s1">&#39;send&#39;</span><span class="p">:</span>
+                <span class="n">w_send</span><span class="p">[</span><span class="n">what</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
+            <span class="k">elif</span> <span class="n">why</span> <span class="o">==</span> <span class="s1">&#39;continue&#39;</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">what</span>
+                <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">g_fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s1">&#39;continue&#39;</span><span class="p">,</span> <span class="n">fib</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g_fib</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">server</span><span class="p">():</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="mi">5566</span><span class="p">)</span>
+    <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s1">&#39;recv&#39;</span><span class="p">,</span> <span class="n">sock</span>
+        <span class="n">conn</span><span class="p">,</span><span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client_handler</span><span class="p">(</span><span class="n">conn</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">client_handler</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="s1">&#39;recv&#39;</span><span class="p">,</span> <span class="n">conn</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">yield</span> <span class="s1">&#39;send&#39;</span><span class="p">,</span> <span class="n">conn</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">server</span><span class="p">())</span>
+<span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="asynchronous-generators">
+<h2>Asynchronous Generators<a class="headerlink" href="#asynchronous-generators" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># PEP 525</span>
+<span class="c1">#</span>
+<span class="c1"># Need python-3.6 or above</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">slow_gen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>         <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">x</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">slow_gen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">task</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="asynchronous-generators-can-have-try-finally-blocks">
+<h2>Asynchronous generators can have <code class="docutils literal"><span class="pre">try..finally</span></code> blocks<a class="headerlink" href="#asynchronous-generators-can-have-try-finally-blocks" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Need python-3.6 or above</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
+<span class="o">...</span>     <span class="k">finally</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="s2">&quot;finally part&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">g</span> <span class="o">=</span> <span class="n">agen</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>         <span class="n">await</span> <span class="n">g</span><span class="o">.</span><span class="n">__anext__</span><span class="p">()</span>
+<span class="o">...</span>     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">finally</span> <span class="n">part</span>
+<span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="s1">&#39;division by zero&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="send-value-and-throw-exception-into-async-generator">
+<h2>send value and throw exception into async generator<a class="headerlink" href="#send-value-and-throw-exception-into-async-generator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Need python-3.6 or above</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>             <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>             <span class="n">val</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">x</span>
+<span class="o">...</span>             <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;get val: {val}&#39;</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">g</span> <span class="o">=</span> <span class="n">agen</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="n">await</span> <span class="n">g</span><span class="o">.</span><span class="n">asend</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span> <span class="o">+</span> <span class="n">await</span> <span class="n">g</span><span class="o">.</span><span class="n">asend</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="n">await</span> <span class="n">g</span><span class="o">.</span><span class="n">athrow</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Get RuntimeError&#39;</span><span class="p">))</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">get</span> <span class="n">val</span><span class="p">:</span> <span class="n">foo</span>
+<span class="mi">1</span>
+<span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Get RuntimeError&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-async-round-robin">
+<h2>Simple async round-robin<a class="headerlink" href="#simple-async-round-robin" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Need python-3.6 or above</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>         <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">x</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">agen</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">agen</span><span class="p">(</span><span class="mi">5</span><span class="p">)])</span>
+<span class="o">...</span>     <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">g</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+<span class="o">...</span>             <span class="n">ret</span> <span class="o">=</span> <span class="n">await</span> <span class="n">g</span><span class="o">.</span><span class="n">__anext__</span><span class="p">()</span>
+<span class="o">...</span>             <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>             <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">except</span> <span class="n">StopAsyncIteration</span><span class="p">:</span>
+<span class="o">...</span>             <span class="k">pass</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="mi">0</span>
+<span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="async-generator-get-better-performance-than-async-iterator">
+<h2>Async generator get better performance than async iterator<a class="headerlink" href="#async-generator-get-better-performance-than-async-iterator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Need python-3.6 or above</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">AsyncIter</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">__aiter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="bp">self</span>
+<span class="o">...</span>     <span class="n">async</span> <span class="k">def</span> <span class="nf">__anext__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="o">...</span>         <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="o">...</span>             <span class="k">raise</span> <span class="n">StopAsyncIteration</span>
+<span class="o">...</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="n">ret</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">i</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">task_agen</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="o">...</span>     <span class="n">async</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">agen</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">pass</span>
+<span class="o">...</span>     <span class="n">cost</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;agen cost time: {cost}&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">task_aiter</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="o">...</span>     <span class="n">async</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">AsyncIter</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">pass</span>
+<span class="o">...</span>     <span class="n">cost</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;aiter cost time: {cost}&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">7</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">task_agen</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="n">agen</span> <span class="n">cost</span> <span class="n">time</span><span class="p">:</span> <span class="mf">1.2698817253112793</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">task_aiter</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+<span class="n">aiter</span> <span class="n">cost</span> <span class="n">time</span><span class="p">:</span> <span class="mf">4.168368101119995</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="asynchronous-comprehensions">
+<h2>Asynchronous Comprehensions<a class="headerlink" href="#asynchronous-comprehensions" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># PEP 530</span>
+<span class="c1">#</span>
+<span class="c1"># Need python-3.6 or above</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">agen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="o">...</span>         <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">x</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span>  <span class="n">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">agen</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)]</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="o">*</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="n">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">agen</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">]</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="o">*</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span> <span class="n">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">agen</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)]</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="o">*</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="s1">&#39;{x}&#39;</span><span class="p">:</span> <span class="n">x</span> <span class="n">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">agen</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)}</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span>
+<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">{</span><span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+
+<span class="c1"># await in Comprehensions</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="s2">&quot;foo&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="s2">&quot;bar&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">baz</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="s2">&quot;baz&quot;</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">gen</span><span class="p">(</span><span class="o">*</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">yield</span> <span class="n">x</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">await_simple_task</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]]</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]}</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]}</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">await_other_task</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]</span> <span class="k">if</span> <span class="n">await</span> <span class="n">baz</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]</span> <span class="k">if</span> <span class="n">await</span> <span class="n">baz</span><span class="p">(</span><span class="mi">1</span><span class="p">)}</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]</span> <span class="k">if</span> <span class="n">await</span> <span class="n">baz</span><span class="p">(</span><span class="mi">1</span><span class="p">)}</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">async</span> <span class="k">def</span> <span class="nf">await_aiter_task</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="n">async</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">)]</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="n">async</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">)}</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="n">async</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">)}</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="n">async</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">)</span> <span class="k">if</span> <span class="n">await</span> <span class="n">baz</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="n">async</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">)</span> <span class="k">if</span> <span class="n">await</span> <span class="n">baz</span><span class="p">(</span><span class="mi">1</span><span class="p">)}</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+<span class="o">...</span>     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">await</span> <span class="n">f</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="n">async</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">)</span> <span class="k">if</span> <span class="n">await</span> <span class="n">baz</span><span class="p">(</span><span class="mi">1</span><span class="p">)}</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">await_simple_task</span><span class="p">())</span>
+<span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">]</span>
+<span class="p">{</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">await_other_task</span><span class="p">())</span>
+<span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">]</span>
+<span class="p">{</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">await_gen_task</span><span class="p">())</span>
+<span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">]</span>
+<span class="p">{</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">}</span>
+<span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">]</span>
+<span class="p">{</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
+<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+<p class="guido">
+  <a href="../index.html" style="border:0;">
+    <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
+  </a>
+</p><h3>Useful Links</h3>
+<ul>
+  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
+  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python generator cheatsheet</a><ul>
+<li><a class="reference internal" href="#glossary-of-generator">Glossary of Generator</a></li>
+<li><a class="reference internal" href="#produce-value-via-generator">Produce value via generator</a></li>
+<li><a class="reference internal" href="#unpacking-generators">Unpacking Generators</a></li>
+<li><a class="reference internal" href="#implement-iterable-object-via-generator">Implement Iterable object via generator</a></li>
+<li><a class="reference internal" href="#send-message-to-generator">Send message to generator</a></li>
+<li><a class="reference internal" href="#yield-from-expression"><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code> expression</a></li>
+<li><a class="reference internal" href="#yield-from-expr-return-res">yield (from) EXPR return RES</a></li>
+<li><a class="reference internal" href="#generate-sequences">Generate sequences</a></li>
+<li><a class="reference internal" href="#what-res-yield-from-exp-actually-do">What <code class="docutils literal"><span class="pre">RES</span> <span class="pre">=</span> <span class="pre">yield</span> <span class="pre">from</span> <span class="pre">EXP</span></code> actually do?</a></li>
+<li><a class="reference internal" href="#for-in-gen-simulate-yield-from"><code class="docutils literal"><span class="pre">for</span> <span class="pre">_</span> <span class="pre">in</span> <span class="pre">gen()</span></code> simulate <code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code></a></li>
+<li><a class="reference internal" href="#check-generator-type">Check generator type</a></li>
+<li><a class="reference internal" href="#check-generator-state">Check Generator State</a></li>
+<li><a class="reference internal" href="#simple-compiler">Simple compiler</a></li>
+<li><a class="reference internal" href="#context-manager-and-generator">Context manager and generator</a></li>
+<li><a class="reference internal" href="#what-contextmanager-actually-doing">What <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code> actually doing?</a></li>
+<li><a class="reference internal" href="#profile-code-block">profile code block</a></li>
+<li><a class="reference internal" href="#yield-from-and-iter"><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span></code> and <code class="docutils literal"><span class="pre">__iter__</span></code></a></li>
+<li><a class="reference internal" href="#yield-from-await-expression"><code class="docutils literal"><span class="pre">yield</span> <span class="pre">from</span> <span class="pre">==</span> <span class="pre">await</span></code> expression</a></li>
+<li><a class="reference internal" href="#closure-in-python-using-generator">Closure in Python - using generator</a></li>
+<li><a class="reference internal" href="#implement-a-simple-scheduler">Implement a simple scheduler</a></li>
+<li><a class="reference internal" href="#simple-round-robin-with-blocking">Simple round-robin with blocking</a></li>
+<li><a class="reference internal" href="#simple-round-robin-with-blocking-and-non-blocking">simple round-robin with blocking and non-blocking</a></li>
+<li><a class="reference internal" href="#asynchronous-generators">Asynchronous Generators</a></li>
+<li><a class="reference internal" href="#asynchronous-generators-can-have-try-finally-blocks">Asynchronous generators can have <code class="docutils literal"><span class="pre">try..finally</span></code> blocks</a></li>
+<li><a class="reference internal" href="#send-value-and-throw-exception-into-async-generator">send value and throw exception into async generator</a></li>
+<li><a class="reference internal" href="#simple-async-round-robin">Simple async round-robin</a></li>
+<li><a class="reference internal" href="#async-generator-get-better-performance-than-async-iterator">Async generator get better performance than async iterator</a></li>
+<li><a class="reference internal" href="#asynchronous-comprehensions">Asynchronous Comprehensions</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="python-unicode.html" title="previous chapter">Python unicode cheatsheet</a></li>
+      <li>Next: <a href="python-rexp.html" title="next chapter">Python Regular Expression cheatsheet</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, crazyguitar.
+      
+      |
+      <a href="../_sources/notes/python-generator.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
