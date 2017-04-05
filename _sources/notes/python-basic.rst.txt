@@ -1,67 +1,67 @@
 =======================
-Python basic cheatsheet
+Python 基础小抄
 =======================
 
-Python Naming Rule
+Python 命名规范
 --------------------
 
 .. code-block:: python
 
-    # see: PEP 8
+    # 见: PEP 8
 
-    # for class
+    # 类 （class）
     #
-    # good:
+    # 推荐:
     #   MyClass
-    # bad:
+    # 不推荐:
     #   myClass, my_class
     MyClass
 
-    # for func, module, package, variables
+    # 方法 （func）, 模块 （module）, 包 （package）, 变量 （variables）
     #
-    # good:
+    # 推荐:
     #   var_underscore_separate
-    # bad:
+    # 不推荐:
     #   varCamel, VarCamel
     var_underscore_separate
 
-    # for public use
+    # 公有变量
     var
 
-    # for internal use
+    # 内部变量
     _var
 
-    # convention to avoid conflict keyword
+    # 避免和关键字冲突
     var_
 
-    # for private use in class
+    # 类的私有变量
     __var
 
-    # for protect use in class
+    # 类的保护变量
     _var_
 
-    # "magic" method or attributes
-    # ex: __init__, __file__, __main__
+    # "magic" 方法或属性
+    # 例: __init__, __file__, __main__
     __var__
 
-    # for "internal" use throwaway variable
-    # usually used in loop
-    # ex: [_ for _ in range(10)]
-    # or variable not used
+    # 内部一次性变量
+    # 通常在循环中使用
+    # 例: [_ for _ in range(10)]
+    # 根本不用的变量（占位符）
     # for _, a in [(1,2),(3,4)]: print a
     _
 
 
-Using ``__future__`` backport features
----------------------------------------
+使用 ``__future__`` 向后移植（backport） 特性
+---------------------------------------------
 
 .. code-block:: python
 
     # PEP 236 - Back to the __future__
 
-    # backport python3 print_function in python2
+    # 在 python2 中使用 python3 的 print 方法
 
-    >>> print "Hello World"  # print is a statement
+    >>> print "Hello World"  # print 是一个语句（statement）
     Hello World
     >>> from __future__ import print_function
     >>> print "Hello World"
@@ -69,53 +69,52 @@ Using ``__future__`` backport features
         print "Hello World"
                           ^
     SyntaxError: invalid syntax
-    >>> print("Hello World") # print become a function
+    >>> print("Hello World") # print 是方法
     Hello World
 
-    # backport python3 unicode_literals in python2
+    # python2 中使用 python3 的 unicode_literals
 
-    >>> type("Guido") # string type is str in python2
+    >>> type("Guido") # python 3 中string 类型是 str
     <type 'str'>
     >>> from __future__ import unicode_literals
-    >>> type("Guido") # string type become unicode
+    >>> type("Guido") # string 类型变成 unicode
     <type 'unicode'>
 
-    # backport PEP 238 -- Changing the Division Operator
+    # backport PEP 238 -- 除法操作修改
 
     >>> 1/2
     0
     >>> from __future__ import division
-    >>> 1/2   # return a float (classic division)
+    >>> 1/2   # 返回浮点数 (正常人理解的除法)
     0.5
-    >>> 1//2  # return a int (floor division)
+    >>> 1//2  # 返回一个整型 (floor 除法)
     0
 
 
 .. note::
 
-    ``from __future__ import feature`` is a `future statement`__.
-    It use for backporting features of other python version to
-    current python version, not like original import.
+    ``from __future__ import feature`` 是一个 `future 语句`__。
+    和一般的 ``import`` 不同，它用于在当前版本的 python 版本中引入之后版本的新特性
 
 .. _future: https://docs.python.org/2/reference/simple_stmts.html#future
 __ future_
 
 
-Check object attributes
------------------------
+查看对象属性
+------------
 
 .. code-block:: python
 
-    # example of check list attributes
+    # 查看列表属性
     >>> dir(list)
     ['__add__', '__class__', ...]
 
-Define a function ``__doc__``
+定义 ``__doc__`` 方法
 ------------------------------
 
 .. code-block:: python
 
-    # Define a function document
+    # 定义函数说明
     >>> def Example():
     ...   """ This is an example function """
     ...   print "Example function"
@@ -123,11 +122,11 @@ Define a function ``__doc__``
     >>> Example.__doc__
     ' This is an example function '
 
-    # Or using help function
+    # 使用 help 方法
     >>> help(Example)
 
-Check instance type
--------------------
+检查实例类型
+------------
 
 .. code-block:: python
 
@@ -135,7 +134,7 @@ Check instance type
     >>> isinstance(ex,int)
     True
 
-Check, Get, Set attribute
+检查、获取、赋值属性
 -------------------------
 
 .. code-block:: python
@@ -147,7 +146,7 @@ Check, Get, Set attribute
     ...     print "This is an example"
     ...
 
-    # Check object has attributes
+    # 检查对象是否有某种属性
     # hasattr(obj, 'attr')
     >>> ex = Example()
     >>> hasattr(ex,"name")
@@ -157,19 +156,19 @@ Check, Get, Set attribute
     >>> hasattr(ex,"print")
     False
 
-    # Get object attribute
+    # 获取对象属性
     # getattr(obj, 'attr')
     >>> getattr(ex,'name')
     'ex'
 
-    # Set object attribute
+    # 给对象某种属性赋值
     # setattr(obj, 'attr', value)
     >>> setattr(ex,'name','example')
     >>> ex.name
     'example'
 
-Check inheritance
------------------
+继承检查
+--------
 
 .. code-block:: python
 
@@ -182,17 +181,17 @@ Check inheritance
     >>> issubclass(Example, object)
     True
 
-Check all global variables
---------------------------
+查询所有 global 变量
+--------------------
 
 .. code-block:: python
 
-    # globals() return a dictionary
+    # globals() 返回一个字典
     # {'variable name': variable value}
     >>> globals()
     {'args': (1, 2, 3, 4, 5), ...}
 
-Check **callable**
+检查 **callable**
 -------------------
 
 .. code-block:: python
@@ -206,8 +205,8 @@ Check **callable**
     >>> callable(fun)
     True
 
-Get function/class name
------------------------
+获取方法名、类名
+-----------------
 
 .. code-block:: python
 
@@ -229,7 +228,7 @@ Get function/class name
 
 .. code-block:: python
 
-    # __init__ will invoke
+    # __init__ 会被调用
     >>> class ClassA(object):
     ...     def __new__(cls, arg):
     ...         print '__new__ ' + arg
@@ -241,7 +240,7 @@ Get function/class name
     __new__ Hello
     __init__ Hello
 
-    # init won't be invoke
+    # __init__ 不会被调用
     >>> class ClassB(object):
     ...     def __new__(cls, arg):
     ...         print '__new__ ' + arg
@@ -253,12 +252,13 @@ Get function/class name
     __new__ Hello
 
 
-The diamond problem
+菱形继承问题
 --------------------
 
 .. code-block:: python
 
-    # The problem of multiple inheritance in searching a method
+    # 多继承 MRO（Method Resolution Order）：方法解析顺序
+    # 采用 C3 算法
 
     >>> def foo_a(self):
     ...     print("This is ClsA")
@@ -283,8 +283,8 @@ The diamond problem
     This is ClsB
 
 
-Representations of your class behave
-------------------------------------
+类呈现方法
+-----------
 
 .. code-block:: python
 
@@ -299,41 +299,41 @@ Representations of your class behave
     >>> Example()
     Example __repr__
 
-Break up a long string
------------------------
+长字符串分割
+------------
 
 .. code-block:: python
 
-    # original long string
+    # 长字符串
     >>> s = 'This is a very very very long python string'
     >>> s
     'This is a very very very long python string'
 
-    # single quote with an escaping backslash
+    # 使用反斜杠
     >>> s = "This is a very very very " \
     ...     "long python string"
     >>> s
     'This is a very very very long python string'
 
-    # using brackets
+    # 使用括号
     >>> s = ("This is a very very very "
     ...      "long python string")
     >>> s
     'This is a very very very long python string'
 
-    # using '+'
+    # 使用 '+'
     >>> s = ("This is a very very very " +
     ...      "long python string")
     >>> s
     'This is a very very very long python string'
 
-    # using triple-quote with an escaping backslash
+    # 使用三引号加反斜杠
     >>> s = '''This is a very very very \
     ... long python string'''
     >>> s
     'This is a very very very long python string'
 
-Get list item **SMART**
+**优雅地** 获取列表元素
 ------------------------
 
 .. code-block:: python
@@ -352,26 +352,26 @@ Get list item **SMART**
     >>> a[0:-1:2]
     [1, 3]
 
-    # using slice object
+    # 使用 slice 对象
     # slice(start,end,step)
     >>> s = slice(0, -1, 2)
     >>> a[s]
     [1, 3]
 
-    # Get index and item in loop
+    # 获取循环中索引和对象
     >>> a = range(3)
     >>> for idx, item in enumerate(a):
     ...   print (idx,item),
     ...
     (0, 0) (1, 1) (2, 2)
 
-    # Transfer two list into tuple list
+    # 将两个队列转换成元组队列
     >>> a = [1, 2, 3, 4, 5]
     >>> b = [2, 4, 5, 6, 8]
     >>> zip(a, b)
     [(1, 2), (2, 4), (3, 5), (4, 6), (5, 8)]
 
-    # with filter
+    # 过滤器
     >>> [x for x in range(5) if x > 1]
     [2, 3, 4]
     >>> l = ['1', '2', 3, 'Hello', 4]
@@ -379,66 +379,66 @@ Get list item **SMART**
     >>> filter(predicate, l)
     [3, 4]
 
-    # collect distinct objects
+    # 列表去重
     >>> a = [1, 2, 3, 3, 3]
     >>> list({_ for _ in a})
     [1, 2, 3]
-    # or
+    # 或者
     >>> list(set(a))
     [1, 2, 3]
 
-    # reverse
+    # 列表翻转
     >>> a = [1, 2, 3, 4, 5]
     >>> a[::-1]
     [5, 4, 3, 2, 1]
 
-Get dictionary item **SMART**
-------------------------------
+**优雅地** 获取字典元素
+------------------------
 
 .. code-block:: python
 
-    # get dictionary all keys
+    # 获取字典所有的键值
     >>> a = {"1":1, "2":2, "3":3}
     >>> b = {"2":2, "3":3, "4":4}
     >>> a.keys()
     ['1', '3', '2']
 
-    # get dictionary key and value as tuple
+    # 元组方式获取字典键值对
     >>> a.items()
     [('1', 1), ('3', 3), ('2', 2)]
 
-    # find same key between two dictionary
+    # 获取两个字典相同的键
     >>> [_ for _ in a.keys() if _ in b.keys()]
     ['3', '2']
-    # better way
+    # 更优雅的方式
     >>> c = set(a).intersection(set(b))
     >>> list(c)
     ['3', '2']
-    # or
+    # 或者
     >>> [_ for _ in a if _ in b]
     ['3', '2']
 
-    # update dictionary
+    # 更新字典
     >>> a.update(b)
     >>> a
     {'1': 1, '3': 3, '2': 2, '4': 4}
 
-Set a list/dict **SMART**
---------------------------
+**优雅地** 给列表、字典赋值
+----------------------------
 
 .. code-block:: python
 
-    # get a list with init value
+    # 初始化列表
     >>> ex = [0] * 10
     >>> ex
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-    # extend two list
+    # 合并列表
     >>> a = [1, 2, 3]; b = ['a', 'b']
     >>> a + b
     [1, 2, 3, 'a', 'b']
 
-    # using list comprehension
+    # 列表推导式
     >>> [x for x in range(10)]
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     >>> fn = lambda x: x**2
@@ -447,30 +447,30 @@ Set a list/dict **SMART**
     >>> {'{0}'.format(x): x for x in range(3)}
     {'1': 1, '0': 0, '2': 2}
 
-    # using builtin function "map"
+    # 使用内建函数“map”
     >>> map(fn, range(5))
     [0, 1, 4, 9, 16]
 
-NamedTuple
-----------
+命名元组（NamedTuple）
+----------------------
 
 .. code-block:: python
 
     # namedtuple(typename, field_names)
-    # replace define class without method
+    # 定义没有方法的类
     >>> from collections import namedtuple
     >>> Example = namedtuple("Example",'a b c')
     >>> e = Example(1, 2, 3)
     >>> print e.a, e[1], e[1] + e.b
     1 2 4
 
-``__iter__`` - Delegating Iteration
-------------------------------------
+``__iter__`` - 代理迭代器
+-------------------------
 
 .. code-block:: python
 
-    # __iter__ return an iterator object
-    # Be careful: list is an "iterable" object not an "iterator"
+    # __iter__ 返回一个迭代器对象
+    # 注意: 列表是一个 “可迭代” 对象，不是一个迭代器
     >>> class Example(object):
     ...    def __init__(self,list_):
     ...       self._list = list_
@@ -482,18 +482,18 @@ NamedTuple
     ...
     1 2 3 4 5
 
-Using Generator as Iterator
----------------------------
+像迭代器一样使用生成器
+----------------------
 
 .. code-block:: python
 
-    # see: PEP289
+    # 见: PEP289
     >>> a = (_ for _ in range(10))
     >>> for _ in a: print _,
     ...
     0 1 2 3 4 5 6 7 8 9
 
-    # equivalent to
+    # 等价于
     >>> def generator():
     ...   for _ in range(10):
     ...     yield _
@@ -502,8 +502,8 @@ Using Generator as Iterator
     ...
     0 1 2 3 4 5 6 7 8 9
 
-Emulating a list
-----------------
+仿写列表
+--------
 
 .. code-block:: python
 
@@ -551,8 +551,8 @@ Emulating a list
     True
 
 
-Emulating a dictionary
-----------------------
+仿写字典
+--------
 
 .. code-block:: python
 
@@ -591,14 +591,14 @@ Emulating a dictionary
     True
 
 
-Emulating a matrix multiplication
-----------------------------------
+仿写矩阵乘法
+------------
 
 .. code-block:: python
 
-    # PEP 465 - "@" represent matrix multiplication
+    # PEP 465 - 使用 "@" 表示矩阵乘法
     #
-    # Need Python-3.5 or above
+    # Python-3.5 以上版本
 
     >>> class Arr:
     ...     def __init__(self, *arg):
@@ -633,12 +633,12 @@ Emulating a matrix multiplication
     Arr([124])
 
 
-Decorator
----------
+装饰器
+------
 
 .. code-block:: python
 
-    # see: PEP318
+    # 见: PEP318
     >>> from functools import wraps
     >>> def decorator(func):
     ...   @wraps(func)
@@ -658,7 +658,7 @@ Decorator
     Inside example function.
     After calling example.
 
-    # equivalent to
+    # 等价于
     ... def example():
     ...   print "Inside example function."
     ...
@@ -670,13 +670,12 @@ Decorator
 
 .. note::
 
-    ``@wraps`` preserve attributes of the original function,
-    otherwise attributes of decorated function will be replaced
-    by **wrapper function**
+    ``@wraps`` 保留了原函数的属性,
+    否则被修饰函数的属性会被 **装饰函数** 替换
 
 .. code-block:: python
 
-    # without @wraps
+    # 不使用 @wraps
     >>> def decorator(func):
     ...     def wrapper(*args, **kwargs):
     ...         print('wrap function')
@@ -687,10 +686,10 @@ Decorator
     ... def example(*a, **kw):
     ...     pass
     ...
-    >>> example.__name__  # attr of function lose
+    >>> example.__name__  # 函数属性改变
     'wrapper'
 
-    # with @wraps
+    # 使用 @wraps
     >>> from functools import wraps
     >>> def decorator(func):
     ...     @wraps(func)
@@ -703,12 +702,12 @@ Decorator
     ... def example(*a, **kw):
     ...     pass
     ...
-    >>> example.__name__  # attr of function preserve
+    >>> example.__name__  # 函数属性保留
     'example'
 
 
-Decorator with arguments
-------------------------
+带参数的装饰器
+--------------
 
 .. code-block:: python
 
@@ -730,7 +729,7 @@ Decorator with arguments
     Val is 10
     This is example function.
 
-    # equivalent to
+    # 等价于
     >>> def example():
     ...   print "This is example function."
     ...
@@ -739,13 +738,13 @@ Decorator with arguments
     Val is 10
     This is example function.
 
-for: exp else: exp
-------------------
+for-else 语句
+-------------
 
 .. code-block:: python
 
-    # see document: More Control Flow Tools
-    # forloop’s else clause runs when no break occurs
+    # 见文章: More Control Flow Tools
+    # for 循环的 else 在没有 break 产生的情况下执行
     >>> for _ in range(5):
     ...   print _,
     ... else:
@@ -762,7 +761,7 @@ for: exp else: exp
     ...
     break occurred
 
-    # above statement equivalent to
+    # 等价于
     flag = False
     for _ in range(5):
         if _ % 2 == 0:
@@ -772,12 +771,12 @@ for: exp else: exp
     if flag == False:
         print "no break occurred"
 
-try: exp else: exp
-------------------
+try-else 语句
+-------------
 
 .. code-block:: python
 
-    # No exception occur will go into else.
+    # 没有异常是执行 else 中的语句
     >>> try:
     ...   print "No exception"
     ... except:
@@ -788,8 +787,8 @@ try: exp else: exp
     No exception
     No exception occurred
 
-Lambda function
----------------
+Lambda 表达式
+-------------
 
 .. code-block:: python
 
@@ -803,7 +802,7 @@ Lambda function
     >>> (lambda x: x if x>3 else 3)(5)
     5
 
-    # multiline lambda example
+    # 多行 lambda 表达式
     >>> (lambda x:
     ... True
     ... if x>0
@@ -811,8 +810,8 @@ Lambda function
     ... False)(3)
     True
 
-Option arguments - (\*args, \*\*kwargs)
----------------------------------------
+不定参数 - (\*args, \*\*kwargs)
+-------------------------------
 
 .. code-block:: python
 
@@ -832,8 +831,8 @@ Option arguments - (\*args, \*\*kwargs)
     (1, 2, 3, 4, 5)
     {'1': 1, '2': 2, '3': 3}
 
-``type()`` declare (create) a ``class``
-----------------------------------------
+``type()`` 声明（创建） ``class``
+----------------------------------
 
 .. code-block:: python
 
@@ -850,7 +849,7 @@ Option arguments - (\*args, \*\*kwargs)
     >>> f.fib(f.val)
     55
 
-    # equal to
+    # 等价于
     >>> class Fib(object):
     ...     val = 10
     ...     def fib(self, n):
@@ -865,8 +864,8 @@ Option arguments - (\*args, \*\*kwargs)
     55
 
 
-Callable object
----------------
+Callable 对象
+--------------
 
 .. code-block:: python
 
@@ -880,14 +879,14 @@ Callable object
     >>> ex()
     I am callable!
 
-Context Manager - ``with`` statement
--------------------------------------
+上下文管理 - ``with`` 语句
+--------------------------
 
 .. code-block:: python
 
-    # replace try: ... finally: ...
-    # see: PEP343
-    # common use in open and close
+    # 代替 try: ... finally: ...
+    # 见: PEP343
+    # 常用于 open 和 close 操作
 
     import socket
 
@@ -903,7 +902,7 @@ Context Manager - ``with`` statement
             self.sock = sock
             return self.sock
 
-        def __exit__(self,*exc_info):
+        def __exit__(self, *exc_info):
             if exc_info[0] is not None:
                 import traceback
                 traceback.print_exception(*exc_info)
@@ -920,7 +919,7 @@ Context Manager - ``with`` statement
                 conn.send(msg)
                 conn.close()
 
-Using ``@contextmanager``
+使用 ``@contextmanager``
 --------------------------
 
 .. code-block:: python
@@ -938,16 +937,16 @@ Using ``@contextmanager``
     with opening('example.txt') as fd:
        fd.read()
 
-Using ``with`` statement open file
-------------------------------------
+用 ``with`` 语句打开文件
+------------------------
 
 .. code-block:: python
 
     >>> with open("/etc/passwd",'r') as f:
     ...    content = f.read()
 
-Property - Managed attributes
------------------------------
+Property - 管理属性
+-------------------
 
 .. code-block:: python
 
@@ -974,7 +973,7 @@ Property - Managed attributes
         raise TypeError("Expected int")
     TypeError: Expected int
 
-    # equivalent to
+    # 等价于
     >>> class Example(object):
     ...     def __init__(self, value):
     ...        self._val = value
@@ -993,8 +992,8 @@ Property - Managed attributes
     ...     val = property(fget=_val_getter, fset=_val_setter, fdel=_val_deleter, doc=None)
     ...
 
-Computed attributes - Using property
-------------------------------------
+计算属性（延迟加载） - 使用 property
+-------------------------------------
 
 .. code-block:: python
 
@@ -1009,11 +1008,11 @@ Computed attributes - Using property
 
 .. note::
 
-    ``@property`` compute the value of attribute only when we need.
-    Not store in memory previously.
+    ``@property`` 在我们需要的时候才会计算属性的值，
+    并不是事先就在内存中存储
 
-Descriptor - manage attributes
-------------------------------
+描述器 - 管理属性
+-----------------
 
 .. code-block:: python
 
@@ -1058,8 +1057,8 @@ Descriptor - manage attributes
 
 .. code-block:: python
 
-    # @classmethod: bound to class
-    # @staticmethod: like python function but in class
+    # @classmethod: 绑定 class
+    # @staticmethod: 和 python 方法类似，只是在类里面
     >>> class example(object):
     ...   @classmethod
     ...   def clsmethod(cls):
@@ -1086,12 +1085,12 @@ Descriptor - manage attributes
       File "", line 1, in
     TypeError: unbound method instmethod() ...
 
-Abstract method - Metaclass
----------------------------
+抽象方法 - 元类（Metaclass）
+----------------------------
 
 .. code-block:: python
 
-    # usually using in define methods but not implement
+    # 通常用于定义抽象方法（没有实现的方法）
     >>> from abc import ABCMeta, abstractmethod
     >>> class base(object):
     ...   __metaclass__ = ABCMeta
@@ -1107,7 +1106,7 @@ Abstract method - Metaclass
     >>> ex.absmethod()
     abstract
 
-    # another better way to define a meta class
+    # 更优雅定义抽象类的方法
     >>> class base(object):
     ...   def absmethod(self):
     ...     raise NotImplementedError
@@ -1120,13 +1119,13 @@ Abstract method - Metaclass
     >>> ex.absmethod()
     abstract
 
-Common Use **Magic**
----------------------
+常用 **Magic** 方法
+-------------------
 
 .. code-block:: python
 
-    # see python document: data model
-    # For command class
+    # 见 python 文档: data model
+    # 一般类
     __main__
     __name__
     __file__
@@ -1140,16 +1139,16 @@ Common Use **Magic**
     __repr__(self)
     __del__(self)
 
-    # For Descriptor
+    # 描述
     __get__(self, instance, owner)
     __set__(self, instance, value)
     __delete__(self, instance)
 
-    # For Context Manager
+    # 上线文管理
     __enter__(self)
     __exit__(self, exc_ty, exc_val, tb)
 
-    # Emulating container types
+    # 仿写容器
     __len__(self)
     __getitem__(self, key)
     __setitem__(self, key, value)
@@ -1157,16 +1156,16 @@ Common Use **Magic**
     __iter__(self)
     __contains__(self, value)
 
-    # Controlling Attribute Access
+    # 属性操作
     __getattr__(self, name)
     __setattr__(self, name, value)
     __delattr__(self, name)
     __getattribute__(self, name)
 
-    # Callable object
+    # Callable 对象
     __call__(self, [args...])
 
-    # Compare related
+    # 比较
     __cmp__(self, other)
     __eq__(self, other)
     __ne__(self, other)
@@ -1175,7 +1174,7 @@ Common Use **Magic**
     __le__(self, other)
     __ge__(self, other)
 
-    # arithmetical operation related
+    # 数学操作
     __add__(self, other)
     __sub__(self, other)
     __mul__(self, other)
@@ -1186,17 +1185,17 @@ Common Use **Magic**
     __xor__(self, other)
 
 
-Parsing csv string
---------------------
+分析 csv
+---------
 
 .. code-block:: python
 
-    # python2 and python3 compatible
+    # python2 和 python3 兼容
 
     >>> try:
-    ...     from StringIO import StringIO # for py2
+    ...     from StringIO import StringIO  # python2 用法
     ... except ImportError:
-    ...     from io import StringIO # for py3
+    ...     from io import StringIO  # python3 用法
     ...
     >>> import csv
     >>> s = "foo,bar,baz"
@@ -1205,7 +1204,7 @@ Parsing csv string
     ...
     ['foo', 'bar', 'baz']
 
-    # or
+    # 或者
 
     >>> import csv
     >>> s = "foo,bar,baz"

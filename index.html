@@ -27,7 +27,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Python basic cheatsheet" href="notes/python-basic.html" />
+    <link rel="next" title="Python 基础小抄" href="notes/python-basic.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -47,48 +47,48 @@
 <h1>Welcome to Python cheatsheet!<a class="headerlink" href="#welcome-to-python-cheatsheet" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notes/python-basic.html">Python basic cheatsheet</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#python-naming-rule">Python Naming Rule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#using-future-backport-features">Using <code class="docutils literal"><span class="pre">__future__</span></code> backport features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-object-attributes">Check object attributes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#define-a-function-doc">Define a function <code class="docutils literal"><span class="pre">__doc__</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-instance-type">Check instance type</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-get-set-attribute">Check, Get, Set attribute</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-inheritance">Check inheritance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-all-global-variables">Check all global variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#check-callable">Check <strong>callable</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#get-function-class-name">Get function/class name</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes/python-basic.html">Python 基础小抄</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id1">Python 命名规范</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#future-backport">使用 <code class="docutils literal"><span class="pre">__future__</span></code> 向后移植（backport） 特性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id3">查看对象属性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#doc">定义 <code class="docutils literal"><span class="pre">__doc__</span></code> 方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id4">检查实例类型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id5">检查、获取、赋值属性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id6">继承检查</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#global">查询所有 global 变量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#callable">检查 <strong>callable</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id7">获取方法名、类名</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#new-init"><code class="docutils literal"><span class="pre">__new__</span></code> &amp; <code class="docutils literal"><span class="pre">__init__</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#the-diamond-problem">The diamond problem</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#representations-of-your-class-behave">Representations of your class behave</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#break-up-a-long-string">Break up a long string</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#get-list-item-smart">Get list item <strong>SMART</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#get-dictionary-item-smart">Get dictionary item <strong>SMART</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#set-a-list-dict-smart">Set a list/dict <strong>SMART</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#namedtuple">NamedTuple</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#iter-delegating-iteration"><code class="docutils literal"><span class="pre">__iter__</span></code> - Delegating Iteration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#using-generator-as-iterator">Using Generator as Iterator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#emulating-a-list">Emulating a list</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#emulating-a-dictionary">Emulating a dictionary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#emulating-a-matrix-multiplication">Emulating a matrix multiplication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#decorator">Decorator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#decorator-with-arguments">Decorator with arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#for-exp-else-exp">for: exp else: exp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#try-exp-else-exp">try: exp else: exp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#lambda-function">Lambda function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#option-arguments-args-kwargs">Option arguments - (*args, **kwargs)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#type-declare-create-a-class"><code class="docutils literal"><span class="pre">type()</span></code> declare (create) a <code class="docutils literal"><span class="pre">class</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#callable-object">Callable object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#context-manager-with-statement">Context Manager - <code class="docutils literal"><span class="pre">with</span></code> statement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#using-contextmanager">Using <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#using-with-statement-open-file">Using <code class="docutils literal"><span class="pre">with</span></code> statement open file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#property-managed-attributes">Property - Managed attributes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#computed-attributes-using-property">Computed attributes - Using property</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#descriptor-manage-attributes">Descriptor - manage attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id8">菱形继承问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id9">类呈现方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id10">长字符串分割</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id11"><strong>优雅地</strong> 获取列表元素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id12"><strong>优雅地</strong> 获取字典元素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id13"><strong>优雅地</strong> 给列表、字典赋值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#namedtuple">命名元组（NamedTuple）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#iter"><code class="docutils literal"><span class="pre">__iter__</span></code> - 代理迭代器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id14">像迭代器一样使用生成器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id15">仿写列表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id16">仿写字典</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id17">仿写矩阵乘法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id18">装饰器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id19">带参数的装饰器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#for-else">for-else 语句</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#try-else">try-else 语句</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#lambda">Lambda 表达式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#args-kwargs">不定参数 - (*args, **kwargs)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#type-class"><code class="docutils literal"><span class="pre">type()</span></code> 声明（创建） <code class="docutils literal"><span class="pre">class</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id20">Callable 对象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#with">上下文管理 - <code class="docutils literal"><span class="pre">with</span></code> 语句</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#contextmanager">使用 <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id21">用 <code class="docutils literal"><span class="pre">with</span></code> 语句打开文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#property">Property - 管理属性</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id22">计算属性（延迟加载） - 使用 property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#id23">描述器 - 管理属性</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#staticmethod-classmethod"><code class="docutils literal"><span class="pre">&#64;staticmethod</span></code>, <code class="docutils literal"><span class="pre">&#64;classmethod</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#abstract-method-metaclass">Abstract method - Metaclass</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#common-use-magic">Common Use <strong>Magic</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#parsing-csv-string">Parsing csv string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#metaclass">抽象方法 - 元类（Metaclass）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#magic">常用 <strong>Magic</strong> 方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/python-basic.html#csv">分析 csv</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notes/python-unicode.html">Python unicode cheatsheet</a><ul>
@@ -324,26 +324,26 @@
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
-<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+        <div class="sphinxsidebarwrapper"><h3>关于 pysheeet</h3>
+<p>此项目旨于提供让程序员少加班，多陪老婆孩子的 Python 代码</p>
 <p class="guido">
   <a href="#" style="border:0;">
     <img class="logo" src="_static/guido.png" title="Python Cheat Sheet"/>
   </a>
-</p><h3>Useful Links</h3>
+</p><h3>相关链接</h3>
 <ul>
-  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
-  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
-  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
+  <li><a href="https://github.com/caimaoy">caimaoy @ GitHub</a></li>
+  <li><a href="http://www.caimaoy.com">caimaoy's blog</a></li>
+  <li><a href="http://caimaoy.com/pysheeet/">pysheeet</a></li>
 </ul><div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="notes/python-basic.html" title="next chapter">Python basic cheatsheet</a></li>
+      <li>Next: <a href="notes/python-basic.html" title="next chapter">Python 基础小抄</a></li>
   </ul></li>
 </ul>
-</div><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-
+</div><iframe src="https://ghbtns.com/github-btn.html?user=caimaoy&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254050673'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1254050673%26show%3Dpic2' type='text/javascript'%3E%3C/script%3E"));</script>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -359,7 +359,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2016, crazyguitar.
+      &copy;2017, caimaoy.
       
       |
       <a href="_sources/index.rst.txt"
@@ -367,7 +367,7 @@
     </div>
 
     
-    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+    <a href="https://github.com/caimaoy/pysheeet" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     

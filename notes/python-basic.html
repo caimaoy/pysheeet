@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python basic cheatsheet &#8212; pysheeet</title>
+    <title>Python 基础小抄 &#8212; pysheeet</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -44,63 +44,63 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="python-basic-cheatsheet">
-<h1>Python basic cheatsheet<a class="headerlink" href="#python-basic-cheatsheet" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="python-naming-rule">
-<h2>Python Naming Rule<a class="headerlink" href="#python-naming-rule" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see: PEP 8</span>
+  <div class="section" id="python">
+<h1>Python 基础小抄<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Python 命名规范<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 见: PEP 8</span>
 
-<span class="c1"># for class</span>
+<span class="c1"># 类 （class）</span>
 <span class="c1">#</span>
-<span class="c1"># good:</span>
+<span class="c1"># 推荐:</span>
 <span class="c1">#   MyClass</span>
-<span class="c1"># bad:</span>
+<span class="c1"># 不推荐:</span>
 <span class="c1">#   myClass, my_class</span>
 <span class="n">MyClass</span>
 
-<span class="c1"># for func, module, package, variables</span>
+<span class="c1"># 方法 （func）, 模块 （module）, 包 （package）, 变量 （variables）</span>
 <span class="c1">#</span>
-<span class="c1"># good:</span>
+<span class="c1"># 推荐:</span>
 <span class="c1">#   var_underscore_separate</span>
-<span class="c1"># bad:</span>
+<span class="c1"># 不推荐:</span>
 <span class="c1">#   varCamel, VarCamel</span>
 <span class="n">var_underscore_separate</span>
 
-<span class="c1"># for public use</span>
+<span class="c1"># 公有变量</span>
 <span class="n">var</span>
 
-<span class="c1"># for internal use</span>
+<span class="c1"># 内部变量</span>
 <span class="n">_var</span>
 
-<span class="c1"># convention to avoid conflict keyword</span>
+<span class="c1"># 避免和关键字冲突</span>
 <span class="n">var_</span>
 
-<span class="c1"># for private use in class</span>
+<span class="c1"># 类的私有变量</span>
 <span class="n">__var</span>
 
-<span class="c1"># for protect use in class</span>
+<span class="c1"># 类的保护变量</span>
 <span class="n">_var_</span>
 
-<span class="c1"># &quot;magic&quot; method or attributes</span>
-<span class="c1"># ex: __init__, __file__, __main__</span>
+<span class="c1"># &quot;magic&quot; 方法或属性</span>
+<span class="c1"># 例: __init__, __file__, __main__</span>
 <span class="n">__var__</span>
 
-<span class="c1"># for &quot;internal&quot; use throwaway variable</span>
-<span class="c1"># usually used in loop</span>
-<span class="c1"># ex: [_ for _ in range(10)]</span>
-<span class="c1"># or variable not used</span>
+<span class="c1"># 内部一次性变量</span>
+<span class="c1"># 通常在循环中使用</span>
+<span class="c1"># 例: [_ for _ in range(10)]</span>
+<span class="c1"># 根本不用的变量（占位符）</span>
 <span class="c1"># for _, a in [(1,2),(3,4)]: print a</span>
 <span class="n">_</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-future-backport-features">
-<h2>Using <code class="docutils literal"><span class="pre">__future__</span></code> backport features<a class="headerlink" href="#using-future-backport-features" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="future-backport">
+<h2>使用 <code class="docutils literal"><span class="pre">__future__</span></code> 向后移植（backport） 特性<a class="headerlink" href="#future-backport" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># PEP 236 - Back to the __future__</span>
 
-<span class="c1"># backport python3 print_function in python2</span>
+<span class="c1"># 在 python2 中使用 python3 的 print 方法</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s2">&quot;Hello World&quot;</span>  <span class="c1"># print is a statement</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s2">&quot;Hello World&quot;</span>  <span class="c1"># print 是一个语句（statement）</span>
 <span class="n">Hello</span> <span class="n">World</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s2">&quot;Hello World&quot;</span>
@@ -108,46 +108,45 @@
     <span class="k">print</span> <span class="s2">&quot;Hello World&quot;</span>
                       <span class="o">^</span>
 <span class="ne">SyntaxError</span><span class="p">:</span> <span class="n">invalid</span> <span class="n">syntax</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello World&quot;</span><span class="p">)</span> <span class="c1"># print become a function</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello World&quot;</span><span class="p">)</span> <span class="c1"># print 是方法</span>
 <span class="n">Hello</span> <span class="n">World</span>
 
-<span class="c1"># backport python3 unicode_literals in python2</span>
+<span class="c1"># python2 中使用 python3 的 unicode_literals</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;Guido&quot;</span><span class="p">)</span> <span class="c1"># string type is str in python2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;Guido&quot;</span><span class="p">)</span> <span class="c1"># python 3 中string 类型是 str</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;str&#39;</span><span class="o">&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;Guido&quot;</span><span class="p">)</span> <span class="c1"># string type become unicode</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;Guido&quot;</span><span class="p">)</span> <span class="c1"># string 类型变成 unicode</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;unicode&#39;</span><span class="o">&gt;</span>
 
-<span class="c1"># backport PEP 238 -- Changing the Division Operator</span>
+<span class="c1"># backport PEP 238 -- 除法操作修改</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span>
 <span class="mi">0</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span>   <span class="c1"># return a float (classic division)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span>   <span class="c1"># 返回浮点数 (正常人理解的除法)</span>
 <span class="mf">0.5</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="o">//</span><span class="mi">2</span>  <span class="c1"># return a int (floor division)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span><span class="o">//</span><span class="mi">2</span>  <span class="c1"># 返回一个整型 (floor 除法)</span>
 <span class="mi">0</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal"><span class="pre">from</span> <span class="pre">__future__</span> <span class="pre">import</span> <span class="pre">feature</span></code> is a <a class="reference external" href="https://docs.python.org/2/reference/simple_stmts.html#future">future statement</a>.
-It use for backporting features of other python version to
-current python version, not like original import.</p>
+<p class="last"><code class="docutils literal"><span class="pre">from</span> <span class="pre">__future__</span> <span class="pre">import</span> <span class="pre">feature</span></code> 是一个 <a class="reference external" href="https://docs.python.org/2/reference/simple_stmts.html#future">future 语句</a>。
+和一般的 <code class="docutils literal"><span class="pre">import</span></code> 不同，它用于在当前版本的 python 版本中引入之后版本的新特性</p>
 </div>
 </div>
-<div class="section" id="check-object-attributes">
-<h2>Check object attributes<a class="headerlink" href="#check-object-attributes" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># example of check list attributes</span>
+<div class="section" id="id3">
+<h2>查看对象属性<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 查看列表属性</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 <span class="p">[</span><span class="s1">&#39;__add__&#39;</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="define-a-function-doc">
-<h2>Define a function <code class="docutils literal"><span class="pre">__doc__</span></code><a class="headerlink" href="#define-a-function-doc" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Define a function document</span>
+<div class="section" id="doc">
+<h2>定义 <code class="docutils literal"><span class="pre">__doc__</span></code> 方法<a class="headerlink" href="#doc" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 定义函数说明</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">Example</span><span class="p">():</span>
 <span class="o">...</span>   <span class="s2">&quot;&quot;&quot; This is an example function &quot;&quot;&quot;</span>
 <span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;Example function&quot;</span>
@@ -155,21 +154,21 @@ current python version, not like original import.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">Example</span><span class="o">.</span><span class="vm">__doc__</span>
 <span class="s1">&#39; This is an example function &#39;</span>
 
-<span class="c1"># Or using help function</span>
+<span class="c1"># 使用 help 方法</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">help</span><span class="p">(</span><span class="n">Example</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="check-instance-type">
-<h2>Check instance type<a class="headerlink" href="#check-instance-type" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>检查实例类型<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="nb">int</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="check-get-set-attribute">
-<h2>Check, Get, Set attribute<a class="headerlink" href="#check-get-set-attribute" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h2>检查、获取、赋值属性<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;ex&quot;</span>
@@ -177,7 +176,7 @@ current python version, not like original import.</p>
 <span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;This is an example&quot;</span>
 <span class="gp">...</span>
 
-<span class="go"># Check object has attributes</span>
+<span class="go"># 检查对象是否有某种属性</span>
 <span class="go"># hasattr(obj, &#39;attr&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">Example</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
@@ -187,12 +186,12 @@ current python version, not like original import.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">hasattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s2">&quot;print&quot;</span><span class="p">)</span>
 <span class="go">False</span>
 
-<span class="go"># Get object attribute</span>
+<span class="go"># 获取对象属性</span>
 <span class="go"># getattr(obj, &#39;attr&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">getattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
 <span class="go">&#39;ex&#39;</span>
 
-<span class="go"># Set object attribute</span>
+<span class="go"># 给对象某种属性赋值</span>
 <span class="go"># setattr(obj, &#39;attr&#39;, value)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">setattr</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span><span class="o">.</span><span class="n">name</span>
@@ -200,8 +199,8 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="check-inheritance">
-<h2>Check inheritance<a class="headerlink" href="#check-inheritance" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h2>继承检查<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;ex&quot;</span>
@@ -213,17 +212,17 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="check-all-global-variables">
-<h2>Check all global variables<a class="headerlink" href="#check-all-global-variables" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># globals() return a dictionary</span>
+<div class="section" id="global">
+<h2>查询所有 global 变量<a class="headerlink" href="#global" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># globals() 返回一个字典</span>
 <span class="c1"># {&#39;variable name&#39;: variable value}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">globals</span><span class="p">()</span>
 <span class="p">{</span><span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="o">...</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="check-callable">
-<h2>Check <strong>callable</strong><a class="headerlink" href="#check-callable" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="callable">
+<h2>检查 <strong>callable</strong><a class="headerlink" href="#callable" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fun</span><span class="p">():</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="s2">&quot;I am callable&quot;</span>
@@ -235,8 +234,8 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="get-function-class-name">
-<h2>Get function/class name<a class="headerlink" href="#get-function-class-name" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h2>获取方法名、类名<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ExampleClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">pass</span>
 <span class="gp">...</span>
@@ -253,7 +252,7 @@ current python version, not like original import.</p>
 </div>
 <div class="section" id="new-init">
 <h2><code class="docutils literal"><span class="pre">__new__</span></code> &amp; <code class="docutils literal"><span class="pre">__init__</span></code><a class="headerlink" href="#new-init" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># __init__ will invoke</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># __init__ 会被调用</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">ClassA</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
 <span class="o">...</span>         <span class="k">print</span> <span class="s1">&#39;__new__ &#39;</span> <span class="o">+</span> <span class="n">arg</span>
@@ -265,7 +264,7 @@ current python version, not like original import.</p>
 <span class="fm">__new__</span> <span class="n">Hello</span>
 <span class="fm">__init__</span> <span class="n">Hello</span>
 
-<span class="c1"># init won&#39;t be invoke</span>
+<span class="c1"># __init__ 不会被调用</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">ClassB</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
 <span class="o">...</span>         <span class="k">print</span> <span class="s1">&#39;__new__ &#39;</span> <span class="o">+</span> <span class="n">arg</span>
@@ -278,9 +277,10 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="the-diamond-problem">
-<h2>The diamond problem<a class="headerlink" href="#the-diamond-problem" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># The problem of multiple inheritance in searching a method</span>
+<div class="section" id="id8">
+<h2>菱形继承问题<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 多继承 MRO（Method Resolution Order）：方法解析顺序</span>
+<span class="c1"># 采用 C3 算法</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;This is ClsA&quot;</span><span class="p">)</span>
@@ -306,8 +306,8 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="representations-of-your-class-behave">
-<h2>Representations of your class behave<a class="headerlink" href="#representations-of-your-class-behave" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h2>类呈现方法<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>   <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="gp">... </span>      <span class="k">return</span> <span class="s2">&quot;Example __str__&quot;</span>
@@ -321,32 +321,32 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="break-up-a-long-string">
-<h2>Break up a long string<a class="headerlink" href="#break-up-a-long-string" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># original long string</span>
+<div class="section" id="id10">
+<h2>长字符串分割<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 长字符串</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;This is a very very very long python string&#39;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
 <span class="s1">&#39;This is a very very very long python string&#39;</span>
 
-<span class="c1"># single quote with an escaping backslash</span>
+<span class="c1"># 使用反斜杠</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;This is a very very very &quot;</span> \
 <span class="o">...</span>     <span class="s2">&quot;long python string&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
 <span class="s1">&#39;This is a very very very long python string&#39;</span>
 
-<span class="c1"># using brackets</span>
+<span class="c1"># 使用括号</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;This is a very very very &quot;</span>
 <span class="o">...</span>      <span class="s2">&quot;long python string&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
 <span class="s1">&#39;This is a very very very long python string&#39;</span>
 
-<span class="c1"># using &#39;+&#39;</span>
+<span class="c1"># 使用 &#39;+&#39;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;This is a very very very &quot;</span> <span class="o">+</span>
 <span class="o">...</span>      <span class="s2">&quot;long python string&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
 <span class="s1">&#39;This is a very very very long python string&#39;</span>
 
-<span class="c1"># using triple-quote with an escaping backslash</span>
+<span class="c1"># 使用三引号加反斜杠</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;This is a very very very </span><span class="se">\</span>
 <span class="s1">... long python string&#39;&#39;&#39;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
@@ -354,8 +354,8 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="get-list-item-smart">
-<h2>Get list item <strong>SMART</strong><a class="headerlink" href="#get-list-item-smart" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h2><strong>优雅地</strong> 获取列表元素<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="go">1</span>
@@ -370,26 +370,26 @@ current python version, not like original import.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
 <span class="go">[1, 3]</span>
 
-<span class="go"># using slice object</span>
+<span class="go"># 使用 slice 对象</span>
 <span class="go"># slice(start,end,step)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
 <span class="go">[1, 3]</span>
 
-<span class="go"># Get index and item in loop</span>
+<span class="go"># 获取循环中索引和对象</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span><span class="n">item</span><span class="p">),</span>
 <span class="gp">...</span>
 <span class="go">(0, 0) (1, 1) (2, 2)</span>
 
-<span class="go"># Transfer two list into tuple list</span>
+<span class="go"># 将两个队列转换成元组队列</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="go">[(1, 2), (2, 4), (3, 5), (4, 6), (5, 8)]</span>
 
-<span class="go"># with filter</span>
+<span class="go"># 过滤器</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
 <span class="go">[2, 3, 4]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Hello&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
@@ -397,64 +397,64 @@ current python version, not like original import.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">filter</span><span class="p">(</span><span class="n">predicate</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
 <span class="go">[3, 4]</span>
 
-<span class="go"># collect distinct objects</span>
+<span class="go"># 列表去重</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">({</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span><span class="p">})</span>
 <span class="go">[1, 2, 3]</span>
-<span class="go"># or</span>
+<span class="go"># 或者</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
 <span class="go">[1, 2, 3]</span>
 
-<span class="go"># reverse</span>
+<span class="go"># 列表翻转</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="go">[5, 4, 3, 2, 1]</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="get-dictionary-item-smart">
-<h2>Get dictionary item <strong>SMART</strong><a class="headerlink" href="#get-dictionary-item-smart" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># get dictionary all keys</span>
+<div class="section" id="id12">
+<h2><strong>优雅地</strong> 获取字典元素<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 获取字典所有的键值</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;2&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">]</span>
 
-<span class="c1"># get dictionary key and value as tuple</span>
+<span class="c1"># 元组方式获取字典键值对</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 <span class="p">[(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
 
-<span class="c1"># find same key between two dictionary</span>
+<span class="c1"># 获取两个字典相同的键</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
 <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">]</span>
-<span class="c1"># better way</span>
+<span class="c1"># 更优雅的方式</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">]</span>
-<span class="c1"># or</span>
+<span class="c1"># 或者</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span> <span class="k">if</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">b</span><span class="p">]</span>
 <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">]</span>
 
-<span class="c1"># update dictionary</span>
+<span class="c1"># 更新字典</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
 <span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="set-a-list-dict-smart">
-<h2>Set a list/dict <strong>SMART</strong><a class="headerlink" href="#set-a-list-dict-smart" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># get a list with init value</span>
+<div class="section" id="id13">
+<h2><strong>优雅地</strong> 给列表、字典赋值<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 初始化列表</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
-<span class="c1"># extend two list</span>
+<span class="c1"># 合并列表</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">]</span>
 
-<span class="c1"># using list comprehension</span>
+<span class="c1"># 列表推导式</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
@@ -463,16 +463,16 @@ current python version, not like original import.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="s1">&#39;{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)}</span>
 <span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 
-<span class="c1"># using builtin function &quot;map&quot;</span>
+<span class="c1"># 使用内建函数“map”</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">map</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="namedtuple">
-<h2>NamedTuple<a class="headerlink" href="#namedtuple" title="Permalink to this headline">¶</a></h2>
+<h2>命名元组（NamedTuple）<a class="headerlink" href="#namedtuple" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># namedtuple(typename, field_names)</span>
-<span class="c1"># replace define class without method</span>
+<span class="c1"># 定义没有方法的类</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">Example</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Example&quot;</span><span class="p">,</span><span class="s1">&#39;a b c&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">e</span> <span class="o">=</span> <span class="n">Example</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -481,10 +481,10 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="iter-delegating-iteration">
-<h2><code class="docutils literal"><span class="pre">__iter__</span></code> - Delegating Iteration<a class="headerlink" href="#iter-delegating-iteration" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># __iter__ return an iterator object</span>
-<span class="c1"># Be careful: list is an &quot;iterable&quot; object not an &quot;iterator&quot;</span>
+<div class="section" id="iter">
+<h2><code class="docutils literal"><span class="pre">__iter__</span></code> - 代理迭代器<a class="headerlink" href="#iter" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># __iter__ 返回一个迭代器对象</span>
+<span class="c1"># 注意: 列表是一个 “可迭代” 对象，不是一个迭代器</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">list_</span><span class="p">):</span>
 <span class="o">...</span>       <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="n">list_</span>
@@ -498,15 +498,15 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-generator-as-iterator">
-<h2>Using Generator as Iterator<a class="headerlink" href="#using-generator-as-iterator" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see: PEP289</span>
+<div class="section" id="id14">
+<h2>像迭代器一样使用生成器<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 见: PEP289</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span> <span class="k">print</span> <span class="n">_</span><span class="p">,</span>
 <span class="o">...</span>
 <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
 
-<span class="c1"># equivalent to</span>
+<span class="c1"># 等价于</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
 <span class="o">...</span>   <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">yield</span> <span class="n">_</span>
@@ -517,8 +517,8 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="emulating-a-list">
-<h2>Emulating a list<a class="headerlink" href="#emulating-a-list" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id15">
+<h2>仿写列表<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">EmuList</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_list</span> <span class="o">=</span> <span class="n">list_</span>
@@ -564,8 +564,8 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="emulating-a-dictionary">
-<h2>Emulating a dictionary<a class="headerlink" href="#emulating-a-dictionary" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id16">
+<h2>仿写字典<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">EmuDict</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="n">dict_</span>
@@ -602,11 +602,11 @@ current python version, not like original import.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="emulating-a-matrix-multiplication">
-<h2>Emulating a matrix multiplication<a class="headerlink" href="#emulating-a-matrix-multiplication" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span># PEP 465 - &quot;@&quot; represent matrix multiplication
+<div class="section" id="id17">
+<h2>仿写矩阵乘法<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span># PEP 465 - 使用 &quot;@&quot; 表示矩阵乘法
 #
-# Need Python-3.5 or above
+# Python-3.5 以上版本
 
 &gt;&gt;&gt; class Arr:
 ...     def __init__(self, *arg):
@@ -642,9 +642,9 @@ Arr([124])
 </pre></div>
 </div>
 </div>
-<div class="section" id="decorator">
-<h2>Decorator<a class="headerlink" href="#decorator" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see: PEP318</span>
+<div class="section" id="id18">
+<h2>装饰器<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 见: PEP318</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="o">...</span>   <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
@@ -664,7 +664,7 @@ Arr([124])
 <span class="n">Inside</span> <span class="n">example</span> <span class="n">function</span><span class="o">.</span>
 <span class="n">After</span> <span class="n">calling</span> <span class="n">example</span><span class="o">.</span>
 
-<span class="c1"># equivalent to</span>
+<span class="c1"># 等价于</span>
 <span class="o">...</span> <span class="k">def</span> <span class="nf">example</span><span class="p">():</span>
 <span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;Inside example function.&quot;</span>
 <span class="o">...</span>
@@ -677,11 +677,10 @@ Arr([124])
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal"><span class="pre">&#64;wraps</span></code> preserve attributes of the original function,
-otherwise attributes of decorated function will be replaced
-by <strong>wrapper function</strong></p>
+<p class="last"><code class="docutils literal"><span class="pre">&#64;wraps</span></code> 保留了原函数的属性,
+否则被修饰函数的属性会被 <strong>装饰函数</strong> 替换</p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># without @wraps</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 不使用 @wraps</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="o">...</span>         <span class="k">print</span><span class="p">(</span><span class="s1">&#39;wrap function&#39;</span><span class="p">)</span>
@@ -692,10 +691,10 @@ by <strong>wrapper function</strong></p>
 <span class="o">...</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">pass</span>
 <span class="o">...</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="vm">__name__</span>  <span class="c1"># attr of function lose</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="vm">__name__</span>  <span class="c1"># 函数属性改变</span>
 <span class="s1">&#39;wrapper&#39;</span>
 
-<span class="c1"># with @wraps</span>
+<span class="c1"># 使用 @wraps</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="o">...</span>     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
@@ -708,13 +707,13 @@ by <strong>wrapper function</strong></p>
 <span class="o">...</span> <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">pass</span>
 <span class="o">...</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="vm">__name__</span>  <span class="c1"># attr of function preserve</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span><span class="o">.</span><span class="vm">__name__</span>  <span class="c1"># 函数属性保留</span>
 <span class="s1">&#39;example&#39;</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="decorator-with-arguments">
-<h2>Decorator with arguments<a class="headerlink" href="#decorator-with-arguments" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id19">
+<h2>带参数的装饰器<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">decorator_with_argument</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -733,7 +732,7 @@ by <strong>wrapper function</strong></p>
 <span class="go">Val is 10</span>
 <span class="go">This is example function.</span>
 
-<span class="go"># equivalent to</span>
+<span class="go"># 等价于</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">example</span><span class="p">():</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="s2">&quot;This is example function.&quot;</span>
 <span class="gp">...</span>
@@ -744,10 +743,10 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="for-exp-else-exp">
-<h2>for: exp else: exp<a class="headerlink" href="#for-exp-else-exp" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see document: More Control Flow Tools</span>
-<span class="c1"># forloop’s else clause runs when no break occurs</span>
+<div class="section" id="for-else">
+<h2>for-else 语句<a class="headerlink" href="#for-else" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 见文章: More Control Flow Tools</span>
+<span class="c1"># for 循环的 else 在没有 break 产生的情况下执行</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
 <span class="o">...</span>   <span class="k">print</span> <span class="n">_</span><span class="p">,</span>
 <span class="o">...</span> <span class="k">else</span><span class="p">:</span>
@@ -764,7 +763,7 @@ by <strong>wrapper function</strong></p>
 <span class="o">...</span>
 <span class="k">break</span> <span class="n">occurred</span>
 
-<span class="c1"># above statement equivalent to</span>
+<span class="c1"># 等价于</span>
 <span class="n">flag</span> <span class="o">=</span> <span class="bp">False</span>
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">_</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -776,9 +775,9 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="try-exp-else-exp">
-<h2>try: exp else: exp<a class="headerlink" href="#try-exp-else-exp" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># No exception occur will go into else.</span>
+<div class="section" id="try-else">
+<h2>try-else 语句<a class="headerlink" href="#try-else" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 没有异常是执行 else 中的语句</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
 <span class="o">...</span>   <span class="k">print</span> <span class="s2">&quot;No exception&quot;</span>
 <span class="o">...</span> <span class="k">except</span><span class="p">:</span>
@@ -791,8 +790,8 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="lambda-function">
-<h2>Lambda function<a class="headerlink" href="#lambda-function" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lambda">
+<h2>Lambda 表达式<a class="headerlink" href="#lambda" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">9</span>
@@ -803,7 +802,7 @@ by <strong>wrapper function</strong></p>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">&gt;</span><span class="mi">3</span> <span class="k">else</span> <span class="mi">3</span><span class="p">)(</span><span class="mi">5</span><span class="p">)</span>
 <span class="go">5</span>
 
-<span class="go"># multiline lambda example</span>
+<span class="go"># 多行 lambda 表达式</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>
 <span class="gp">... </span><span class="bp">True</span>
 <span class="gp">... </span><span class="k">if</span> <span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span>
@@ -813,8 +812,8 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="option-arguments-args-kwargs">
-<h2>Option arguments - (*args, **kwargs)<a class="headerlink" href="#option-arguments-args-kwargs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="args-kwargs">
+<h2>不定参数 - (*args, **kwargs)<a class="headerlink" href="#args-kwargs" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="n">args</span>
@@ -833,8 +832,8 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="type-declare-create-a-class">
-<h2><code class="docutils literal"><span class="pre">type()</span></code> declare (create) a <code class="docutils literal"><span class="pre">class</span></code><a class="headerlink" href="#type-declare-create-a-class" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="type-class">
+<h2><code class="docutils literal"><span class="pre">type()</span></code> 声明（创建） <code class="docutils literal"><span class="pre">class</span></code><a class="headerlink" href="#type-class" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="mi">1</span>
@@ -848,7 +847,7 @@ by <strong>wrapper function</strong></p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">fib</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">val</span><span class="p">)</span>
 <span class="go">55</span>
 
-<span class="go"># equal to</span>
+<span class="go"># 等价于</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Fib</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">val</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
@@ -864,8 +863,8 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="callable-object">
-<h2>Callable object<a class="headerlink" href="#callable-object" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id20">
+<h2>Callable 对象<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">CallableObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">print</span> <span class="s2">&quot;I am callable!&quot;</span>
@@ -878,11 +877,11 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="context-manager-with-statement">
-<h2>Context Manager - <code class="docutils literal"><span class="pre">with</span></code> statement<a class="headerlink" href="#context-manager-with-statement" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># replace try: ... finally: ...</span>
-<span class="c1"># see: PEP343</span>
-<span class="c1"># common use in open and close</span>
+<div class="section" id="with">
+<h2>上下文管理 - <code class="docutils literal"><span class="pre">with</span></code> 语句<a class="headerlink" href="#with" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 代替 try: ... finally: ...</span>
+<span class="c1"># 见: PEP343</span>
+<span class="c1"># 常用于 open 和 close 操作</span>
 
 <span class="kn">import</span> <span class="nn">socket</span>
 
@@ -898,7 +897,7 @@ by <strong>wrapper function</strong></p>
         <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">exc_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">traceback</span>
             <span class="n">traceback</span><span class="o">.</span><span class="n">print_exception</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">)</span>
@@ -917,8 +916,8 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-contextmanager">
-<h2>Using <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code><a class="headerlink" href="#using-contextmanager" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="contextmanager">
+<h2>使用 <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code><a class="headerlink" href="#contextmanager" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
 
 <span class="nd">@contextmanager</span>
@@ -934,15 +933,15 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-with-statement-open-file">
-<h2>Using <code class="docutils literal"><span class="pre">with</span></code> statement open file<a class="headerlink" href="#using-with-statement-open-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id21">
+<h2>用 <code class="docutils literal"><span class="pre">with</span></code> 语句打开文件<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/etc/passwd&quot;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">... </span>   <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="property-managed-attributes">
-<h2>Property - Managed attributes<a class="headerlink" href="#property-managed-attributes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="property">
+<h2>Property - 管理属性<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="gp">... </span>       <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">value</span>
@@ -966,7 +965,7 @@ by <strong>wrapper function</strong></p>
 <span class="gr">    raise TypeError(&quot;Expected int&quot;)</span>
 <span class="gr">TypeError</span>: <span class="n">Expected int</span>
 
-<span class="go"># equivalent to</span>
+<span class="go"># 等价于</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="gp">... </span>       <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">value</span>
@@ -987,8 +986,8 @@ by <strong>wrapper function</strong></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="computed-attributes-using-property">
-<h2>Computed attributes - Using property<a class="headerlink" href="#computed-attributes-using-property" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id22">
+<h2>计算属性（延迟加载） - 使用 property<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="nd">@property</span>
 <span class="gp">... </span>  <span class="k">def</span> <span class="nf">square3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1001,12 +1000,12 @@ by <strong>wrapper function</strong></p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal"><span class="pre">&#64;property</span></code> compute the value of attribute only when we need.
-Not store in memory previously.</p>
+<p class="last"><code class="docutils literal"><span class="pre">&#64;property</span></code> 在我们需要的时候才会计算属性的值，
+并不是事先就在内存中存储</p>
 </div>
 </div>
-<div class="section" id="descriptor-manage-attributes">
-<h2>Descriptor - manage attributes<a class="headerlink" href="#descriptor-manage-attributes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id23">
+<h2>描述器 - 管理属性<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Integer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
@@ -1047,8 +1046,8 @@ Not store in memory previously.</p>
 </div>
 <div class="section" id="staticmethod-classmethod">
 <h2><code class="docutils literal"><span class="pre">&#64;staticmethod</span></code>, <code class="docutils literal"><span class="pre">&#64;classmethod</span></code><a class="headerlink" href="#staticmethod-classmethod" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># @classmethod: bound to class</span>
-<span class="c1"># @staticmethod: like python function but in class</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># @classmethod: 绑定 class</span>
+<span class="c1"># @staticmethod: 和 python 方法类似，只是在类里面</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">example</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>   <span class="nd">@classmethod</span>
 <span class="o">...</span>   <span class="k">def</span> <span class="nf">clsmethod</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -1077,9 +1076,9 @@ Not store in memory previously.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="abstract-method-metaclass">
-<h2>Abstract method - Metaclass<a class="headerlink" href="#abstract-method-metaclass" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># usually using in define methods but not implement</span>
+<div class="section" id="metaclass">
+<h2>抽象方法 - 元类（Metaclass）<a class="headerlink" href="#metaclass" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 通常用于定义抽象方法（没有实现的方法）</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>   <span class="vm">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
@@ -1095,7 +1094,7 @@ Not store in memory previously.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span><span class="o">.</span><span class="n">absmethod</span><span class="p">()</span>
 <span class="n">abstract</span>
 
-<span class="c1"># another better way to define a meta class</span>
+<span class="c1"># 更优雅定义抽象类的方法</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>   <span class="k">def</span> <span class="nf">absmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -1110,10 +1109,10 @@ Not store in memory previously.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="common-use-magic">
-<h2>Common Use <strong>Magic</strong><a class="headerlink" href="#common-use-magic" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># see python document: data model</span>
-<span class="c1"># For command class</span>
+<div class="section" id="magic">
+<h2>常用 <strong>Magic</strong> 方法<a class="headerlink" href="#magic" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># 见 python 文档: data model</span>
+<span class="c1"># 一般类</span>
 <span class="n">__main__</span>
 <span class="vm">__name__</span>
 <span class="vm">__file__</span>
@@ -1127,16 +1126,16 @@ Not store in memory previously.</p>
 <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<span class="c1"># For Descriptor</span>
+<span class="c1"># 描述</span>
 <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
 <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 <span class="fm">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
 
-<span class="c1"># For Context Manager</span>
+<span class="c1"># 上线文管理</span>
 <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_ty</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span>
 
-<span class="c1"># Emulating container types</span>
+<span class="c1"># 仿写容器</span>
 <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
 <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -1144,16 +1143,16 @@ Not store in memory previously.</p>
 <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
-<span class="c1"># Controlling Attribute Access</span>
+<span class="c1"># 属性操作</span>
 <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 <span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-<span class="c1"># Callable object</span>
+<span class="c1"># Callable 对象</span>
 <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">args</span><span class="o">...</span><span class="p">])</span>
 
-<span class="c1"># Compare related</span>
+<span class="c1"># 比较</span>
 <span class="fm">__cmp__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
@@ -1162,7 +1161,7 @@ Not store in memory previously.</p>
 <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-<span class="c1"># arithmetical operation related</span>
+<span class="c1"># 数学操作</span>
 <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
@@ -1174,14 +1173,14 @@ Not store in memory previously.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="parsing-csv-string">
-<h2>Parsing csv string<a class="headerlink" href="#parsing-csv-string" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># python2 and python3 compatible</span>
+<div class="section" id="csv">
+<h2>分析 csv<a class="headerlink" href="#csv" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># python2 和 python3 兼容</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
-<span class="o">...</span>     <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span> <span class="c1"># for py2</span>
+<span class="o">...</span>     <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>  <span class="c1"># python2 用法</span>
 <span class="o">...</span> <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-<span class="o">...</span>     <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span> <span class="c1"># for py3</span>
+<span class="o">...</span>     <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>  <span class="c1"># python3 用法</span>
 <span class="o">...</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">csv</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;foo,bar,baz&quot;</span>
@@ -1190,7 +1189,7 @@ Not store in memory previously.</p>
 <span class="o">...</span>
 <span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">]</span>
 
-<span class="c1"># or</span>
+<span class="c1"># 或者</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">csv</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;foo,bar,baz&quot;</span>
@@ -1207,63 +1206,63 @@ Not store in memory previously.</p>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><h3>About pysheeet</h3>
-<p>This project tries to provide a lot of piece of Python code that makes life easier.</p>
+        <div class="sphinxsidebarwrapper"><h3>关于 pysheeet</h3>
+<p>此项目旨于提供让程序员少加班，多陪老婆孩子的 Python 代码</p>
 <p class="guido">
   <a href="../index.html" style="border:0;">
     <img class="logo" src="../_static/guido.png" title="Python Cheat Sheet"/>
   </a>
-</p><h3>Useful Links</h3>
+</p><h3>相关链接</h3>
 <ul>
-  <li><a href="https://www.pythonsheets.com">The pysheeet website</a></li>
-  <li><a href="https://github.com/crazyguitar/pysheeet">pysheeet @ GitHub</a></li>
-  <li><a href="https://github.com/crazyguitar/pysheeet/issues">Issue Tracker</a></li>
-</ul><iframe src="https://ghbtns.com/github-btn.html?user=crazyguitar&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-
+  <li><a href="https://github.com/caimaoy">caimaoy @ GitHub</a></li>
+  <li><a href="http://www.caimaoy.com">caimaoy's blog</a></li>
+  <li><a href="http://caimaoy.com/pysheeet/">pysheeet</a></li>
+</ul><iframe src="https://ghbtns.com/github-btn.html?user=caimaoy&repo=pysheeet&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254050673'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1254050673%26show%3Dpic2' type='text/javascript'%3E%3C/script%3E"));</script>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Python basic cheatsheet</a><ul>
-<li><a class="reference internal" href="#python-naming-rule">Python Naming Rule</a></li>
-<li><a class="reference internal" href="#using-future-backport-features">Using <code class="docutils literal"><span class="pre">__future__</span></code> backport features</a></li>
-<li><a class="reference internal" href="#check-object-attributes">Check object attributes</a></li>
-<li><a class="reference internal" href="#define-a-function-doc">Define a function <code class="docutils literal"><span class="pre">__doc__</span></code></a></li>
-<li><a class="reference internal" href="#check-instance-type">Check instance type</a></li>
-<li><a class="reference internal" href="#check-get-set-attribute">Check, Get, Set attribute</a></li>
-<li><a class="reference internal" href="#check-inheritance">Check inheritance</a></li>
-<li><a class="reference internal" href="#check-all-global-variables">Check all global variables</a></li>
-<li><a class="reference internal" href="#check-callable">Check <strong>callable</strong></a></li>
-<li><a class="reference internal" href="#get-function-class-name">Get function/class name</a></li>
+<li><a class="reference internal" href="#">Python 基础小抄</a><ul>
+<li><a class="reference internal" href="#id1">Python 命名规范</a></li>
+<li><a class="reference internal" href="#future-backport">使用 <code class="docutils literal"><span class="pre">__future__</span></code> 向后移植（backport） 特性</a></li>
+<li><a class="reference internal" href="#id3">查看对象属性</a></li>
+<li><a class="reference internal" href="#doc">定义 <code class="docutils literal"><span class="pre">__doc__</span></code> 方法</a></li>
+<li><a class="reference internal" href="#id4">检查实例类型</a></li>
+<li><a class="reference internal" href="#id5">检查、获取、赋值属性</a></li>
+<li><a class="reference internal" href="#id6">继承检查</a></li>
+<li><a class="reference internal" href="#global">查询所有 global 变量</a></li>
+<li><a class="reference internal" href="#callable">检查 <strong>callable</strong></a></li>
+<li><a class="reference internal" href="#id7">获取方法名、类名</a></li>
 <li><a class="reference internal" href="#new-init"><code class="docutils literal"><span class="pre">__new__</span></code> &amp; <code class="docutils literal"><span class="pre">__init__</span></code></a></li>
-<li><a class="reference internal" href="#the-diamond-problem">The diamond problem</a></li>
-<li><a class="reference internal" href="#representations-of-your-class-behave">Representations of your class behave</a></li>
-<li><a class="reference internal" href="#break-up-a-long-string">Break up a long string</a></li>
-<li><a class="reference internal" href="#get-list-item-smart">Get list item <strong>SMART</strong></a></li>
-<li><a class="reference internal" href="#get-dictionary-item-smart">Get dictionary item <strong>SMART</strong></a></li>
-<li><a class="reference internal" href="#set-a-list-dict-smart">Set a list/dict <strong>SMART</strong></a></li>
-<li><a class="reference internal" href="#namedtuple">NamedTuple</a></li>
-<li><a class="reference internal" href="#iter-delegating-iteration"><code class="docutils literal"><span class="pre">__iter__</span></code> - Delegating Iteration</a></li>
-<li><a class="reference internal" href="#using-generator-as-iterator">Using Generator as Iterator</a></li>
-<li><a class="reference internal" href="#emulating-a-list">Emulating a list</a></li>
-<li><a class="reference internal" href="#emulating-a-dictionary">Emulating a dictionary</a></li>
-<li><a class="reference internal" href="#emulating-a-matrix-multiplication">Emulating a matrix multiplication</a></li>
-<li><a class="reference internal" href="#decorator">Decorator</a></li>
-<li><a class="reference internal" href="#decorator-with-arguments">Decorator with arguments</a></li>
-<li><a class="reference internal" href="#for-exp-else-exp">for: exp else: exp</a></li>
-<li><a class="reference internal" href="#try-exp-else-exp">try: exp else: exp</a></li>
-<li><a class="reference internal" href="#lambda-function">Lambda function</a></li>
-<li><a class="reference internal" href="#option-arguments-args-kwargs">Option arguments - (*args, **kwargs)</a></li>
-<li><a class="reference internal" href="#type-declare-create-a-class"><code class="docutils literal"><span class="pre">type()</span></code> declare (create) a <code class="docutils literal"><span class="pre">class</span></code></a></li>
-<li><a class="reference internal" href="#callable-object">Callable object</a></li>
-<li><a class="reference internal" href="#context-manager-with-statement">Context Manager - <code class="docutils literal"><span class="pre">with</span></code> statement</a></li>
-<li><a class="reference internal" href="#using-contextmanager">Using <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code></a></li>
-<li><a class="reference internal" href="#using-with-statement-open-file">Using <code class="docutils literal"><span class="pre">with</span></code> statement open file</a></li>
-<li><a class="reference internal" href="#property-managed-attributes">Property - Managed attributes</a></li>
-<li><a class="reference internal" href="#computed-attributes-using-property">Computed attributes - Using property</a></li>
-<li><a class="reference internal" href="#descriptor-manage-attributes">Descriptor - manage attributes</a></li>
+<li><a class="reference internal" href="#id8">菱形继承问题</a></li>
+<li><a class="reference internal" href="#id9">类呈现方法</a></li>
+<li><a class="reference internal" href="#id10">长字符串分割</a></li>
+<li><a class="reference internal" href="#id11"><strong>优雅地</strong> 获取列表元素</a></li>
+<li><a class="reference internal" href="#id12"><strong>优雅地</strong> 获取字典元素</a></li>
+<li><a class="reference internal" href="#id13"><strong>优雅地</strong> 给列表、字典赋值</a></li>
+<li><a class="reference internal" href="#namedtuple">命名元组（NamedTuple）</a></li>
+<li><a class="reference internal" href="#iter"><code class="docutils literal"><span class="pre">__iter__</span></code> - 代理迭代器</a></li>
+<li><a class="reference internal" href="#id14">像迭代器一样使用生成器</a></li>
+<li><a class="reference internal" href="#id15">仿写列表</a></li>
+<li><a class="reference internal" href="#id16">仿写字典</a></li>
+<li><a class="reference internal" href="#id17">仿写矩阵乘法</a></li>
+<li><a class="reference internal" href="#id18">装饰器</a></li>
+<li><a class="reference internal" href="#id19">带参数的装饰器</a></li>
+<li><a class="reference internal" href="#for-else">for-else 语句</a></li>
+<li><a class="reference internal" href="#try-else">try-else 语句</a></li>
+<li><a class="reference internal" href="#lambda">Lambda 表达式</a></li>
+<li><a class="reference internal" href="#args-kwargs">不定参数 - (*args, **kwargs)</a></li>
+<li><a class="reference internal" href="#type-class"><code class="docutils literal"><span class="pre">type()</span></code> 声明（创建） <code class="docutils literal"><span class="pre">class</span></code></a></li>
+<li><a class="reference internal" href="#id20">Callable 对象</a></li>
+<li><a class="reference internal" href="#with">上下文管理 - <code class="docutils literal"><span class="pre">with</span></code> 语句</a></li>
+<li><a class="reference internal" href="#contextmanager">使用 <code class="docutils literal"><span class="pre">&#64;contextmanager</span></code></a></li>
+<li><a class="reference internal" href="#id21">用 <code class="docutils literal"><span class="pre">with</span></code> 语句打开文件</a></li>
+<li><a class="reference internal" href="#property">Property - 管理属性</a></li>
+<li><a class="reference internal" href="#id22">计算属性（延迟加载） - 使用 property</a></li>
+<li><a class="reference internal" href="#id23">描述器 - 管理属性</a></li>
 <li><a class="reference internal" href="#staticmethod-classmethod"><code class="docutils literal"><span class="pre">&#64;staticmethod</span></code>, <code class="docutils literal"><span class="pre">&#64;classmethod</span></code></a></li>
-<li><a class="reference internal" href="#abstract-method-metaclass">Abstract method - Metaclass</a></li>
-<li><a class="reference internal" href="#common-use-magic">Common Use <strong>Magic</strong></a></li>
-<li><a class="reference internal" href="#parsing-csv-string">Parsing csv string</a></li>
+<li><a class="reference internal" href="#metaclass">抽象方法 - 元类（Metaclass）</a></li>
+<li><a class="reference internal" href="#magic">常用 <strong>Magic</strong> 方法</a></li>
+<li><a class="reference internal" href="#csv">分析 csv</a></li>
 </ul>
 </li>
 </ul>
@@ -1291,7 +1290,7 @@ Not store in memory previously.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2016, crazyguitar.
+      &copy;2017, caimaoy.
       
       |
       <a href="../_sources/notes/python-basic.rst.txt"
@@ -1299,7 +1298,7 @@ Not store in memory previously.</p>
     </div>
 
     
-    <a href="https://github.com/crazyguitar/pysheeet" class="github">
+    <a href="https://github.com/caimaoy/pysheeet" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     
