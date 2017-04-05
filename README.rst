@@ -19,4 +19,4 @@ How to run the server
     $ make
     $ python app.py
 
-    # URL: localhost:5000
+    # URL: localhost:7788
