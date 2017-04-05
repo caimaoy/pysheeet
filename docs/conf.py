@@ -51,8 +51,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'python-cheatsheet'
-copyright = u'2016, crazyguitar'
-author = u'crazyguitar'
+copyright = u'2017, caimaoy'
+author = u'caimaoy'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -119,7 +119,7 @@ html_theme = 'alabaster'
 # documentation.
 html_theme_options = {
     'show_powered_by': False,
-    'github_user': 'crazyguitar',
+    'github_user': 'caimaoy',
     'github_repo': 'pysheeet',
     'github_banner': True,
     'show_related': False,
@@ -251,7 +251,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'python-cheatsheet.tex', u'python-cheatsheet Documentation',
-     u'crazyguitar', 'manual'),
+     u'caimaoy', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
