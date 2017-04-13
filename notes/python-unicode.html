@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python unicode cheatsheet &#8212; pysheeet</title>
+    <title>Python unicode 小抄 &#8212; pysheeet</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -44,26 +44,26 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="python-unicode-cheatsheet">
-<h1>Python unicode cheatsheet<a class="headerlink" href="#python-unicode-cheatsheet" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="encode-unicode-code-point-to-bytes">
-<h2>Encode: unicode code point to bytes<a class="headerlink" href="#encode-unicode-code-point-to-bytes" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="python-unicode">
+<h1>Python unicode 小抄<a class="headerlink" href="#python-unicode" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="encode-unicode-bytes">
+<h2>Encode: unicode 编码转 bytes<a class="headerlink" href="#encode-unicode-bytes" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;Café&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
 <span class="go">&lt;class &#39;bytes&#39;&gt;</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="decode-bytes-to-unicode-code-point">
-<h2>Decode: bytes to unicode code point<a class="headerlink" href="#decode-bytes-to-unicode-code-point" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="decode-bytes-unicode">
+<h2>Decode: bytes 转 unicode 编码<a class="headerlink" href="#decode-bytes-unicode" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="s1">&#39;Café&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 <span class="go">&#39;Café&#39;</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="get-unicode-code-point">
-<h2>Get unicode code point<a class="headerlink" href="#get-unicode-code-point" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="unicode">
+<h2>获取 unicode 码位<a class="headerlink" href="#unicode" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;Café&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s1">&#39;U+</span><span class="si">%04x</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">ord</span><span class="p">(</span><span class="n">_c</span><span class="p">))</span>
 <span class="gp">...</span>
@@ -79,8 +79,8 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="python2-str-is-equivalent-to-byte-string">
-<h2>python2 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to byte string<a class="headerlink" href="#python2-str-is-equivalent-to-byte-string" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python2-str-byte">
+<h2>python2 中``str`` 等价于 byte 类型<a class="headerlink" href="#python2-str-byte" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>  <span class="c1"># byte string</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span>
 <span class="go">&#39;Caf\xc3\xa9&#39;</span>
@@ -94,8 +94,8 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="python3-str-is-equivalent-to-unicode-string">
-<h2>python3 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to unicode string<a class="headerlink" href="#python3-str-is-equivalent-to-unicode-string" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python3-str-unicode">
+<h2>python3  中 <code class="docutils literal"><span class="pre">str</span></code> 等价于 unicode 类型<a class="headerlink" href="#python3-str-unicode" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="go">&lt;class &#39;str&#39;&gt;</span>
@@ -193,12 +193,12 @@
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254050673'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1254050673%26show%3Dpic2' type='text/javascript'%3E%3C/script%3E"));</script>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Python unicode cheatsheet</a><ul>
-<li><a class="reference internal" href="#encode-unicode-code-point-to-bytes">Encode: unicode code point to bytes</a></li>
-<li><a class="reference internal" href="#decode-bytes-to-unicode-code-point">Decode: bytes to unicode code point</a></li>
-<li><a class="reference internal" href="#get-unicode-code-point">Get unicode code point</a></li>
-<li><a class="reference internal" href="#python2-str-is-equivalent-to-byte-string">python2 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to byte string</a></li>
-<li><a class="reference internal" href="#python3-str-is-equivalent-to-unicode-string">python3 <code class="docutils literal"><span class="pre">str</span></code> is equivalent to unicode string</a></li>
+<li><a class="reference internal" href="#">Python unicode 小抄</a><ul>
+<li><a class="reference internal" href="#encode-unicode-bytes">Encode: unicode 编码转 bytes</a></li>
+<li><a class="reference internal" href="#decode-bytes-unicode">Decode: bytes 转 unicode 编码</a></li>
+<li><a class="reference internal" href="#unicode">获取 unicode 码位</a></li>
+<li><a class="reference internal" href="#python2-str-byte">python2 中``str`` 等价于 byte 类型</a></li>
+<li><a class="reference internal" href="#python3-str-unicode">python3  中 <code class="docutils literal"><span class="pre">str</span></code> 等价于 unicode 类型</a></li>
 <li><a class="reference internal" href="#python2-take-str-char-as-byte-character">python2 take <code class="docutils literal"><span class="pre">str</span></code> char as byte character</a></li>
 <li><a class="reference internal" href="#python3-take-str-char-as-unicode-character">python3 take <code class="docutils literal"><span class="pre">str</span></code> char as unicode character</a></li>
 <li><a class="reference internal" href="#unicode-normalization">unicode normalization</a></li>
