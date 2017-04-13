@@ -80,7 +80,7 @@
 </div>
 </div>
 <div class="section" id="python2-str-byte">
-<h2>python2 中``str`` 等价于 byte 类型<a class="headerlink" href="#python2-str-byte" title="Permalink to this headline">¶</a></h2>
+<h2>python2 中 <code class="docutils literal"><span class="pre">str</span></code> 等价于 byte 类型<a class="headerlink" href="#python2-str-byte" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>  <span class="c1"># byte string</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span>
 <span class="go">&#39;Caf\xc3\xa9&#39;</span>
@@ -108,8 +108,8 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="python2-take-str-char-as-byte-character">
-<h2>python2 take <code class="docutils literal"><span class="pre">str</span></code> char as byte character<a class="headerlink" href="#python2-take-str-char-as-byte-character" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h2>python2 中 <code class="docutils literal"><span class="pre">str</span></code> 字符是 byte 字符<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span> <span class="s1">&#39;Café&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">[</span><span class="n">_c</span> <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
 <span class="go">[&#39;C&#39;, &#39;a&#39;, &#39;f&#39;, &#39;\xc3&#39;, &#39;\xa9&#39;]</span>
@@ -123,23 +123,23 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="python3-take-str-char-as-unicode-character">
-<h2>python3 take <code class="docutils literal"><span class="pre">str</span></code> char as unicode character<a class="headerlink" href="#python3-take-str-char-as-unicode-character" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span> <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>
- <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">([</span><span class="n">_c</span> <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">])</span>
- <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;é&#39;</span><span class="p">]</span>
- <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
- <span class="mi">4</span>
- <span class="o">&gt;&gt;&gt;</span> <span class="n">bs</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
- <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
- <span class="sa">b</span><span class="s1">&#39;Caf</span><span class="se">\xc3\xa9</span><span class="s1">&#39;</span>
- <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
-<span class="mi">5</span>
+<div class="section" id="id2">
+<h2>python3 中 <code class="docutils literal"><span class="pre">str</span></code> 字符是 unicode 字符<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">([</span><span class="n">_c</span> <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">])</span>
+<span class="go">[&#39;C&#39;, &#39;a&#39;, &#39;f&#39;, &#39;é&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bs</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
+<span class="go">b&#39;Caf\xc3\xa9&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">bs</span><span class="p">)</span>
+<span class="go">5</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="unicode-normalization">
-<h2>unicode normalization<a class="headerlink" href="#unicode-normalization" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>unicode 规整化<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># python 3</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span> <span class="o">=</span> <span class="s1">&#39;Café&#39;</span>       <span class="c1"># unicode string</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">u2</span> <span class="o">=</span> <span class="s1">&#39;Cafe</span><span class="se">\u0301</span><span class="s1">&#39;</span>
@@ -197,11 +197,11 @@
 <li><a class="reference internal" href="#encode-unicode-bytes">Encode: unicode 编码转 bytes</a></li>
 <li><a class="reference internal" href="#decode-bytes-unicode">Decode: bytes 转 unicode 编码</a></li>
 <li><a class="reference internal" href="#unicode">获取 unicode 码位</a></li>
-<li><a class="reference internal" href="#python2-str-byte">python2 中``str`` 等价于 byte 类型</a></li>
+<li><a class="reference internal" href="#python2-str-byte">python2 中 <code class="docutils literal"><span class="pre">str</span></code> 等价于 byte 类型</a></li>
 <li><a class="reference internal" href="#python3-str-unicode">python3  中 <code class="docutils literal"><span class="pre">str</span></code> 等价于 unicode 类型</a></li>
-<li><a class="reference internal" href="#python2-take-str-char-as-byte-character">python2 take <code class="docutils literal"><span class="pre">str</span></code> char as byte character</a></li>
-<li><a class="reference internal" href="#python3-take-str-char-as-unicode-character">python3 take <code class="docutils literal"><span class="pre">str</span></code> char as unicode character</a></li>
-<li><a class="reference internal" href="#unicode-normalization">unicode normalization</a></li>
+<li><a class="reference internal" href="#id1">python2 中 <code class="docutils literal"><span class="pre">str</span></code> 字符是 byte 字符</a></li>
+<li><a class="reference internal" href="#id2">python3 中 <code class="docutils literal"><span class="pre">str</span></code> 字符是 unicode 字符</a></li>
+<li><a class="reference internal" href="#id3">unicode 规整化</a></li>
 </ul>
 </li>
 </ul>
