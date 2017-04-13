@@ -38,8 +38,8 @@ Decode: bytes 转 unicode 编码
     U+4e2d
     U+6587
 
-python2 中``str`` 等价于 byte 类型
-----------------------------------
+python2 中 ``str`` 等价于 byte 类型
+------------------------------------
 
 .. code-block:: python
 
