@@ -1,9 +1,9 @@
 ==========================
-Python unicode cheatsheet
+Python unicode 小抄
 ==========================
 
-Encode: unicode code point to bytes
-------------------------------------
+Encode: unicode 编码转 bytes
+-----------------------------
 
 .. code-block:: python
 
@@ -11,8 +11,8 @@ Encode: unicode code point to bytes
     >>> type(s.encode('utf-8'))
     <class 'bytes'>
 
-Decode: bytes to unicode code point
-------------------------------------
+Decode: bytes 转 unicode 编码
+-----------------------------
 
 .. code-block:: python
 
@@ -20,26 +20,26 @@ Decode: bytes to unicode code point
     >>> s.decode('utf-8')
     'Café'
 
-Get unicode code point
------------------------
+获取 unicode 码位
+-----------------
 
 .. code-block:: python
 
     >>> s = u'Café'
     >>> for _c in s: print('U+%04x' % ord(_c))
-    ... 
+    ...
     U+0043
     U+0061
     U+0066
     U+00e9
     >>> u = '中文'
     >>> for _c in u: print('U+%04x' % ord(_c))
-    ... 
+    ...
     U+4e2d
     U+6587
 
-python2 ``str`` is equivalent to byte string
----------------------------------------------
+python2 中``str`` 等价于 byte 类型
+----------------------------------
 
 .. code-block:: python
 
@@ -55,8 +55,8 @@ python2 ``str`` is equivalent to byte string
     <type 'unicode'>
 
 
-python3 ``str`` is equivalent to unicode string 
--------------------------------------------------
+python3  中 ``str`` 等价于 unicode 类型
+---------------------------------------
 
 .. code-block:: python
 
@@ -71,8 +71,8 @@ python3 ``str`` is equivalent to unicode string
     'Café'
 
 
-python2 take ``str`` char as byte character
---------------------------------------------
+python2 中 ``str`` 字符是 byte 字符
+-----------------------------------
 
 .. code-block:: python
 
@@ -87,8 +87,8 @@ python2 take ``str`` char as byte character
     >>> len(s)
     4
 
-python3 take ``str`` char as unicode character
------------------------------------------------
+python3 中 ``str`` 字符是 unicode 字符
+--------------------------------------
 
 .. code-block:: python
 
@@ -101,11 +101,11 @@ python3 take ``str`` char as unicode character
     >>> print(bs)
     b'Caf\xc3\xa9'
     >>> len(bs)
-   5 
+    5
 
 
-unicode normalization
-----------------------
+unicode 规整化
+--------------
 
 .. code-block:: python
 
@@ -123,7 +123,7 @@ unicode normalization
     >>> u2.encode('utf-8') # get u2 byte string
     b'Cafe\xcc\x81'
     >>> from unicodedata import normalize
-    >>> s1 = normalize('NFC', u1)  # get u1 NFC format 
+    >>> s1 = normalize('NFC', u1)  # get u1 NFC format
     >>> s2 = normalize('NFC', u2)  # get u2 NFC format
     >>> s1 == s2
     True
@@ -136,7 +136,4 @@ unicode normalization
     >>> s1 == s2
     True
     >>> s1.encode('utf-8'), s2.encode('utf-8')
-    (b'Cafe\xcc\x81', b'Cafe\xcc\x81') 
-
-    
-
+    (b'Cafe\xcc\x81', b'Cafe\xcc\x81')
